@@ -13,10 +13,10 @@ export type Product = {
 }
 
 export const catalogImages = {
-  manual: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maunal-zFqCVCoYPNeN0Oi4sf6RxkLcN7aaA1.png',
-  semi: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/semi-dg6SHr8ArlxfGOwW72Fg8HvBi5tqI2.png',
-  automatic: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Automatic-SglY2Tgtr1TGSSbRZVec9lJtJIbX4O.png',
-  cabinet: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Automatic%20With%20Cabinet-NwoVPw2J7f0Pt5OQlP1FlcgDafi2EV.png',
+  manual: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maunal-klp4aAPNzXbjrr7ziejd9rX05TcxCv.png',
+  semi: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-mV2NZtmGAsbVhrL9C3AgC3d33O6u18.png',
+  automatic: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Semi%20automatic-rbMWZ1JdWU46BpMwjfMkonmT90oXRL.png',
+  cabinet: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic%20with%20cabinet-HTGIrTPnrFtM7wZghaeC4nfuyU9Z3F.png',
 }
 
 export const catalogBrochures = {

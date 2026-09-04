@@ -1,8 +1,5 @@
-'use client'
-
 import Link from 'next/link'
-import { ArrowRight, ChevronRight, Menu, Search, X } from 'lucide-react'
-import { useState } from 'react'
+import { ArrowRight, ChevronRight, Search } from 'lucide-react'
 import { products as catalogueProducts } from '@/lib/catalog'
 
 const products = catalogueProducts.slice(0, 3).map((product) => ({ name: product.name, category: product.family, code: product.variants[0].model, image: product.image, slug: product.slug }))
@@ -10,25 +7,8 @@ const products = catalogueProducts.slice(0, 3).map((product) => ({ name: product
 const capabilities = ['Metrology equipment', 'Precision instruments', 'Quality control systems', 'Technical support']
 
 export default function Page() {
-  const [menuOpen, setMenuOpen] = useState(false)
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="bg-primary px-4 py-2 text-center font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-primary-foreground">Precision measurement systems for modern manufacturing</div>
-      <header className="border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-8">
-          <Link href="/" className="flex items-center gap-3" aria-label="ArmaTech Associates home">
-            <span className="flex size-10 items-center justify-center bg-primary font-mono text-lg font-black text-primary-foreground">AT</span>
-            <span className="font-mono text-sm font-bold uppercase tracking-[0.16em]">ArmaTech <span className="text-muted-foreground">Associates</span></span>
-          </Link>
-          <nav className="hidden items-center gap-8 text-xs font-semibold uppercase tracking-[0.16em] lg:flex">
-            <Link className="hover:text-primary" href="/about">About</Link><Link className="hover:text-primary" href="/products">Products</Link><Link className="hover:text-primary" href="/services">Services</Link><Link className="hover:text-primary" href="/contact">Contact</Link>
-            <Link href="/contact" className="bg-primary px-5 py-3 text-primary-foreground transition hover:bg-primary/90">Request a quote <ArrowRight className="ml-2 inline size-3" /></Link>
-          </nav>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden" aria-label={menuOpen ? 'Close menu' : 'Open menu'}>{menuOpen ? <X /> : <Menu />}</button>
-        </div>
-        {menuOpen && <nav className="flex flex-col gap-5 border-t border-border px-5 py-6 text-sm font-semibold uppercase tracking-widest lg:hidden"><Link href="/about">About</Link><Link href="/products">Products</Link><Link href="/services">Services</Link><Link href="/contact">Contact</Link></nav>}
-      </header>
-
       <section className="relative overflow-hidden bg-foreground text-background">
         <div className="mx-auto grid max-w-7xl items-end gap-12 px-5 pb-16 pt-20 lg:grid-cols-[1.1fr_0.9fr] lg:px-8 lg:pb-24 lg:pt-28">
           <div><p className="mb-7 font-mono text-xs font-bold uppercase tracking-[0.25em] text-primary">ArmaTech Associates / India</p><h1 className="max-w-3xl text-balance font-mono text-4xl font-bold uppercase leading-[0.98] tracking-[-0.06em] sm:text-6xl lg:text-7xl">Measure what<br /><span className="text-primary">matters.</span></h1><p className="mt-8 max-w-xl text-pretty text-base leading-7 text-background/70">Precision measurement and quality control solutions for the teams building what comes next.</p><div className="mt-10 flex flex-wrap gap-4"><Link href="/products" className="bg-primary px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground hover:bg-primary/90">Explore products <ArrowRight className="ml-3 inline size-4" /></Link><Link href="/about" className="border border-background/30 px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-background hover:border-primary">Our approach</Link></div></div>

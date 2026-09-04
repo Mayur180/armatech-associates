@@ -14,10 +14,12 @@ export type Product = {
 }
 
 export const catalogImages = {
-  manual: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maunal-klp4aAPNzXbjrr7ziejd9rX05TcxCv.png',
-  semi: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-mV2NZtmGAsbVhrL9C3AgC3d33O6u18.png',
-  automatic: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Semi%20automatic-rbMWZ1JdWU46BpMwjfMkonmT90oXRL.png',
-  cabinet: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic%20with%20cabinet-HTGIrTPnrFtM7wZghaeC4nfuyU9Z3F.png',
+  // Transparent cut-outs for product stages; the enhanced images keep the machine silhouette clean.
+  manual: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maunal-L8yjCFjZiWt6iCDQZhujqswIkFjqPo.png',
+  semi: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/semi-nIQvd99xxNXr13VTuwnMkOI3ip3YPp.png',
+  automatic: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic-bPz5STarFfXkj1fNgBOz2KFbBnrSIY.png',
+  cabinet: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic%20with%20cabinet-nMON6kS70ryrBN3q5uxzUV77A0oTbr.png',
+  vms: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/vms-UyN1lpNPu7hfXst0XeCpOdBG3w6paP.png',
 }
 
 export const catalogBrochures = {

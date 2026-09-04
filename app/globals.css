@@ -2,7 +2,7 @@
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
 @theme inline { --color-background: var(--background); --color-foreground: var(--foreground); --color-primary: var(--primary); --color-primary-foreground: var(--primary-foreground); --color-secondary: var(--secondary); --color-secondary-foreground: var(--secondary-foreground); --color-muted-foreground: var(--muted-foreground); --color-border: var(--border); --font-sans: 'Arial', sans-serif; --font-mono: 'Courier New', monospace; }
-:root { color-scheme: light; --background: #fff; --foreground: #171717; --primary: #c8102e; --primary-foreground: #fff; --secondary: #f8f8f8; --secondary-foreground: #171717; --muted-foreground: #555; --border: #e5e5e5; }
+:root { color-scheme: light; --background: #fffdf8; --foreground: #201b16; --primary: #e3a900; --primary-foreground: #201b16; --secondary: #f6f0df; --secondary-foreground: #201b16; --muted-foreground: #71695f; --border: #ded4c1; --accent-red: #b4232f; }
 * { @apply border-border; }
 html { background: var(--background); scroll-behavior: smooth; }
 body { @apply bg-background text-foreground antialiased; }

@@ -1,22 +1,319 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-@theme inline { --color-background: var(--background); --color-foreground: var(--foreground); --color-primary: var(--primary); --color-primary-foreground: var(--primary-foreground); --color-secondary: var(--secondary); --color-secondary-foreground: var(--secondary-foreground); --color-muted-foreground: var(--muted-foreground); --color-border: var(--border); --font-sans: 'Arial', sans-serif; --font-mono: 'Courier New', monospace; }
-:root { color-scheme: light; --background: #fffdf8; --foreground: #201b16; --primary: #e3a900; --primary-foreground: #201b16; --secondary: #f6f0df; --secondary-foreground: #201b16; --muted-foreground: #71695f; --border: #ded4c1; --accent-red: #b4232f; }
-* { @apply border-border; }
-html { background: var(--background); scroll-behavior: smooth; }
-body { @apply bg-background text-foreground antialiased; }
-a, button { transition: color .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease; }
-::selection { background: var(--primary); color: var(--primary-foreground); }
-.nav-link { @apply font-mono text-[11px] font-bold uppercase tracking-widest text-foreground hover:text-primary; }
-.mobile-link { @apply py-3 font-mono text-xs font-bold uppercase tracking-widest text-foreground hover:text-primary; }
-.quote-nav { @apply bg-primary px-4 py-3 font-mono text-[10px] font-bold uppercase tracking-widest text-primary-foreground hover:bg-[#9e0b22]; }
-.mega-menu { animation: menu-in .16s ease-out both; }
-@keyframes menu-in { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-.product-stage { isolation: isolate; }
-.scan-grid { background-image: linear-gradient(to right, color-mix(in srgb, var(--foreground) 12%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in srgb, var(--foreground) 12%, transparent) 1px, transparent 1px); background-size: 32px 32px; mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent); }
-.scan-line { animation: scan 5s ease-in-out infinite; box-shadow: 0 0 18px color-mix(in srgb, var(--primary) 70%, transparent); }
-.measure-ring { animation: pulse-ring 4s ease-in-out infinite; }
-@keyframes scan { 0%, 100% { transform: translateY(-120px); opacity: .25; } 50% { transform: translateY(120px); opacity: .9; } }
-@keyframes pulse-ring { 0%, 100% { transform: scale(.9); opacity: .35; } 50% { transform: scale(1.08); opacity: .9; } }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+
+/* ============================================================
+   THEME
+   ============================================================ */
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-border: var(--border);
+    --font-sans: Arial, sans-serif;
+    --font-mono: 'Courier New', monospace;
+}
+
+
+/* ============================================================
+   ROOT COLORS
+   ============================================================ */
+
+:root {
+    color-scheme: light;
+    --background: #fffdf8;
+    --foreground: #201b16;
+    --primary: #e3a900;
+    --primary-foreground: #201b16;
+    --secondary: #f6f0df;
+    --secondary-foreground: #201b16;
+    --muted-foreground: #71695f;
+    --border: #ded4c1;
+    --accent-red: #b4232f;
+}
+
+
+/* ============================================================
+   GLOBAL
+   ============================================================ */
+
+* {
+    @apply border-border;
+}
+
+html {
+    background: var(--background);
+    scroll-behavior: smooth;
+}
+
+body {
+    @apply bg-background text-foreground antialiased;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ============================================================
+   LINKS & BUTTONS
+   ============================================================ */
+
+a,
+button {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+
+/* ============================================================
+   TEXT SELECTION
+   ============================================================ */
+
+
+/*
+   Dark selection instead of yellow.
+   This prevents selected footer text from looking like
+   a yellow text box.
+*/
+
+::selection {
+    background: #201b16;
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+
+.nav-link {
+    @apply font-mono text-[11px] font-bold uppercase tracking-widest text-foreground;
+}
+
+.nav-link:hover {
+    color: var(--primary);
+}
+
+.mobile-link {
+    @apply py-3 font-mono text-xs font-bold uppercase tracking-widest text-foreground;
+}
+
+.mobile-link:hover {
+    color: var(--primary);
+}
+
+.quote-nav {
+    @apply bg-primary px-4 py-3 font-mono text-[10px] font-bold uppercase tracking-widest text-primary-foreground;
+}
+
+.quote-nav:hover {
+    background-color: var(--accent-red);
+    color: #ffffff;
+}
+
+
+/* ============================================================
+   MEGA MENU
+   ============================================================ */
+
+.mega-menu {
+    animation: menu-in 0.16s ease-out both;
+}
+
+@keyframes menu-in {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ============================================================
+   PRODUCT STAGE
+   ============================================================ */
+
+.product-stage {
+    isolation: isolate;
+}
+
+
+/* ============================================================
+   SCAN GRID
+   ============================================================ */
+
+.scan-grid {
+    background-image: linear-gradient( to right, color-mix( in srgb, var(--foreground) 12%, transparent) 1px, transparent 1px), linear-gradient( to bottom, color-mix( in srgb, var(--foreground) 12%, transparent) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: linear-gradient( to bottom, transparent, black 20%, black 80%, transparent);
+}
+
+
+/* ============================================================
+   SCAN LINE
+   ============================================================ */
+
+.scan-line {
+    animation: scan 5s ease-in-out infinite;
+    box-shadow: 0 0 18px color-mix( in srgb, var(--primary) 70%, transparent);
+}
+
+@keyframes scan {
+    0%,
+    100% {
+        transform: translateY(-120px);
+        opacity: 0.25;
+    }
+    50% {
+        transform: translateY(120px);
+        opacity: 0.9;
+    }
+}
+
+
+/* ============================================================
+   MEASURE RING
+   ============================================================ */
+
+.measure-ring {
+    animation: pulse-ring 4s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+    0%,
+    100% {
+        transform: scale(0.9);
+        opacity: 0.35;
+    }
+    50% {
+        transform: scale(1.08);
+        opacity: 0.9;
+    }
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+
+
+/*
+   Main footer
+*/
+
+footer {
+    color: var(--foreground);
+}
+
+
+/*
+   Footer links
+*/
+
+footer a {
+    color: var(--foreground);
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--primary);
+}
+
+
+/*
+   Footer paragraphs
+*/
+
+footer p {
+    color: var(--foreground);
+}
+
+
+/*
+   Footer headings
+*/
+
+footer h1,
+footer h2,
+footer h3,
+footer h4,
+footer h5,
+footer h6 {
+    color: var(--foreground);
+}
+
+
+/*
+   Footer muted text
+*/
+
+footer .text-white\/70,
+footer .text-white\/60,
+footer .text-white\/50 {
+    color: var(--muted-foreground) !important;
+}
+
+
+/*
+   Footer white text classes
+   converted to readable dark text
+*/
+
+footer .text-white {
+    color: var(--foreground) !important;
+}
+
+
+/*
+   Footer borders
+*/
+
+footer .border-white\/20,
+footer .border-white\/10 {
+    border-color: var(--border) !important;
+}
+
+
+/*
+   Footer copyright
+*/
+
+footer small {
+    color: var(--muted-foreground);
+}
+
+
+/* ============================================================
+   RESPONSIVE FOOTER
+   ============================================================ */
+
+@media (max-width: 768px) {
+    footer {
+        text-align: left;
+    }
+    footer p {
+        line-height: 1.6;
+    }
+}
+
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}

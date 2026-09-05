@@ -46,6 +46,8 @@ export default function ContactPage() {
 
   const [showReview, setShowReview] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState("")
 
   /* =========================================================
      READ PRODUCT + MODEL FROM URL
@@ -180,9 +182,56 @@ export default function ContactPage() {
      Backend/API can be connected here later.
   ========================================================= */
 
-  function handleSubmit() {
-    setSubmitted(true)
+  async function handleSubmit() {
+  if (submitting) {
+    return
   }
+
+  setSubmitting(true)
+  setSubmitError("")
+
+  try {
+    const response = await fetch("/api/enquiries", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name.trim(),
+        company: company.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        message: message.trim(),
+
+        product: product?.name ?? "",
+        productSlug: product?.slug ?? "",
+        model: variant?.model ?? "",
+      }),
+    })
+
+    const data = await response.json()
+
+    if (!response.ok || !data.success) {
+      throw new Error(
+        data.error || "Unable to submit your enquiry."
+      )
+    }
+
+    console.log("Enquiry submitted successfully:", data)
+
+    setSubmitted(true)
+  } catch (error) {
+    console.error("Enquiry submission error:", error)
+
+    setSubmitError(
+      error instanceof Error
+        ? error.message
+        : "Unable to submit your enquiry. Please try again."
+    )
+  } finally {
+    setSubmitting(false)
+  }
+}
 
   /* =========================================================
      SUCCESS PAGE
@@ -464,14 +513,33 @@ export default function ContactPage() {
               </button>
 
               <button
-                type="button"
-                onClick={handleSubmit}
-                className="inline-flex items-center justify-center gap-3 bg-primary px-7 py-4 font-mono text-xs font-bold uppercase tracking-widest text-primary-foreground transition hover:opacity-90"
-              >
-                Send request
-                <Send className="size-4" />
-              </button>
+  type="button"
+  onClick={handleSubmit}
+  disabled={submitting}
+  className="inline-flex items-center justify-center gap-3 bg-primary px-7 py-4 font-mono text-xs font-bold uppercase tracking-widest text-primary-foreground transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+>
+  {submitting ? "Sending..." : "Send request"}
 
+  {!submitting && <Send className="size-4" />}
+</button>
+{submitError && (
+  <div className="mt-6 border border-red-500/30 bg-red-500/5 px-6 py-4">
+    <p className="font-mono text-xs font-bold uppercase tracking-widest text-red-600">
+      Submission failed
+    </p>
+
+    <p className="mt-2 text-sm leading-6 text-red-600">
+      {submitError}
+    </p>
+
+    <p className="mt-2 text-xs text-muted-foreground">
+      Please check your internet connection and try again.
+    </p>
+  </div>
+)}
+
+{/* Actions */}
+<div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end"></div>
             </div>
 
           </div>

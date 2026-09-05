@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowLeft, ArrowRight, Check, Download } from "lucide-react"
+import { ArrowLeft, ArrowRight, Check } from "lucide-react"
 import { notFound } from "next/navigation"
 
 import ProductViewer from "@/components/ProductViewer"
@@ -197,16 +197,6 @@ export default async function ProductDetail({
                 <ArrowRight className="size-4" />
               </Link>
 
-              <a
-                href={product.brochure}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 border border-border px-6 py-4 text-xs font-bold uppercase tracking-widest transition hover:border-primary hover:text-primary"
-              >
-                <Download className="size-4" />
-
-                Download PDF
-              </a>
 
             </div>
 
@@ -438,41 +428,6 @@ export default async function ProductDetail({
         </section>
 
       )}
-
-      {/* ======================================================
-          FINAL DOWNLOAD CTA
-      ====================================================== */}
-
-      <section className="bg-primary px-5 py-14 text-primary-foreground lg:px-8">
-
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 md:flex-row md:items-center md:justify-between">
-
-          <div>
-
-            <p className="font-mono text-xs font-bold uppercase tracking-widest">
-              Technical catalogue
-            </p>
-
-            <h2 className="mt-3 max-w-2xl font-mono text-2xl font-bold uppercase">
-              Download complete {product.name} specifications.
-            </h2>
-
-          </div>
-
-          <a
-            href={product.brochure}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-3 bg-foreground px-5 py-4 text-xs font-bold uppercase tracking-widest text-background transition hover:opacity-90"
-          >
-            <Download className="size-4" />
-
-            Download PDF
-          </a>
-
-        </div>
-
-      </section>
 
     </main>
   )

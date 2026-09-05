@@ -282,30 +282,37 @@ export default function ProductsPage() {
           <div>
 
             <p className="font-mono text-xs font-bold uppercase tracking-widest">
-              Download the Technical Set
+              Technical library
             </p>
 
             <h2 className="mt-3 font-mono text-2xl font-bold uppercase">
-              All VMM specifications, in one file.
+              VMM specifications and catalogues.
             </h2>
 
           </div>
 
 
-          {/* DOWNLOAD BUTTON */}
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="/Pdf/VMS_VMM.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-3 bg-foreground px-5 py-4 text-xs font-bold uppercase tracking-widest text-background"
+            >
+              <Download className="size-4" />
+              Download technical set
+            </a>
 
-          <a
-            href="https://blobs.vusercontent.net/blob/VMM-catalog%201-AVSXq7UUFKs3md35QB7w7o1sEEr216.pdf"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-3 bg-foreground px-5 py-4 text-xs font-bold uppercase tracking-widest text-background"
-          >
-
-            <Download className="size-4" />
-
-            Download Catalogue
-
-          </a>
+            <a
+              href="/Pdf/Manual_VMM.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-3 border border-primary-foreground/40 px-5 py-4 text-xs font-bold uppercase tracking-widest text-primary-foreground transition hover:bg-primary-foreground hover:text-primary"
+            >
+              <Download className="size-4" />
+              Download catalogue
+            </a>
+          </div>
 
         </div>
 

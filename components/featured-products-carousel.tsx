@@ -51,7 +51,7 @@ export function FeaturedProductsCarousel({
       {/* =====================================================
           PRODUCT CAROUSEL
       ===================================================== */}
-      <div className="relative flex items-start">
+      <div className="relative">
 
         {/* ===================================================
             LEFT ARROW
@@ -65,7 +65,7 @@ export function FeaturedProductsCarousel({
             absolute
             -left-16
             top-[38%]
-            z-10
+            z-20
             hidden
             size-12
             -translate-y-1/2
@@ -74,14 +74,17 @@ export function FeaturedProductsCarousel({
             rounded-full
             border
             border-border
-            bg-background
+            bg-white
             text-foreground
+            shadow-sm
             transition-all
+            duration-300
             hover:border-primary
             hover:bg-primary
-            hover:text-primary-foreground
+            hover:text-white
+            hover:shadow-md
             disabled:cursor-not-allowed
-            disabled:opacity-30
+            disabled:opacity-25
             lg:flex
           "
         >
@@ -92,18 +95,68 @@ export function FeaturedProductsCarousel({
         {/* ===================================================
             PRODUCTS
         =================================================== */}
-        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
           {visibleProducts.map((product) => (
+
             <Link
               href={`/products/${product.slug}`}
               key={product.slug}
-              className="group bg-background"
+              className="
+                group
+                block
+                overflow-hidden
+                border
+                border-border
+                bg-white
+                transition-all
+                duration-300
+                hover:-translate-y-1
+                hover:border-primary/40
+                hover:shadow-xl
+              "
             >
 
-              {/* PRODUCT IMAGE */}
-              <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-secondary">
+              {/* =================================================
+                  IMAGE AREA
+              ================================================= */}
+              <div
+                className="
+                  relative
+                  flex
+                  aspect-[4/3]
+                  items-center
+                  justify-center
+                  overflow-hidden
+                  bg-[#f7f7f7]
+                "
+              >
 
+                {/* Small technical label */}
+                <div
+                  className="
+                    absolute
+                    left-4
+                    top-4
+                    z-10
+                    border
+                    border-border
+                    bg-white/90
+                    px-3
+                    py-1.5
+                    font-mono
+                    text-[9px]
+                    font-bold
+                    uppercase
+                    tracking-[0.15em]
+                    text-muted-foreground
+                  "
+                >
+                  ArmaTech
+                </div>
+
+
+                {/* Image */}
                 <img
                   src={product.image}
                   alt={`${product.name} catalogue reference`}
@@ -111,39 +164,158 @@ export function FeaturedProductsCarousel({
                     size-full
                     object-contain
                     mix-blend-multiply
-                    transition
-                    duration-500
-                    group-hover:scale-[1.04]
+                    px-8
+                    py-6
+                    transition-transform
+                    duration-700
+                    ease-out
+                    group-hover:scale-[1.07]
+                  "
+                />
+
+
+                {/* Red corner marker */}
+                <div
+                  className="
+                    absolute
+                    bottom-4
+                    right-4
+                    size-7
+                    border-b-2
+                    border-r-2
+                    border-primary
+                    opacity-60
+                    transition-all
+                    duration-300
+                    group-hover:size-9
+                    group-hover:opacity-100
                   "
                 />
 
               </div>
 
 
-              {/* PRODUCT DETAILS */}
-              <div className="px-1 py-5">
+              {/* =================================================
+                  PRODUCT DETAILS
+              ================================================= */}
+              <div className="border-t border-border px-5 py-6">
 
-                <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
+                {/* Category */}
+                <p
+                  className="
+                    font-mono
+                    text-[10px]
+                    font-bold
+                    uppercase
+                    tracking-[0.18em]
+                    text-primary
+                  "
+                >
                   {product.category}
                 </p>
 
-                <h3 className="mt-2 font-mono text-lg font-bold uppercase text-foreground">
+
+                {/* Product name */}
+                <h3
+                  className="
+                    mt-2
+                    font-mono
+                    text-xl
+                    font-bold
+                    uppercase
+                    leading-tight
+                    tracking-[-0.02em]
+                    text-foreground
+                  "
+                >
                   {product.name}
                 </h3>
 
-                <p className="mt-2 text-xs text-muted-foreground">
+
+                {/* Model number */}
+                <p
+                  className="
+                    mt-2
+                    font-mono
+                    text-xs
+                    font-bold
+                    uppercase
+                    tracking-widest
+                    text-muted-foreground
+                  "
+                >
                   {product.code}
                 </p>
 
-                <div className="mt-4 flex items-center text-xs font-bold uppercase tracking-widest text-foreground">
-                  View details
 
-                  <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+                {/* Description */}
+                <p
+                  className="
+                    mt-4
+                    max-w-[240px]
+                    text-sm
+                    leading-6
+                    text-muted-foreground
+                  "
+                >
+                  Precision Video Measuring Machine
+                </p>
+
+
+                {/* Divider */}
+                <div className="my-5 h-px w-full bg-border" />
+
+
+                {/* View Product */}
+                <div
+                  className="
+                    flex
+                    items-center
+                    justify-between
+                    text-xs
+                    font-bold
+                    uppercase
+                    tracking-[0.14em]
+                    text-foreground
+                    transition-colors
+                    group-hover:text-primary
+                  "
+                >
+                  <span>
+                    View Product
+                  </span>
+
+                  <span
+                    className="
+                      flex
+                      size-9
+                      items-center
+                      justify-center
+                      rounded-full
+                      border
+                      border-border
+                      transition-all
+                      duration-300
+                      group-hover:border-primary
+                      group-hover:bg-primary
+                      group-hover:text-white
+                    "
+                  >
+                    <ArrowRight
+                      className="
+                        size-4
+                        transition-transform
+                        duration-300
+                        group-hover:translate-x-0.5
+                      "
+                    />
+                  </span>
                 </div>
 
               </div>
 
             </Link>
+
           ))}
 
         </div>
@@ -161,7 +333,7 @@ export function FeaturedProductsCarousel({
             absolute
             -right-16
             top-[38%]
-            z-10
+            z-20
             hidden
             size-12
             -translate-y-1/2
@@ -170,14 +342,17 @@ export function FeaturedProductsCarousel({
             rounded-full
             border
             border-border
-            bg-background
+            bg-white
             text-foreground
+            shadow-sm
             transition-all
+            duration-300
             hover:border-primary
             hover:bg-primary
-            hover:text-primary-foreground
+            hover:text-white
+            hover:shadow-md
             disabled:cursor-not-allowed
-            disabled:opacity-30
+            disabled:opacity-25
             lg:flex
           "
         >
@@ -188,11 +363,10 @@ export function FeaturedProductsCarousel({
 
 
       {/* =====================================================
-          MOBILE ARROWS
-          Shows below products on smaller screens
+          MOBILE CONTROLS
       ===================================================== */}
       {products.length > 3 && (
-        <div className="mt-8 flex items-center justify-center gap-4 lg:hidden">
+        <div className="mt-8 flex items-center justify-center gap-5 lg:hidden">
 
           <button
             type="button"
@@ -204,14 +378,14 @@ export function FeaturedProductsCarousel({
               size-11
               items-center
               justify-center
+              rounded-full
               border
               border-border
-              bg-background
-              text-foreground
-              transition-colors
+              bg-white
+              transition-all
               hover:border-primary
               hover:bg-primary
-              hover:text-primary-foreground
+              hover:text-white
               disabled:cursor-not-allowed
               disabled:opacity-30
             "
@@ -219,11 +393,23 @@ export function FeaturedProductsCarousel({
             <ChevronLeft className="size-5" />
           </button>
 
-          <span className="min-w-[100px] text-center font-mono text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            {currentIndex + 1} —{' '}
-            {Math.min(currentIndex + 3, products.length)} /{' '}
-            {products.length}
-          </span>
+
+          {/* Counter */}
+          <div className="text-center">
+
+            <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              Products
+            </p>
+
+            <p className="mt-1 font-mono text-xs font-bold">
+              {currentIndex + 1} —{' '}
+              {Math.min(currentIndex + 3, products.length)}
+              {' / '}
+              {products.length}
+            </p>
+
+          </div>
+
 
           <button
             type="button"
@@ -235,14 +421,14 @@ export function FeaturedProductsCarousel({
               size-11
               items-center
               justify-center
+              rounded-full
               border
               border-border
-              bg-background
-              text-foreground
-              transition-colors
+              bg-white
+              transition-all
               hover:border-primary
               hover:bg-primary
-              hover:text-primary-foreground
+              hover:text-white
               disabled:cursor-not-allowed
               disabled:opacity-30
             "
@@ -258,12 +444,29 @@ export function FeaturedProductsCarousel({
           DESKTOP PRODUCT COUNTER
       ===================================================== */}
       {products.length > 3 && (
-        <div className="mt-8 hidden justify-center lg:flex">
+        <div className="mt-7 hidden items-center justify-center gap-3 lg:flex">
 
-          <div className="font-mono text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            {currentIndex + 1} —{' '}
-            {Math.min(currentIndex + 3, products.length)} /{' '}
-            {products.length}
+          {/* Progress indicator */}
+          <div className="flex items-center gap-1.5">
+
+            {products.map((_, index) => (
+              <span
+                key={index}
+                className={`
+                  h-1.5
+                  rounded-full
+                  transition-all
+                  duration-300
+                  ${
+                    index >= currentIndex &&
+                    index < currentIndex + 3
+                      ? 'w-6 bg-primary'
+                      : 'w-1.5 bg-border'
+                  }
+                `}
+              />
+            ))}
+
           </div>
 
         </div>

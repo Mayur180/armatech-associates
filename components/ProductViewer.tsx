@@ -13,7 +13,7 @@ type ProductViewerProps = {
 export default function ProductViewer({
   image,
   name,
-  badge,
+  badge: _badge,
   model,
 }: ProductViewerProps) {
   const [rotation, setRotation] = useState(0)
@@ -22,7 +22,9 @@ export default function ProductViewer({
   const startX = useRef(0)
   const startRotation = useRef(0)
 
-  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerDown = (
+    event: React.PointerEvent<HTMLDivElement>
+  ) => {
     setIsDragging(true)
 
     startX.current = event.clientX
@@ -31,15 +33,16 @@ export default function ProductViewer({
     event.currentTarget.setPointerCapture(event.pointerId)
   }
 
-  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerMove = (
+    event: React.PointerEvent<HTMLDivElement>
+  ) => {
     if (!isDragging) return
 
     const difference = event.clientX - startX.current
 
-    // Controls how much the product rotates
-    const newRotation = startRotation.current + difference * 0.35
+    const newRotation =
+      startRotation.current + difference * 0.35
 
-    // Keep rotation within a comfortable range
     const limitedRotation = Math.max(
       -28,
       Math.min(28, newRotation)
@@ -58,7 +61,9 @@ export default function ProductViewer({
 
   return (
     <div className="w-full">
-      {/* PRODUCT STAGE */}
+      {/* =====================================================
+          PRODUCT STAGE
+      ====================================================== */}
 
       <div
         className={`product-view-wrapper group relative flex aspect-[4/3] select-none items-center justify-center overflow-hidden border border-border bg-secondary ${
@@ -73,15 +78,17 @@ export default function ProductViewer({
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
         onPointerLeave={() => {
-          if (isDragging) setIsDragging(false)
+          if (isDragging) {
+            setIsDragging(false)
+          }
         }}
       >
-        {/* ================================================
+        {/* =====================================================
             TECHNICAL GRID
-        ================================================= */}
+        ====================================================== */}
 
         <div
-          className="pointer-events-none absolute inset-0 opacity-40"
+          className="pointer-events-none absolute inset-0 z-0 opacity-40"
           aria-hidden="true"
           style={{
             backgroundImage: `
@@ -100,9 +107,9 @@ export default function ProductViewer({
           }}
         />
 
-        {/* ================================================
+        {/* =====================================================
             CENTER CROSSHAIR
-        ================================================= */}
+        ====================================================== */}
 
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 z-[1] size-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/25 sm:size-56"
@@ -113,9 +120,9 @@ export default function ProductViewer({
           <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-primary/20" />
         </div>
 
-        {/* ================================================
+        {/* =====================================================
             TECHNICAL LINES
-        ================================================= */}
+        ====================================================== */}
 
         <div
           className="pointer-events-none absolute inset-x-0 top-1/2 z-[1] h-px bg-primary/40"
@@ -127,9 +134,9 @@ export default function ProductViewer({
           aria-hidden="true"
         />
 
-        {/* ================================================
+        {/* =====================================================
             CORNER MARKERS
-        ================================================= */}
+        ====================================================== */}
 
         <div className="pointer-events-none absolute left-5 top-5 z-20 h-5 w-5 border-l-2 border-t-2 border-primary" />
 
@@ -139,9 +146,10 @@ export default function ProductViewer({
 
         <div className="pointer-events-none absolute bottom-5 right-5 z-20 h-5 w-5 border-b-2 border-r-2 border-primary" />
 
-        {/* ================================================
+        {/* =====================================================
             3D PRODUCT
-        ================================================= */}
+            PRODUCT IMAGE IS UNCHANGED
+        ====================================================== */}
 
         <div
           className="relative z-10 flex h-full w-full items-center justify-center"
@@ -157,14 +165,16 @@ export default function ProductViewer({
               : "transform 300ms ease-out",
           }}
         >
-          {/* Shadow behind product */}
+          {/* Product shadow */}
 
           <div
             className="pointer-events-none absolute bottom-[13%] left-1/2 h-[12%] w-[58%] -translate-x-1/2 rounded-[50%] bg-black/20 blur-2xl"
             style={{
-              transform: `rotateX(70deg) translateZ(-30px)`,
+              transform: "rotateX(70deg) translateZ(-30px)",
             }}
           />
+
+          {/* Actual product image */}
 
           <img
             src={image}
@@ -177,23 +187,16 @@ export default function ProductViewer({
           />
         </div>
 
-        {/* ================================================
-            BADGE
-        ================================================= */}
-
-        <span className="absolute left-5 top-5 z-30 bg-primary px-4 py-3 font-mono text-[10px] font-bold uppercase tracking-widest text-primary-foreground">
-          {badge}
-        </span>
-
-        {/* ================================================
+        {/* =====================================================
             DRAG INSTRUCTION
-        ================================================= */}
+            MOVED TO TOP-RIGHT
+        ====================================================== */}
 
         <div
-          className={`pointer-events-none absolute left-1/2 top-6 z-30 -translate-x-1/2 transition-all duration-500 ${
+          className={`pointer-events-none absolute right-5 top-6 z-30 transition-all duration-500 ${
             isDragging
-              ? "opacity-0"
-              : "opacity-100"
+              ? "translate-y-[-4px] opacity-0"
+              : "translate-y-0 opacity-100"
           }`}
         >
           <div className="flex items-center gap-2 border border-primary/40 bg-background/90 px-4 py-2 shadow-sm backdrop-blur-sm">
@@ -205,9 +208,9 @@ export default function ProductViewer({
           </div>
         </div>
 
-        {/* ================================================
+        {/* =====================================================
             ROTATION VALUE
-        ================================================= */}
+        ====================================================== */}
 
         <div className="pointer-events-none absolute bottom-5 left-5 z-30 border border-border bg-background/85 px-3 py-2 backdrop-blur-sm">
           <span className="font-mono text-[9px] uppercase tracking-widest text-muted-foreground">
@@ -220,18 +223,18 @@ export default function ProductViewer({
           </span>
         </div>
 
-        {/* ================================================
+        {/* =====================================================
             MODEL
-        ================================================= */}
+        ====================================================== */}
 
         <span className="absolute bottom-5 right-5 z-30 font-mono text-[9px] uppercase tracking-widest text-foreground/55">
           MODEL / {model ?? "N/A"}
         </span>
       </div>
 
-      {/* ================================================
+      {/* =====================================================
           CONTROLS
-      ================================================= */}
+      ====================================================== */}
 
       <div className="mt-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-2">

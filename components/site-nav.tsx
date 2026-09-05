@@ -42,7 +42,7 @@ export function SiteNav() {
             className="flex items-center"
           >
             <img
-              src="/Public/logo.png"
+              src="/public/logo.png"
               alt="Crystal"
               className="h-[85px] w-auto object-contain"
             />

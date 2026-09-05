@@ -42,7 +42,7 @@ export function SiteNav() {
             className="flex items-center"
           >
             <img
-              src="/logo.png"
+              src="/Public/logo.png"
               alt="Crystal"
               className="h-[85px] w-auto object-contain"
             />
@@ -150,9 +150,8 @@ export function SiteNav() {
                 Products
 
                 <ChevronDown
-                  className={`h-4 w-4 transition-transform duration-200 ${
-                    mega ? 'rotate-180' : ''
-                  }`}
+                  className={`h-4 w-4 transition-transform duration-200 ${mega ? 'rotate-180' : ''
+                    }`}
                 />
               </button>
 
@@ -193,7 +192,7 @@ export function SiteNav() {
               )}
             </div>
 
-          
+
 
             {/* QUALITY */}
 
@@ -303,7 +302,7 @@ export function SiteNav() {
               </div>
             </details>
 
-           
+
 
 
             {/* QUALITY */}

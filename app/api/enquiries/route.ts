@@ -1,125 +1,116 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
+import { ObjectId } from "mongodb"
 import { Resend } from "resend"
 
 import clientPromise from "@/lib/mongodb"
 
-export const runtime = "nodejs"
+// ============================================================
+// CONFIGURATION
+// ============================================================
+
+const DB_NAME = "crystal_vmm"
+const COLLECTION_NAME = "enquiries"
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL
+const RESEND_API_KEY = process.env.RESEND_API_KEY
+
+const FROM_EMAIL =
+  process.env.RESEND_FROM_EMAIL ||
+  "Crystal VMM <onboarding@resend.dev>"
 
 // ============================================================
 // TYPES
 // ============================================================
 
-type EnquiryBody = {
-  name?: string
-  company?: string
-  email?: string
-  phone?: string
-  message?: string
-  product?: string
-  productSlug?: string
-  model?: string
+type Enquiry = {
+  _id?: ObjectId
+  name: string
+  company: string
+  email: string
+  phone: string
+  message: string
+  product: string
+  productSlug: string
+  model: string
+  createdAt: Date
 }
 
 // ============================================================
 // HELPERS
 // ============================================================
 
-function clean(value: unknown): string {
-  if (typeof value !== "string") {
-    return ""
-  }
-
-  return value.trim()
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;")
+function isValidIndianPhone(phone: string) {
+  const cleaned = phone.replace(/[\s-]/g, "")
+
+  return /^(?:\+91)?[6-9]\d{9}$/.test(cleaned)
+}
+
+function clean(value: unknown): string {
+  return typeof value === "string" ? value.trim() : ""
 }
 
 // ============================================================
 // POST
-// SAVE ENQUIRY + SEND EMAILS
+// Submit a new enquiry
 // ============================================================
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    // ========================================================
-    // 1. ENVIRONMENT VARIABLES
-    // ========================================================
+    // ----------------------------------------------------------
+    // Read request body
+    // ----------------------------------------------------------
 
-    const adminEmail = clean(process.env.ADMIN_EMAIL)
-    const resendApiKey = clean(process.env.RESEND_API_KEY)
-
-    const fromEmail =
-      clean(process.env.RESEND_FROM_EMAIL) ||
-      "Crystal VMM <onboarding@resend.dev>"
-
-    if (!adminEmail) {
-      console.error("ADMIN_EMAIL is missing.")
-
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Company email configuration is missing.",
-        },
-        { status: 500 }
-      )
-    }
-
-    if (!resendApiKey) {
-      console.error("RESEND_API_KEY is missing.")
-
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Email service configuration is missing.",
-        },
-        { status: 500 }
-      )
-    }
-
-    // ========================================================
-    // 2. READ REQUEST BODY
-    // ========================================================
-
-    const body = (await request.json()) as EnquiryBody
+    const body = await request.json()
 
     const name = clean(body.name)
     const company = clean(body.company)
-    const email = clean(body.email)
+    const email = clean(body.email).toLowerCase()
     const phone = clean(body.phone)
     const message = clean(body.message)
+
     const product = clean(body.product)
     const productSlug = clean(body.productSlug)
     const model = clean(body.model)
 
-    // ========================================================
-    // 3. VALIDATION
-    // ========================================================
+    // ----------------------------------------------------------
+    // Validate required fields
+    // ----------------------------------------------------------
 
-    if (!name || !email || !phone || !product || !model) {
+    if (!name) {
       return NextResponse.json(
         {
           success: false,
-          error:
-            "Name, email, phone, product and model are required.",
+          error: "Name is required.",
         },
         { status: 400 }
       )
     }
 
-    // ========================================================
-    // 4. EMAIL VALIDATION
-    // ========================================================
+    if (!company) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Company name is required.",
+        },
+        { status: 400 }
+      )
+    }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!email) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Email is required.",
+        },
+        { status: 400 }
+      )
+    }
 
-    if (!emailRegex.test(email)) {
+    if (!isValidEmail(email)) {
       return NextResponse.json(
         {
           success: false,
@@ -129,30 +120,71 @@ export async function POST(request: Request) {
       )
     }
 
-    // ========================================================
-    // 5. CONNECT TO MONGODB
-    // ========================================================
+    if (!phone) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Phone number is required.",
+        },
+        { status: 400 }
+      )
+    }
+
+    if (!isValidIndianPhone(phone)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Please enter a valid Indian mobile number.",
+        },
+        { status: 400 }
+      )
+    }
+
+    if (!message) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Message is required.",
+        },
+        { status: 400 }
+      )
+    }
+
+    if (!product) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Product information is missing.",
+        },
+        { status: 400 }
+      )
+    }
+
+    if (!model) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Model information is missing.",
+        },
+        { status: 400 }
+      )
+    }
+
+    // ----------------------------------------------------------
+    // Connect to MongoDB
+    // ----------------------------------------------------------
 
     const client = await clientPromise
 
-    // IMPORTANT:
-    // Your enquiries will be stored here:
-    //
-    // Database:
-    // crystal_vmm
-    //
-    // Collection:
-    // enquiries
+    const db = client.db(DB_NAME)
 
-    const db = client.db("crystal_vmm")
+    const enquiries = db.collection<Enquiry>(COLLECTION_NAME)
 
-    // ========================================================
-    // 6. CREATE ENQUIRY
-    // ========================================================
+    // ----------------------------------------------------------
+    // Create enquiry
+    // ----------------------------------------------------------
 
-    const now = new Date()
-
-    const enquiry = {
+    const enquiry: Enquiry = {
       name,
       company,
       email,
@@ -161,786 +193,377 @@ export async function POST(request: Request) {
       product,
       productSlug,
       model,
-
-      status: "new",
-
-      createdAt: now,
-      updatedAt: now,
+      createdAt: new Date(),
     }
 
-    // ========================================================
-    // 7. SAVE TO MONGODB FIRST
-    // ========================================================
+    // ----------------------------------------------------------
+    // Save enquiry
+    // ----------------------------------------------------------
 
-    const result = await db
-      .collection("enquiries")
-      .insertOne(enquiry)
+    const result = await enquiries.insertOne(enquiry)
 
-    const enquiryId = result.insertedId.toString()
+    console.log("ENQUIRY SAVED TO MONGODB:", result.insertedId.toString())
 
-    console.log(
-      "============================================"
-    )
+    // ==========================================================
+    // SEND EMAILS
+    // ==========================================================
 
-    console.log(
-      "ENQUIRY SAVED SUCCESSFULLY"
-    )
-
-    console.log(
-      "Database: crystal_vmm"
-    )
-
-    console.log(
-      "Collection: enquiries"
-    )
-
-    console.log(
-      "ID:",
-      enquiryId
-    )
-
-    console.log(
-      "============================================"
-    )
-
-    // ========================================================
-    // 8. ESCAPE VALUES FOR EMAIL HTML
-    // ========================================================
-
-    const safeName = escapeHtml(name)
-
-    const safeCompany = escapeHtml(
-      company || "Not provided"
-    )
-
-    const safeEmail = escapeHtml(email)
-
-    const safePhone = escapeHtml(phone)
-
-    const safeMessage = escapeHtml(
-      message || "No message provided."
-    )
-
-    const safeProduct = escapeHtml(product)
-
-    const safeModel = escapeHtml(model)
-
-    // ========================================================
-    // 9. CREATE RESEND CLIENT
-    // ========================================================
-
-    const resend = new Resend(resendApiKey)
-
-    // ========================================================
-    // 10. SEND EMAIL TO COMPANY
-    // ========================================================
-
-    let companyEmailSent = false
-
-    try {
-      const companyEmail = await resend.emails.send({
-        from: fromEmail,
-
-        to: [adminEmail],
-
-        replyTo: email,
-
-        subject: `New Enquiry - ${product} - ${model}`,
-
-        html: `
-<!DOCTYPE html>
-
-<html>
-
-<head>
-  <meta charset="UTF-8" />
-
-  <title>New Customer Enquiry</title>
-</head>
-
-<body
-  style="
-    margin:0;
-    padding:0;
-    background:#f5f5f5;
-    font-family:Arial,Helvetica,sans-serif;
-    color:#222222;
-  "
->
-
-  <div
-    style="
-      max-width:700px;
-      margin:30px auto;
-      background:#ffffff;
-      border:1px solid #dddddd;
-    "
-  >
-
-    <!-- HEADER -->
-
-    <div
-      style="
-        background:#d90000;
-        padding:25px;
-        text-align:center;
-      "
-    >
-
-      <h1
-        style="
-          margin:0;
-          color:#ffffff;
-          font-size:28px;
-        "
-      >
-        Crystal VMM
-      </h1>
-
-      <p
-        style="
-          margin:8px 0 0;
-          color:#ffffff;
-          font-size:14px;
-        "
-      >
-        New Customer Enquiry
-      </p>
-
-    </div>
-
-
-    <!-- CONTENT -->
-
-    <div style="padding:30px;">
-
-      <h2
-        style="
-          margin-top:0;
-          color:#d90000;
-        "
-      >
-        New Enquiry Received
-      </h2>
-
-      <p
-        style="
-          font-size:15px;
-          line-height:1.6;
-        "
-      >
-        A new enquiry has been submitted through
-        the Crystal VMM website.
-      </p>
-
-
-      <!-- CUSTOMER DETAILS -->
-
-      <h3
-        style="
-          color:#d90000;
-          border-bottom:2px solid #d90000;
-          padding-bottom:8px;
-          margin-top:30px;
-        "
-      >
-        Customer Details
-      </h3>
-
-
-      <table
-        style="
-          width:100%;
-          border-collapse:collapse;
-        "
-      >
-
-        <tr>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-              font-weight:bold;
-              width:35%;
-            "
-          >
-            Name
-          </td>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-            "
-          >
-            ${safeName}
-          </td>
-
-        </tr>
-
-
-        <tr>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-              font-weight:bold;
-            "
-          >
-            Company
-          </td>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-            "
-          >
-            ${safeCompany}
-          </td>
-
-        </tr>
-
-
-        <tr>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-              font-weight:bold;
-            "
-          >
-            Email
-          </td>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-            "
-          >
-            ${safeEmail}
-          </td>
-
-        </tr>
-
-
-        <tr>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-              font-weight:bold;
-            "
-          >
-            Phone
-          </td>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-            "
-          >
-            ${safePhone}
-          </td>
-
-        </tr>
-
-      </table>
-
-
-      <!-- PRODUCT DETAILS -->
-
-      <h3
-        style="
-          color:#d90000;
-          border-bottom:2px solid #d90000;
-          padding-bottom:8px;
-          margin-top:30px;
-        "
-      >
-        Product Details
-      </h3>
-
-
-      <table
-        style="
-          width:100%;
-          border-collapse:collapse;
-        "
-      >
-
-        <tr>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-              font-weight:bold;
-              width:35%;
-            "
-          >
-            Product
-          </td>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-            "
-          >
-            ${safeProduct}
-          </td>
-
-        </tr>
-
-
-        <tr>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-              font-weight:bold;
-            "
-          >
-            Model
-          </td>
-
-          <td
-            style="
-              padding:10px;
-              border:1px solid #dddddd;
-            "
-          >
-            ${safeModel}
-          </td>
-
-        </tr>
-
-      </table>
-
-
-      <!-- MESSAGE -->
-
-      <h3
-        style="
-          color:#d90000;
-          border-bottom:2px solid #d90000;
-          padding-bottom:8px;
-          margin-top:30px;
-        "
-      >
-        Customer Message
-      </h3>
-
-
-      <div
-        style="
-          background:#f7f7f7;
-          border-left:4px solid #d90000;
-          padding:15px;
-          line-height:1.7;
-        "
-      >
-        ${safeMessage}
-      </div>
-
-
-      <p
-        style="
-          margin-top:30px;
-          font-size:13px;
-          color:#777777;
-        "
-      >
-        Enquiry ID:
-        <strong>${enquiryId}</strong>
-      </p>
-
-
-      <p
-        style="
-          margin-top:15px;
-          font-size:13px;
-          color:#777777;
-        "
-      >
-        This enquiry has been saved in the
-        Crystal VMM Admin Dashboard.
-      </p>
-
-    </div>
-
-
-    <!-- FOOTER -->
-
-    <div
-      style="
-        background:#f5f5f5;
-        padding:18px;
-        text-align:center;
-        color:#777777;
-        font-size:12px;
-      "
-    >
-      Crystal VMM | ArmaTech Associates
-    </div>
-
-  </div>
-
-</body>
-
-</html>
-        `,
-      })
-
-      if (companyEmail.error) {
-        console.error(
-          "Company email error:",
-          companyEmail.error
-        )
-      } else {
-        companyEmailSent = true
-
-        console.log(
-          "Company email sent successfully."
-        )
-      }
-    } catch (emailError) {
-      console.error(
-        "Company email exception:",
-        emailError
-      )
-    }
-
-    // ========================================================
-    // 11. SEND THANK-YOU EMAIL TO CUSTOMER
-    // ========================================================
-
+    let adminEmailSent = false
     let customerEmailSent = false
 
-    try {
-      const customerEmail = await resend.emails.send({
-        from: fromEmail,
+    // ----------------------------------------------------------
+    // Only attempt email if Resend is configured
+    // ----------------------------------------------------------
 
-        to: [email],
+    if (RESEND_API_KEY) {
+      const resend = new Resend(RESEND_API_KEY)
 
-        subject:
-          "Thank You for Your Enquiry - Crystal VMM",
+      // ========================================================
+      // ADMIN EMAIL
+      // ========================================================
 
-        html: `
-<!DOCTYPE html>
+      if (ADMIN_EMAIL) {
+        try {
+          const adminResult = await resend.emails.send({
+            from: FROM_EMAIL,
+            to: ADMIN_EMAIL,
 
-<html>
+            subject: `New Enquiry - ${product} - ${model}`,
 
-<head>
-  <meta charset="UTF-8" />
+            replyTo: email,
 
-  <title>Thank You</title>
-</head>
+            html: `
+              <div style="
+                font-family: Arial, Helvetica, sans-serif;
+                max-width: 700px;
+                margin: 0 auto;
+                padding: 30px;
+                background: #ffffff;
+                color: #222222;
+              ">
 
-<body
-  style="
-    margin:0;
-    padding:0;
-    background:#f5f5f5;
-    font-family:Arial,Helvetica,sans-serif;
-    color:#222222;
-  "
->
+                <div style="
+                  border-bottom: 4px solid #b91c1c;
+                  padding-bottom: 15px;
+                  margin-bottom: 25px;
+                ">
+                  <h1 style="
+                    margin: 0;
+                    color: #b91c1c;
+                    font-size: 26px;
+                  ">
+                    New Website Enquiry
+                  </h1>
+                </div>
 
-  <div
-    style="
-      max-width:650px;
-      margin:30px auto;
-      background:#ffffff;
-      border:1px solid #dddddd;
-    "
-  >
+                <p style="
+                  font-size: 16px;
+                  line-height: 1.6;
+                ">
+                  A new enquiry has been submitted through the
+                  Crystal VMM website.
+                </p>
 
-    <!-- HEADER -->
+                <div style="
+                  background: #f8f8f8;
+                  border: 1px solid #dddddd;
+                  border-radius: 8px;
+                  padding: 20px;
+                  margin: 25px 0;
+                ">
 
-    <div
-      style="
-        background:#d90000;
-        padding:28px;
-        text-align:center;
-      "
-    >
+                  <h2 style="
+                    margin-top: 0;
+                    color: #b91c1c;
+                    font-size: 20px;
+                  ">
+                    Customer Details
+                  </h2>
 
-      <h1
-        style="
-          margin:0;
-          color:#ffffff;
-          font-size:28px;
-        "
-      >
-        Crystal VMM
-      </h1>
+                  <p>
+                    <strong>Name:</strong>
+                    ${escapeHtml(name)}
+                  </p>
 
-      <p
-        style="
-          margin:8px 0 0;
-          color:#ffffff;
-          font-size:14px;
-        "
-      >
-        ArmaTech Associates
-      </p>
+                  <p>
+                    <strong>Company:</strong>
+                    ${escapeHtml(company)}
+                  </p>
 
-    </div>
+                  <p>
+                    <strong>Email:</strong>
+                    ${escapeHtml(email)}
+                  </p>
 
+                  <p>
+                    <strong>Phone:</strong>
+                    ${escapeHtml(phone)}
+                  </p>
 
-    <!-- CONTENT -->
+                </div>
 
-    <div style="padding:35px;">
+                <div style="
+                  background: #fff7f7;
+                  border-left: 5px solid #b91c1c;
+                  padding: 18px;
+                  margin: 25px 0;
+                ">
 
-      <h2
-        style="
-          margin-top:0;
-          color:#d90000;
-          font-size:24px;
-        "
-      >
-        Thank You, ${safeName}!
-      </h2>
+                  <h2 style="
+                    margin-top: 0;
+                    color: #b91c1c;
+                    font-size: 20px;
+                  ">
+                    Product Enquiry
+                  </h2>
 
+                  <p>
+                    <strong>Product:</strong>
+                    ${escapeHtml(product)}
+                  </p>
 
-      <p
-        style="
-          font-size:16px;
-          line-height:1.7;
-        "
-      >
-        Thank you for submitting your enquiry
-        to <strong>Crystal VMM</strong>.
-      </p>
+                  <p>
+                    <strong>Model:</strong>
+                    ${escapeHtml(model)}
+                  </p>
 
+                </div>
 
-      <p
-        style="
-          font-size:16px;
-          line-height:1.7;
-        "
-      >
-        We have successfully received your
-        request. Our team will review your
-        requirements and get back to you shortly.
-      </p>
+                <div style="
+                  border-top: 1px solid #dddddd;
+                  padding-top: 20px;
+                ">
 
+                  <h2 style="
+                    font-size: 20px;
+                    color: #333333;
+                  ">
+                    Customer Message
+                  </h2>
 
-      <!-- PRODUCT DETAILS -->
+                  <p style="
+                    white-space: pre-line;
+                    line-height: 1.7;
+                    font-size: 15px;
+                  ">
+                    ${escapeHtml(message)}
+                  </p>
 
-      <div
-        style="
-          margin-top:30px;
-          border:1px solid #dddddd;
-        "
-      >
+                </div>
 
-        <div
-          style="
-            background:#f3f3f3;
-            padding:15px 20px;
-            border-bottom:1px solid #dddddd;
-          "
-        >
+                <div style="
+                  margin-top: 30px;
+                  padding-top: 20px;
+                  border-top: 1px solid #dddddd;
+                  color: #777777;
+                  font-size: 13px;
+                ">
+                  <p>
+                    This enquiry was submitted from the
+                    Crystal VMM website.
+                  </p>
+                </div>
 
-          <h3
-            style="
-              margin:0;
-              color:#d90000;
-              font-size:18px;
-            "
-          >
-            Product Details
-          </h3>
+              </div>
+            `,
+          })
 
-        </div>
+          if (!adminResult.error) {
+            adminEmailSent = true
+            console.log("ADMIN EMAIL SENT")
+          } else {
+            console.error(
+              "ADMIN EMAIL ERROR:",
+              adminResult.error
+            )
+          }
+        } catch (error) {
+          console.error(
+            "ADMIN EMAIL FAILED:",
+            error
+          )
+        }
+      }
 
+      // ========================================================
+      // CUSTOMER THANK-YOU EMAIL
+      // ========================================================
 
-        <div style="padding:20px;">
+      try {
+        const customerResult = await resend.emails.send({
+          from: FROM_EMAIL,
 
-          <table
-            style="
-              width:100%;
-              border-collapse:collapse;
-            "
-          >
+          to: email,
 
-            <tr>
+          subject: "Thank You for Your Enquiry - Crystal VMM",
 
-              <td
-                style="
-                  padding:10px 0;
-                  font-weight:bold;
-                  width:35%;
-                "
-              >
-                Product
-              </td>
+          html: `
+            <div style="
+              font-family: Arial, Helvetica, sans-serif;
+              max-width: 700px;
+              margin: 0 auto;
+              padding: 30px;
+              background: #ffffff;
+              color: #222222;
+            ">
 
-              <td style="padding:10px 0;">
-                ${safeProduct}
-              </td>
+              <div style="
+                border-bottom: 4px solid #b91c1c;
+                padding-bottom: 15px;
+                margin-bottom: 25px;
+              ">
 
-            </tr>
+                <h1 style="
+                  margin: 0;
+                  color: #b91c1c;
+                  font-size: 28px;
+                ">
+                  Thank You for Contacting Crystal
+                </h1>
 
+              </div>
 
-            <tr>
+              <p style="
+                font-size: 17px;
+                line-height: 1.7;
+              ">
+                Dear ${escapeHtml(name)},
+              </p>
 
-              <td
-                style="
-                  padding:10px 0;
-                  font-weight:bold;
-                "
-              >
-                Model
-              </td>
+              <p style="
+                font-size: 16px;
+                line-height: 1.7;
+              ">
+                Thank you for your enquiry regarding our
+                Video Measuring Machines.
+              </p>
 
-              <td style="padding:10px 0;">
-                ${safeModel}
-              </td>
+              <div style="
+                background: #f8f8f8;
+                border: 1px solid #dddddd;
+                border-radius: 8px;
+                padding: 20px;
+                margin: 25px 0;
+              ">
 
-            </tr>
+                <p>
+                  <strong>Product:</strong>
+                  ${escapeHtml(product)}
+                </p>
 
-          </table>
+                <p>
+                  <strong>Model:</strong>
+                  ${escapeHtml(model)}
+                </p>
 
-        </div>
+              </div>
 
-      </div>
+              <p style="
+                font-size: 16px;
+                line-height: 1.7;
+              ">
+                Our team has received your enquiry and will
+                get in touch with you shortly.
+              </p>
 
+              <p style="
+                font-size: 16px;
+                line-height: 1.7;
+              ">
+                If you have any additional requirements,
+                specifications, or questions, please feel
+                free to reply to this email.
+              </p>
 
-      <p
-        style="
-          margin-top:30px;
-          font-size:15px;
-          line-height:1.7;
-        "
-      >
-        Our team will contact you using the
-        contact information provided in your
-        enquiry.
-      </p>
+              <div style="
+                margin-top: 35px;
+                padding: 20px;
+                background: #fff7f7;
+                border-left: 5px solid #b91c1c;
+              ">
 
+                <p style="
+                  margin: 0;
+                  font-weight: bold;
+                  color: #b91c1c;
+                ">
+                  Crystal VMM
+                </p>
 
-      <p
-        style="
-          margin-top:30px;
-          font-size:15px;
-          line-height:1.7;
-        "
-      >
-        Regards,<br />
+                <p style="
+                  margin-bottom: 0;
+                  color: #555555;
+                ">
+                  Precision Measurement Solutions
+                </p>
 
-        <strong>
-          Crystal VMM Team
-        </strong>
+              </div>
 
-        <br />
+              <div style="
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #dddddd;
+                color: #777777;
+                font-size: 13px;
+              ">
 
-        ArmaTech Associates
-      </p>
+                <p>
+                  This is an automated confirmation email.
+                  Please reply to this email if you need
+                  further assistance.
+                </p>
 
+              </div>
 
-      <p
-        style="
-          margin-top:25px;
-          font-size:12px;
-          color:#777777;
-        "
-      >
-        Enquiry ID:
-        <strong>${enquiryId}</strong>
-      </p>
+            </div>
+          `,
+        })
 
-    </div>
-
-
-    <!-- FOOTER -->
-
-    <div
-      style="
-        background:#f5f5f5;
-        padding:18px;
-        text-align:center;
-        color:#777777;
-        font-size:12px;
-      "
-    >
-      Thank you for choosing Crystal VMM.
-    </div>
-
-  </div>
-
-</body>
-
-</html>
-        `,
-      })
-
-      if (customerEmail.error) {
+        if (!customerResult.error) {
+          customerEmailSent = true
+          console.log("CUSTOMER THANK-YOU EMAIL SENT")
+        } else {
+          console.error(
+            "CUSTOMER EMAIL ERROR:",
+            customerResult.error
+          )
+        }
+      } catch (error) {
         console.error(
-          "Customer email error:",
-          customerEmail.error
-        )
-      } else {
-        customerEmailSent = true
-
-        console.log(
-          "Customer thank-you email sent successfully."
+          "CUSTOMER EMAIL FAILED:",
+          error
         )
       }
-    } catch (emailError) {
-      console.error(
-        "Customer email exception:",
-        emailError
+    } else {
+      console.warn(
+        "RESEND_API_KEY is not configured. Emails were skipped."
       )
     }
 
-    // ========================================================
-    // 12. FINAL SUCCESS
-    // ========================================================
+    // ==========================================================
+    // RESPONSE
+    // ==========================================================
 
     return NextResponse.json(
       {
         success: true,
+        message: "Your enquiry has been submitted successfully.",
+        enquiryId: result.insertedId.toString(),
 
-        saved: true,
-
-        emailSent: companyEmailSent,
-
-        customerEmailSent,
-
-        enquiryId,
-
-        message:
-          "Thank you for submitting your enquiry. Our team will get back to you shortly.",
+        email: {
+          adminSent: adminEmailSent,
+          customerSent: customerEmailSent,
+        },
       },
       { status: 201 }
     )
   } catch (error) {
-    // ========================================================
-    // 13. ERROR HANDLING
-    // ========================================================
-
-    console.error(
-      "Enquiry submission error:",
-      error
-    )
+    console.error("ENQUIRY API ERROR:", error)
 
     return NextResponse.json(
       {
         success: false,
-
-        error:
-          "Unable to process your enquiry at this time. Please try again later.",
+        error: "Unable to submit your enquiry. Please try again.",
       },
       { status: 500 }
     )
@@ -949,30 +572,45 @@ export async function POST(request: Request) {
 
 // ============================================================
 // GET
-// FETCH ENQUIRIES
+// Admin enquiries list
 // ============================================================
 
 export async function GET() {
   try {
     const client = await clientPromise
 
-    const db = client.db("crystal_vmm")
+    const db = client.db(DB_NAME)
 
-    const enquiries = await db
-      .collection("enquiries")
+    const enquiries = db.collection<Enquiry>(COLLECTION_NAME)
+
+    const results = await enquiries
       .find({})
       .sort({ createdAt: -1 })
       .toArray()
 
-    return NextResponse.json({
-      success: true,
-      items: enquiries,
-    })
-  } catch (error) {
-    console.error(
-      "Get enquiries error:",
-      error
+    return NextResponse.json(
+      {
+        success: true,
+        enquiries: results.map((item) => ({
+          _id: item._id?.toString(),
+
+          name: item.name,
+          company: item.company,
+          email: item.email,
+          phone: item.phone,
+          message: item.message,
+
+          product: item.product,
+          productSlug: item.productSlug,
+          model: item.model,
+
+          createdAt: item.createdAt,
+        })),
+      },
+      { status: 200 }
     )
+  } catch (error) {
+    console.error("GET ENQUIRIES ERROR:", error)
 
     return NextResponse.json(
       {
@@ -982,4 +620,130 @@ export async function GET() {
       { status: 500 }
     )
   }
+}
+
+// ============================================================
+// DELETE
+//
+// Supports:
+//
+// DELETE /api/enquiries?id=ENQUIRY_ID
+//
+// Deletes one enquiry.
+//
+// DELETE /api/enquiries?all=true
+//
+// Deletes all enquiries.
+// ============================================================
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+
+    const id = searchParams.get("id")
+    const deleteAll = searchParams.get("all")
+
+    const client = await clientPromise
+
+    const db = client.db(DB_NAME)
+
+    const enquiries = db.collection<Enquiry>(COLLECTION_NAME)
+
+    // ========================================================
+    // DELETE ALL
+    // ========================================================
+
+    if (deleteAll === "true") {
+      const result = await enquiries.deleteMany({})
+
+      console.log(
+        `DELETED ${result.deletedCount} ENQUIRIES`
+      )
+
+      return NextResponse.json(
+        {
+          success: true,
+          message: `${result.deletedCount} enquiries deleted successfully.`,
+          deletedCount: result.deletedCount,
+        },
+        { status: 200 }
+      )
+    }
+
+    // ========================================================
+    // DELETE ONE
+    // ========================================================
+
+    if (!id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Enquiry ID is required.",
+        },
+        { status: 400 }
+      )
+    }
+
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid enquiry ID.",
+        },
+        { status: 400 }
+      )
+    }
+
+    const result = await enquiries.deleteOne({
+      _id: new ObjectId(id),
+    })
+
+    if (result.deletedCount === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Enquiry not found.",
+        },
+        { status: 404 }
+      )
+    }
+
+    console.log(
+      `DELETED ENQUIRY: ${id}`
+    )
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Enquiry deleted successfully.",
+        deletedId: id,
+      },
+      { status: 200 }
+    )
+  } catch (error) {
+    console.error("DELETE ENQUIRY ERROR:", error)
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Unable to delete enquiry.",
+      },
+      { status: 500 }
+    )
+  }
+}
+
+// ============================================================
+// HTML ESCAPE
+// Prevents customer-entered data from being interpreted
+// as HTML inside emails.
+// ============================================================
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
 }

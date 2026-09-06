@@ -1,12 +1,8 @@
-'use client'
+"use client"
 
-import Link from 'next/link'
-import {
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-} from 'lucide-react'
-import { useState } from 'react'
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
+import { useState } from "react"
 
 type Product = {
   name: string
@@ -16,462 +12,323 @@ type Product = {
   slug: string
 }
 
-type Props = {
-  products: Product[]
-}
+const products: Product[] = [
+  {
+    name: "MANUAL VMM",
+    category: "VIDEO MEASURING MACHINE",
+    code: "AA-9011M",
+    image:
+      "image/maunal.png",
+    slug: "manual-vmm",
+  },
+  {
+    name: "SEMI-AUTO VMM",
+    category: "VIDEO MEASURING MACHINE",
+    code: "AA-9021SA",
+    image:
+      "image/semi.png",
+    slug: "semi-automatic-vmm",
+  },
+  {
+    name: "FULLY AUTOMATIC VMM",
+    category: "VIDEO MEASURING MACHINE",
+    code: "AA-9031A",
+    image:
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic-bPz5STarFfXkj1fNgBOz2KFbBnrSIY.png",
+    slug: "cnc-auto-vmm",
+  },
+  {
+    name: "AUTOMATIC VMM WITH CABINET",
+    category: "VIDEO MEASURING MACHINE",
+    code: "AA-9041AC",
+    image:
+      "image/automatic with cabinet.png",
+    slug: "automatic-vmm-cabinet",
+  },
+  {
+    name: "VMS MANUAL",
+    category: "VISION MEASURING SYSTEM",
+    code: "AA-9051V",
+    image:
+      "image/vms.png",
+    slug: "vms-manual",
+  },
+]
 
-export function FeaturedProductsCarousel({
-  products,
-}: Props) {
-  const [currentIndex, setCurrentIndex] = useState(0)
+export default function FeaturedProductsCarousel() {
+  const [paused, setPaused] = useState(false)
 
-  const visibleProducts = products.slice(
-    currentIndex,
-    currentIndex + 3
-  )
+  /*
+   * Keep the product order fixed.
+   * This guarantees the carousel always runs:
+   *
+   * Manual
+   * ↓
+   * Semi-Auto
+   * ↓
+   * Fully Automatic
+   * ↓
+   * Automatic with Cabinet
+   * ↓
+   * VMS Manual
+   * ↓
+   * Manual again...
+   */
 
-  const canGoPrevious = currentIndex > 0
-  const canGoNext = currentIndex + 3 < products.length
+  const orderedProducts = [
+    "manual-vmm",
+    "semi-automatic-vmm",
+    "cnc-auto-vmm",
+    "automatic-vmm-cabinet",
+    "vms-manual",
+  ]
+    .map((slug) => products.find((product) => product.slug === slug))
+    .filter(Boolean) as Product[]
 
-  const goPrevious = () => {
-    if (canGoPrevious) {
-      setCurrentIndex((prev) => prev - 1)
-    }
-  }
-
-  const goNext = () => {
-    if (canGoNext) {
-      setCurrentIndex((prev) => prev + 1)
-    }
-  }
+  /*
+   * Duplicate the complete product set.
+   *
+   * This creates:
+   *
+   * [1 2 3 4 5] [1 2 3 4 5]
+   *
+   * When the first set finishes moving,
+   * the second set is already visible.
+   *
+   * The animation then starts again seamlessly.
+   */
+  const carouselProducts = [...orderedProducts, ...orderedProducts]
 
   return (
-    <div className="relative">
+    <section className="bg-white py-16 sm:py-20">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
 
-      {/* =====================================================
-          PRODUCT CAROUSEL
-      ===================================================== */}
-      <div className="relative">
+        {/* =====================================================
+            SECTION HEADER
+        ====================================================== */}
 
-        {/* ===================================================
-            LEFT ARROW
-        =================================================== */}
-        <button
-          type="button"
-          onClick={goPrevious}
-          disabled={!canGoPrevious}
-          aria-label="Previous products"
-          className="
-            absolute
-            -left-16
-            top-[38%]
-            z-20
-            hidden
-            size-12
-            -translate-y-1/2
-            items-center
-            justify-center
-            rounded-full
-            border
-            border-border
-            bg-white
-            text-foreground
-            shadow-sm
-            transition-all
-            duration-300
-            hover:border-primary
-            hover:bg-primary
-            hover:text-white
-            hover:shadow-md
-            disabled:cursor-not-allowed
-            disabled:opacity-25
-            lg:flex
-          "
-        >
-          <ChevronLeft className="size-6" />
-        </button>
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-red-600">
+              Our Products
+            </p>
 
+            <h2 className="text-3xl font-black tracking-tight text-zinc-950 sm:text-4xl">
+              Precision Measurement Systems
+            </h2>
 
-        {/* ===================================================
-            PRODUCTS
-        =================================================== */}
-        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-
-          {visibleProducts.map((product) => (
-
-            <Link
-              href={`/products/${product.slug}`}
-              key={product.slug}
-              className="
-                group
-                block
-                overflow-hidden
-                border
-                border-border
-                bg-white
-                transition-all
-                duration-300
-                hover:-translate-y-1
-                hover:border-primary/40
-                hover:shadow-xl
-              "
-            >
-
-              {/* =================================================
-                  IMAGE AREA
-              ================================================= */}
-              <div
-                className="
-                  relative
-                  flex
-                  aspect-[4/3]
-                  items-center
-                  justify-center
-                  overflow-hidden
-                  bg-[#f7f7f7]
-                "
-              >
-
-                {/* Small technical label */}
-                <div
-                  className="
-                    absolute
-                    left-4
-                    top-4
-                    z-10
-                    border
-                    border-border
-                    bg-white/90
-                    px-3
-                    py-1.5
-                    font-mono
-                    text-[9px]
-                    font-bold
-                    uppercase
-                    tracking-[0.15em]
-                    text-muted-foreground
-                  "
-                >
-                  ArmaTech
-                </div>
-
-
-                {/* Image */}
-                <img
-                  src={product.image}
-                  alt={`${product.name} catalogue reference`}
-                  className="
-                    size-full
-                    object-contain
-                    mix-blend-multiply
-                    px-8
-                    py-6
-                    transition-transform
-                    duration-700
-                    ease-out
-                    group-hover:scale-[1.07]
-                  "
-                />
-
-
-                {/* Red corner marker */}
-                <div
-                  className="
-                    absolute
-                    bottom-4
-                    right-4
-                    size-7
-                    border-b-2
-                    border-r-2
-                    border-primary
-                    opacity-60
-                    transition-all
-                    duration-300
-                    group-hover:size-9
-                    group-hover:opacity-100
-                  "
-                />
-
-              </div>
-
-
-              {/* =================================================
-                  PRODUCT DETAILS
-              ================================================= */}
-              <div className="border-t border-border px-5 py-6">
-
-                {/* Category */}
-                <p
-                  className="
-                    font-mono
-                    text-[10px]
-                    font-bold
-                    uppercase
-                    tracking-[0.18em]
-                    text-primary
-                  "
-                >
-                  {product.category}
-                </p>
-
-
-                {/* Product name */}
-                <h3
-                  className="
-                    mt-2
-                    font-mono
-                    text-xl
-                    font-bold
-                    uppercase
-                    leading-tight
-                    tracking-[-0.02em]
-                    text-foreground
-                  "
-                >
-                  {product.name}
-                </h3>
-
-
-                {/* Model number */}
-                <p
-                  className="
-                    mt-2
-                    font-mono
-                    text-xs
-                    font-bold
-                    uppercase
-                    tracking-widest
-                    text-muted-foreground
-                  "
-                >
-                  {product.code}
-                </p>
-
-
-                {/* Description */}
-                <p
-                  className="
-                    mt-4
-                    max-w-[240px]
-                    text-sm
-                    leading-6
-                    text-muted-foreground
-                  "
-                >
-                  Precision Video Measuring Machine
-                </p>
-
-
-                {/* Divider */}
-                <div className="my-5 h-px w-full bg-border" />
-
-
-                {/* View Product */}
-                <div
-                  className="
-                    flex
-                    items-center
-                    justify-between
-                    text-xs
-                    font-bold
-                    uppercase
-                    tracking-[0.14em]
-                    text-foreground
-                    transition-colors
-                    group-hover:text-primary
-                  "
-                >
-                  <span>
-                    View Product
-                  </span>
-
-                  <span
-                    className="
-                      flex
-                      size-9
-                      items-center
-                      justify-center
-                      rounded-full
-                      border
-                      border-border
-                      transition-all
-                      duration-300
-                      group-hover:border-primary
-                      group-hover:bg-primary
-                      group-hover:text-white
-                    "
-                  >
-                    <ArrowRight
-                      className="
-                        size-4
-                        transition-transform
-                        duration-300
-                        group-hover:translate-x-0.5
-                      "
-                    />
-                  </span>
-                </div>
-
-              </div>
-
-            </Link>
-
-          ))}
-
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-500 sm:text-base">
+              Explore our range of precision video measuring and vision
+              measurement systems designed for accurate industrial inspection.
+            </p>
+          </div>
         </div>
 
+        {/* =====================================================
+            CAROUSEL VIEWPORT
+        ====================================================== */}
 
-        {/* ===================================================
-            RIGHT ARROW
-        =================================================== */}
-        <button
-          type="button"
-          onClick={goNext}
-          disabled={!canGoNext}
-          aria-label="Next products"
-          className="
-            absolute
-            -right-16
-            top-[38%]
-            z-20
-            hidden
-            size-12
-            -translate-y-1/2
-            items-center
-            justify-center
-            rounded-full
-            border
-            border-border
-            bg-white
-            text-foreground
-            shadow-sm
-            transition-all
-            duration-300
-            hover:border-primary
-            hover:bg-primary
-            hover:text-white
-            hover:shadow-md
-            disabled:cursor-not-allowed
-            disabled:opacity-25
-            lg:flex
-          "
+        <div
+          className="group relative overflow-hidden"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
         >
-          <ChevronRight className="size-6" />
-        </button>
+          {/* =================================================
+              MOVING TRACK
+          ================================================== */}
 
+          <div
+            className="flex w-max gap-6"
+            style={{
+              animation: `featured-products-scroll ${
+                orderedProducts.length * 8
+              }s linear infinite`,
+              animationPlayState: paused ? "paused" : "running",
+            }}
+          >
+            {/* =================================================
+                FIRST PRODUCT SET
+            ================================================== */}
+
+            <div className="flex shrink-0 gap-6">
+              {orderedProducts.map((product) => (
+                <ProductCard
+                  key={`first-${product.slug}`}
+                  product={product}
+                />
+              ))}
+            </div>
+
+            {/* =================================================
+                SECOND PRODUCT SET
+            ================================================== */}
+
+            <div className="flex shrink-0 gap-6">
+              {orderedProducts.map((product) => (
+                <ProductCard
+                  key={`second-${product.slug}`}
+                  product={product}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
+      {/* =======================================================
+          INFINITE CAROUSEL ANIMATION
+      ======================================================== */}
 
-      {/* =====================================================
-          MOBILE CONTROLS
-      ===================================================== */}
-      {products.length > 3 && (
-        <div className="mt-8 flex items-center justify-center gap-5 lg:hidden">
+      <style jsx global>{`
+        @keyframes featured-products-scroll {
+          from {
+            transform: translateX(0);
+          }
 
-          <button
-            type="button"
-            onClick={goPrevious}
-            disabled={!canGoPrevious}
-            aria-label="Previous products"
+          to {
+            transform: translateX(calc(-50% - 12px));
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .featured-products-reduced-motion {
+            animation: none !important;
+          }
+        }
+      `}</style>
+    </section>
+  )
+}
+
+/* =============================================================
+   PRODUCT CARD
+============================================================= */
+
+function ProductCard({ product }: { product: Product }) {
+  return (
+    <Link
+      href={`/products/${product.slug}`}
+      className="
+        group/card
+        block
+        w-[82vw]
+        max-w-[380px]
+        shrink-0
+        overflow-hidden
+        border
+        border-zinc-200
+        bg-white
+        transition-all
+        duration-300
+        hover:-translate-y-1
+        hover:border-zinc-300
+        hover:shadow-xl
+        sm:w-[360px]
+        lg:w-[380px]
+      "
+    >
+      {/* =======================================================
+          IMAGE AREA
+      ======================================================== */}
+
+      <div className="relative h-[340px] overflow-hidden border-b border-zinc-200 bg-zinc-50 sm:h-[350px]">
+
+        {/* ArmaTech Label */}
+
+        <div className="absolute left-5 top-0 z-20 border-x border-b border-zinc-200 bg-white px-4 py-3">
+          <span className="font-mono text-[10px] font-bold tracking-[0.18em] text-zinc-500">
+            ARMATECH
+          </span>
+        </div>
+
+        {/* Red corner */}
+
+        <div className="absolute bottom-5 right-5 z-20 h-9 w-9 border-b-2 border-r-2 border-zinc-200 transition-colors duration-300 group-hover/card:border-red-600" />
+
+        {/* Product Image */}
+
+        <div className="flex h-full items-center justify-center p-8">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="
+              h-full
+              w-full
+              object-contain
+              transition-transform
+              duration-700
+              ease-out
+              group-hover/card:scale-105
+            "
+          />
+        </div>
+      </div>
+
+      {/* =======================================================
+          PRODUCT INFORMATION
+      ======================================================== */}
+
+      <div className="p-6">
+
+        {/* Category */}
+
+        <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-red-600">
+          {product.category}
+        </p>
+
+        {/* Product Name */}
+
+        <h3 className="mt-3 font-mono text-xl font-black tracking-tight text-zinc-950">
+          {product.name}
+        </h3>
+
+        {/* Model */}
+
+        <p className="mt-3 font-mono text-xs font-bold tracking-[0.16em] text-zinc-500">
+          {product.code}
+        </p>
+
+        {/* Description */}
+
+        <p className="mt-6 text-sm text-zinc-500">
+          Precision Video Measuring Machine
+        </p>
+
+        {/* Divider */}
+
+        <div className="my-6 h-px bg-zinc-200" />
+
+        {/* View Product */}
+
+        <div className="flex items-center justify-between">
+
+          <span className="text-sm font-bold uppercase tracking-[0.18em] text-zinc-900 transition-colors duration-300 group-hover/card:text-red-600">
+            View Product
+          </span>
+
+          <span
             className="
               flex
-              size-11
+              h-11
+              w-11
               items-center
               justify-center
               rounded-full
               border
-              border-border
-              bg-white
+              border-zinc-200
+              text-zinc-900
               transition-all
-              hover:border-primary
-              hover:bg-primary
-              hover:text-white
-              disabled:cursor-not-allowed
-              disabled:opacity-30
+              duration-300
+              group-hover/card:border-red-600
+              group-hover/card:bg-red-600
+              group-hover/card:text-white
             "
           >
-            <ChevronLeft className="size-5" />
-          </button>
-
-
-          {/* Counter */}
-          <div className="text-center">
-
-            <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-              Products
-            </p>
-
-            <p className="mt-1 font-mono text-xs font-bold">
-              {currentIndex + 1} —{' '}
-              {Math.min(currentIndex + 3, products.length)}
-              {' / '}
-              {products.length}
-            </p>
-
-          </div>
-
-
-          <button
-            type="button"
-            onClick={goNext}
-            disabled={!canGoNext}
-            aria-label="Next products"
-            className="
-              flex
-              size-11
-              items-center
-              justify-center
-              rounded-full
-              border
-              border-border
-              bg-white
-              transition-all
-              hover:border-primary
-              hover:bg-primary
-              hover:text-white
-              disabled:cursor-not-allowed
-              disabled:opacity-30
-            "
-          >
-            <ChevronRight className="size-5" />
-          </button>
+            <ArrowRight size={18} />
+          </span>
 
         </div>
-      )}
-
-
-      {/* =====================================================
-          DESKTOP PRODUCT COUNTER
-      ===================================================== */}
-      {products.length > 3 && (
-        <div className="mt-7 hidden items-center justify-center gap-3 lg:flex">
-
-          {/* Progress indicator */}
-          <div className="flex items-center gap-1.5">
-
-            {products.map((_, index) => (
-              <span
-                key={index}
-                className={`
-                  h-1.5
-                  rounded-full
-                  transition-all
-                  duration-300
-                  ${
-                    index >= currentIndex &&
-                    index < currentIndex + 3
-                      ? 'w-6 bg-primary'
-                      : 'w-1.5 bg-border'
-                  }
-                `}
-              />
-            ))}
-
-          </div>
-
-        </div>
-      )}
-
-    </div>
+      </div>
+    </Link>
   )
 }

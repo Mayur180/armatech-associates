@@ -169,19 +169,6 @@ export default async function ProductDetail({
 
                   <div className="absolute bottom-7 left-5 z-30 hidden items-center gap-2 sm:flex">
 
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full border border-red-500 bg-white text-red-600 shadow-sm">
-                      <span className="text-sm">◎</span>
-                    </div>
-
-                    <div className="border border-zinc-100 bg-white px-2 py-1 shadow-sm">
-
-                      <p className="text-[8px] font-bold uppercase leading-3 tracking-wide text-zinc-900">
-                        High
-                        <br />
-                        Precision
-                      </p>
-
-                    </div>
 
                   </div>
 

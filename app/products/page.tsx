@@ -1,14 +1,34 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, Search, SlidersHorizontal } from "lucide-react"
-import { useMemo, useState } from "react"
-import { categories, products } from "@/lib/catalog"
+import {
+  ArrowLeft,
+  ArrowRight,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react"
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 
+import { categories, products } from "@/lib/catalog"
 
 export default function ProductsPage() {
   const [category, setCategory] = useState("All systems")
   const [query, setQuery] = useState("")
+
+  const carouselRef = useRef<HTMLDivElement | null>(null)
+
+  const animationRef = useRef<number | null>(null)
+
+  const isPausedRef = useRef(false)
+
+  const firstSetWidthRef = useRef(0)
+
+  const gapRef = useRef(20)
 
   const filtered = useMemo(() => {
     return products.filter((product) => {
@@ -33,6 +53,152 @@ export default function ProductsPage() {
     })
   }, [category, query])
 
+  /*
+  ============================================================
+  CALCULATE THE WIDTH OF ONE COMPLETE PRODUCT SET
+  ============================================================
+  */
+
+  useEffect(() => {
+    const calculateWidth = () => {
+      const carousel = carouselRef.current
+
+      if (!carousel) return
+
+      const firstSet =
+        carousel.querySelector(
+          "[data-carousel-set='first']"
+        ) as HTMLElement | null
+
+      if (!firstSet) return
+
+      firstSetWidthRef.current = firstSet.offsetWidth
+
+      const styles = window.getComputedStyle(carousel)
+
+      const gap = parseFloat(styles.columnGap || "20")
+
+      gapRef.current = Number.isNaN(gap)
+        ? 20
+        : gap
+    }
+
+    calculateWidth()
+
+    window.addEventListener("resize", calculateWidth)
+
+    return () => {
+      window.removeEventListener(
+        "resize",
+        calculateWidth
+      )
+    }
+  }, [filtered])
+
+  /*
+  ============================================================
+  CONTINUOUS AUTO SCROLL
+  ============================================================
+  */
+
+  useEffect(() => {
+    const carousel = carouselRef.current
+
+    if (!carousel || filtered.length === 0) {
+      return
+    }
+
+    let lastTime = performance.now()
+
+    const speed = 35
+
+    const animate = (currentTime: number) => {
+      const delta = currentTime - lastTime
+
+      lastTime = currentTime
+
+      if (!isPausedRef.current) {
+        const movement =
+          (speed * delta) / 1000
+
+        carousel.scrollLeft += movement
+
+        const resetPoint =
+          firstSetWidthRef.current +
+          gapRef.current
+
+        if (
+          resetPoint > 0 &&
+          carousel.scrollLeft >= resetPoint
+        ) {
+          carousel.scrollLeft -= resetPoint
+        }
+      }
+
+      animationRef.current =
+        requestAnimationFrame(animate)
+    }
+
+    animationRef.current =
+      requestAnimationFrame(animate)
+
+    return () => {
+      if (animationRef.current !== null) {
+        cancelAnimationFrame(
+          animationRef.current
+        )
+      }
+    }
+  }, [filtered])
+
+  /*
+  ============================================================
+  MOUSE ENTER / LEAVE
+  ============================================================
+  */
+
+  const pauseCarousel = () => {
+    isPausedRef.current = true
+  }
+
+  const resumeCarousel = () => {
+    isPausedRef.current = false
+  }
+
+  /*
+  ============================================================
+  MANUAL NEXT
+  ============================================================
+  */
+
+  const moveNext = () => {
+    const carousel = carouselRef.current
+
+    if (!carousel) return
+
+    carousel.scrollBy({
+      left: 400,
+      behavior: "smooth",
+    })
+  }
+
+  /*
+  ============================================================
+  MANUAL PREVIOUS
+  ============================================================
+  */
+
+  const movePrevious = () => {
+    const carousel = carouselRef.current
+
+    if (!carousel) return
+
+    carousel.scrollBy({
+      left: -400,
+      behavior: "smooth",
+    })
+  }
+
   return (
     <main className="min-h-screen bg-background">
 
@@ -41,8 +207,6 @@ export default function ProductsPage() {
       ====================================================== */}
 
       <section className="relative overflow-hidden border-b border-border bg-foreground text-background">
-
-        {/* TECHNICAL GRID */}
 
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.08]"
@@ -55,13 +219,9 @@ export default function ProductsPage() {
           }}
         />
 
-        {/* RED ACCENT */}
-
         <div className="absolute right-0 top-0 h-full w-1 bg-primary" />
 
         <div className="relative mx-auto max-w-7xl px-5 py-16 lg:px-8 lg:py-24">
-
-          {/* TOP LABEL */}
 
           <div className="flex items-center gap-3">
 
@@ -72,8 +232,6 @@ export default function ProductsPage() {
             </p>
 
           </div>
-
-          {/* HEADING */}
 
           <h1
             className="
@@ -104,8 +262,6 @@ export default function ProductsPage() {
               travel ranges and available models.
             </p>
 
-            {/* CATALOGUE COUNT */}
-
             <div className="border-l border-background/20 pl-5">
 
               <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-background/50">
@@ -119,8 +275,6 @@ export default function ProductsPage() {
             </div>
 
           </div>
-
-          {/* TECHNICAL FOOTER */}
 
           <div className="mt-12 grid border-t border-background/15 pt-5 sm:grid-cols-3">
 
@@ -180,8 +334,6 @@ export default function ProductsPage() {
 
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
 
-            {/* CATEGORY */}
-
             <div>
 
               <div className="mb-4 flex items-center gap-2">
@@ -230,8 +382,6 @@ export default function ProductsPage() {
 
             </div>
 
-            {/* SEARCH */}
-
             <label
               className="
                 flex
@@ -276,8 +426,6 @@ export default function ProductsPage() {
 
           </div>
 
-          {/* RESULT COUNT */}
-
           <div className="mt-7 flex items-center justify-between">
 
             <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
@@ -303,359 +451,187 @@ export default function ProductsPage() {
         </div>
 
         {/* ====================================================
-            PRODUCT GRID
+            CONTINUOUS PRODUCT CAROUSEL
         ==================================================== */}
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {filtered.length > 0 && (
 
-          {filtered.map((product, productIndex) => (
+          <div className="relative mt-10">
 
-            <Link
-              key={product.slug}
-              href={`/products/${product.slug}`}
+            {/* LEFT ARROW */}
+
+            <button
+              type="button"
+              onClick={movePrevious}
+              onMouseEnter={pauseCarousel}
+              onMouseLeave={resumeCarousel}
+              aria-label="Previous products"
               className="
-                group
-                relative
-                overflow-hidden
+                absolute
+                left-[-18px]
+                top-1/2
+                z-40
+                hidden
+                size-14
+                -translate-y-1/2
+                items-center
+                justify-center
+                rounded-full
                 border
                 border-border
                 bg-background
+                shadow-sm
                 transition-all
-                duration-500
-                hover:-translate-y-1
                 hover:border-primary
-                hover:shadow-xl
+                hover:bg-primary
+                hover:text-primary-foreground
+                lg:flex
               "
+            >
+              <ArrowLeft className="size-5" />
+            </button>
+
+            {/* RIGHT ARROW */}
+
+            <button
+              type="button"
+              onClick={moveNext}
+              onMouseEnter={pauseCarousel}
+              onMouseLeave={resumeCarousel}
+              aria-label="Next products"
+              className="
+                absolute
+                right-[-18px]
+                top-1/2
+                z-40
+                hidden
+                size-14
+                -translate-y-1/2
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-border
+                bg-background
+                shadow-sm
+                transition-all
+                hover:border-primary
+                hover:bg-primary
+                hover:text-primary-foreground
+                lg:flex
+              "
+            >
+              <ArrowRight className="size-5" />
+            </button>
+
+            {/* LEFT FADE */}
+
+            <div
+              className="
+                pointer-events-none
+                absolute
+                left-0
+                top-0
+                z-30
+                h-full
+                w-16
+                bg-gradient-to-r
+                from-background
+                to-transparent
+              "
+            />
+
+            {/* RIGHT FADE */}
+
+            <div
+              className="
+                pointer-events-none
+                absolute
+                right-0
+                top-0
+                z-30
+                h-full
+                w-16
+                bg-gradient-to-l
+                from-background
+                to-transparent
+              "
+            />
+
+            {/* ==================================================
+                SCROLL CONTAINER
+            ================================================== */}
+
+            <div
+              ref={carouselRef}
+              onMouseEnter={pauseCarousel}
+              onMouseLeave={resumeCarousel}
+              className="
+                flex
+                w-full
+                gap-5
+                overflow-x-hidden
+                scroll-smooth
+                pb-2
+                scrollbar-hide
+              "
+              style={{
+                scrollbarWidth: "none",
+              }}
             >
 
               {/* ==================================================
-                  PRODUCT NUMBER
+                  FIRST PRODUCT SET
               ================================================== */}
 
               <div
-                className="
-                  pointer-events-none
-                  absolute
-                  left-0
-                  top-0
-                  z-20
-                  flex
-                  h-9
-                  min-w-9
-                  items-center
-                  justify-center
-                  bg-foreground
-                  px-3
-                  font-mono
-                  text-[9px]
-                  font-bold
-                  tracking-widest
-                  text-background
-                "
-              >
-                {String(productIndex + 1).padStart(2, "0")}
-              </div>
-
-              {/* ==================================================
-                  RED CORNER
-              ================================================== */}
-
-              <div
-                className="
-                  pointer-events-none
-                  absolute
-                  right-0
-                  top-0
-                  z-20
-                  h-8
-                  w-8
-                  border-r-2
-                  border-t-2
-                  border-primary
-                "
-              />
-
-              {/* ==================================================
-                  PRODUCT IMAGE
-              ================================================== */}
-
-              <div
-                className="
-                  relative
-                  aspect-[4/3]
-                  overflow-hidden
-                  bg-secondary
-                "
+                data-carousel-set="first"
+                className="flex shrink-0 gap-5"
               >
 
-                {/* GRID */}
+                {filtered.map(
+                  (product, productIndex) => (
 
-                <div
-                  className="
-                    pointer-events-none
-                    absolute
-                    inset-0
-                    z-0
-                    opacity-70
-                  "
-                  style={{
-                    backgroundImage: `
-                      linear-gradient(rgba(17,17,17,.045) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(17,17,17,.045) 1px, transparent 1px)
-                    `,
-                    backgroundSize: "32px 32px",
-                  }}
-                />
+                    <ProductCard
+                      key={`first-${product.slug}`}
+                      product={product}
+                      productIndex={productIndex}
+                    />
 
-                {/* PRODUCT IMAGE */}
-
-                <div className="relative z-10 flex size-full items-center justify-center p-7">
-
-                  <img
-                    src={product.image}
-                    alt={`${product.name} catalogue reference`}
-                    loading="lazy"
-                    decoding="async"
-                    className="
-                      size-full
-                      object-contain
-                      mix-blend-multiply
-                      transition-transform
-                      duration-700
-                      ease-out
-                      group-hover:scale-[1.06]
-                    "
-                  />
-
-                </div>
-
-                {/* BADGE */}
-
-                <span
-                  className="
-                    absolute
-                    bottom-4
-                    left-4
-                    z-20
-                    border
-                    border-border
-                    bg-white/95
-                    px-3
-                    py-2
-                    font-mono
-                    text-[9px]
-                    font-bold
-                    uppercase
-                    tracking-widest
-                    backdrop-blur-sm
-                  "
-                >
-                  {product.badge}
-                </span>
-
-                {/* VIEW INDICATOR */}
-
-                <div
-                  className="
-                    absolute
-                    bottom-4
-                    right-4
-                    z-20
-                    flex
-                    size-9
-                    items-center
-                    justify-center
-                    border
-                    border-border
-                    bg-white/95
-                    transition-all
-                    duration-300
-                    group-hover:border-primary
-                    group-hover:bg-primary
-                  "
-                >
-
-                  <ArrowRight
-                    className="
-                      size-4
-                      text-foreground
-                      transition-all
-                      duration-300
-                      group-hover:translate-x-0.5
-                      group-hover:text-primary-foreground
-                    "
-                  />
-
-                </div>
+                  )
+                )}
 
               </div>
 
               {/* ==================================================
-                  PRODUCT INFORMATION
+                  SECOND PRODUCT SET
+                  EXACT DUPLICATE FOR SEAMLESS LOOP
               ================================================== */}
 
-              <div className="p-5">
+              <div
+                data-carousel-set="second"
+                className="flex shrink-0 gap-5"
+              >
 
-                {/* FAMILY */}
+                {filtered.map(
+                  (product, productIndex) => (
 
-                <p className="font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-primary">
-                  {product.family}
-                </p>
+                    <ProductCard
+                      key={`second-${product.slug}`}
+                      product={product}
+                      productIndex={productIndex}
+                    />
 
-                {/* NAME */}
-
-                <h2
-                  className="
-                    mt-3
-                    font-mono
-                    text-xl
-                    font-black
-                    uppercase
-                    leading-tight
-                    tracking-[-.03em]
-                  "
-                >
-                  {product.name}
-                </h2>
-
-                {/* SUMMARY */}
-
-                <p className="mt-3 min-h-[72px] text-sm leading-6 text-muted-foreground">
-                  {product.summary}
-                </p>
-
-                {/* ==================================================
-                    PRODUCT DATA
-                ================================================== */}
-
-                <div className="mt-5 grid grid-cols-2 border-y border-border">
-
-                  <div className="border-r border-border py-4 pr-4">
-
-                    <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-muted-foreground">
-                      Configurations
-                    </p>
-
-                    <p className="mt-2 font-mono text-sm font-black">
-                      {product.variants.length}
-                    </p>
-
-                  </div>
-
-                  <div className="py-4 pl-4">
-
-                    <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-muted-foreground">
-                      System
-                    </p>
-
-                    <p className="mt-2 font-mono text-[10px] font-black uppercase">
-                      {product.category}
-                    </p>
-
-                  </div>
-
-                </div>
-
-                {/* ==================================================
-                    TRAVEL RANGE
-                ================================================== */}
-
-                <div className="mt-4">
-
-                  <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Measuring travel
-                  </p>
-
-                  <p className="mt-2 text-xs font-bold leading-5">
-                    {product.travel}
-                  </p>
-
-                </div>
-
-                {/* ==================================================
-                    MODEL NUMBERS
-                ================================================== */}
-
-                <div className="mt-5">
-
-                  <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-muted-foreground">
-                    Available models
-                  </p>
-
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-
-                    {product.variants.map((variant) => (
-
-                      <span
-                        key={variant.model}
-                        className="
-                          border
-                          border-border
-                          bg-secondary
-                          px-2
-                          py-1.5
-                          font-mono
-                          text-[9px]
-                          font-bold
-                          tracking-wider
-                          transition-colors
-                          group-hover:border-primary/30
-                        "
-                      >
-                        {variant.model}
-                      </span>
-
-                    ))}
-
-                  </div>
-
-                </div>
-
-                {/* ==================================================
-                    VIEW PRODUCT
-                ================================================== */}
-
-                <div
-                  className="
-                    mt-6
-                    flex
-                    items-center
-                    justify-between
-                    border-t
-                    border-border
-                    pt-5
-                  "
-                >
-
-                  <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-foreground">
-                    View product
-                  </span>
-
-                  <span
-                    className="
-                      font-mono
-                      text-[9px]
-                      font-bold
-                      uppercase
-                      tracking-widest
-                      text-primary
-                      transition-transform
-                      duration-300
-                      group-hover:translate-x-1
-                    "
-                  >
-                    Explore →
-                  </span>
-
-                </div>
+                  )
+                )}
 
               </div>
 
-            </Link>
+            </div>
 
-          ))}
+          </div>
 
-        </div>
+        )}
 
         {/* ====================================================
             NO RESULTS
@@ -782,5 +758,345 @@ export default function ProductsPage() {
       </section>
 
     </main>
+  )
+}
+
+
+/* ============================================================
+   PRODUCT CARD
+   ============================================================ */
+
+function ProductCard({
+  product,
+  productIndex,
+}: {
+  product: (typeof products)[number]
+  productIndex: number
+}) {
+  return (
+    <Link
+      href={`/products/${product.slug}`}
+      className="
+        group
+        relative
+        block
+        w-[85vw]
+        shrink-0
+        overflow-hidden
+        border
+        border-border
+        bg-background
+        transition-all
+        duration-500
+        hover:-translate-y-1
+        hover:border-primary
+        hover:shadow-xl
+        sm:w-[420px]
+        lg:w-[380px]
+      "
+    >
+
+      {/* PRODUCT NUMBER */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          left-0
+          top-0
+          z-20
+          flex
+          h-9
+          min-w-9
+          items-center
+          justify-center
+          bg-foreground
+          px-3
+          font-mono
+          text-[9px]
+          font-bold
+          tracking-widest
+          text-background
+        "
+      >
+        {String(productIndex + 1).padStart(2, "0")}
+      </div>
+
+      {/* RED CORNER */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          right-0
+          top-0
+          z-20
+          h-8
+          w-8
+          border-r-2
+          border-t-2
+          border-primary
+        "
+      />
+
+      {/* PRODUCT IMAGE */}
+
+      <div
+        className="
+          relative
+          aspect-[4/3]
+          overflow-hidden
+          bg-secondary
+        "
+      >
+
+        {/* GRID */}
+
+        <div
+          className="
+            pointer-events-none
+            absolute
+            inset-0
+            z-0
+            opacity-70
+          "
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(17,17,17,.045) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(17,17,17,.045) 1px, transparent 1px)
+            `,
+            backgroundSize: "32px 32px",
+          }}
+        />
+
+        {/* IMAGE */}
+
+        <div className="relative z-10 flex size-full items-center justify-center p-7">
+
+          <img
+            src={product.image}
+            alt={`${product.name} catalogue reference`}
+            loading="lazy"
+            decoding="async"
+            className="
+              size-full
+              object-contain
+              mix-blend-multiply
+              transition-transform
+              duration-700
+              ease-out
+              group-hover:scale-[1.06]
+            "
+          />
+
+        </div>
+
+        {/* BADGE */}
+
+        <span
+          className="
+            absolute
+            bottom-4
+            left-4
+            z-20
+            border
+            border-border
+            bg-white/95
+            px-3
+            py-2
+            font-mono
+            text-[9px]
+            font-bold
+            uppercase
+            tracking-widest
+            backdrop-blur-sm
+          "
+        >
+          {product.badge}
+        </span>
+
+        {/* ARROW */}
+
+        <div
+          className="
+            absolute
+            bottom-4
+            right-4
+            z-20
+            flex
+            size-9
+            items-center
+            justify-center
+            border
+            border-border
+            bg-white/95
+            transition-all
+            duration-300
+            group-hover:border-primary
+            group-hover:bg-primary
+          "
+        >
+
+          <ArrowRight
+            className="
+              size-4
+              text-foreground
+              transition-all
+              duration-300
+              group-hover:translate-x-0.5
+              group-hover:text-primary-foreground
+            "
+          />
+
+        </div>
+
+      </div>
+
+      {/* PRODUCT INFORMATION */}
+
+      <div className="p-5">
+
+        <p className="font-mono text-[9px] font-bold uppercase tracking-[0.18em] text-primary">
+          {product.family}
+        </p>
+
+        <h2
+          className="
+            mt-3
+            font-mono
+            text-xl
+            font-black
+            uppercase
+            leading-tight
+            tracking-[-.03em]
+          "
+        >
+          {product.name}
+        </h2>
+
+        <p className="mt-3 min-h-[72px] text-sm leading-6 text-muted-foreground">
+          {product.summary}
+        </p>
+
+        {/* PRODUCT DATA */}
+
+        <div className="mt-5 grid grid-cols-2 border-y border-border">
+
+          <div className="border-r border-border py-4 pr-4">
+
+            <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-muted-foreground">
+              Configurations
+            </p>
+
+            <p className="mt-2 font-mono text-sm font-black">
+              {product.variants.length}
+            </p>
+
+          </div>
+
+          <div className="py-4 pl-4">
+
+            <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-muted-foreground">
+              System
+            </p>
+
+            <p className="mt-2 font-mono text-[10px] font-black uppercase">
+              {product.category}
+            </p>
+
+          </div>
+
+        </div>
+
+        {/* TRAVEL */}
+
+        <div className="mt-4">
+
+          <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-muted-foreground">
+            Measuring travel
+          </p>
+
+          <p className="mt-2 text-xs font-bold leading-5">
+            {product.travel}
+          </p>
+
+        </div>
+
+        {/* MODELS */}
+
+        <div className="mt-5">
+
+          <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-muted-foreground">
+            Available models
+          </p>
+
+          <div className="mt-2 flex flex-wrap gap-1.5">
+
+            {product.variants.map((variant) => (
+
+              <span
+                key={variant.model}
+                className="
+                  border
+                  border-border
+                  bg-secondary
+                  px-2
+                  py-1.5
+                  font-mono
+                  text-[9px]
+                  font-bold
+                  tracking-wider
+                  transition-colors
+                  group-hover:border-primary/30
+                "
+              >
+                {variant.model}
+              </span>
+
+            ))}
+
+          </div>
+
+        </div>
+
+        {/* VIEW PRODUCT */}
+
+        <div
+          className="
+            mt-6
+            flex
+            items-center
+            justify-between
+            border-t
+            border-border
+            pt-5
+          "
+        >
+
+          <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-foreground">
+            View product
+          </span>
+
+          <span
+            className="
+              font-mono
+              text-[9px]
+              font-bold
+              uppercase
+              tracking-widest
+              text-primary
+              transition-transform
+              duration-300
+              group-hover:translate-x-1
+            "
+          >
+            Explore →
+          </span>
+
+        </div>
+
+      </div>
+
+    </Link>
   )
 }

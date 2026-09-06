@@ -73,15 +73,10 @@ export default function ContactPage() {
   //
   // Example:
   // /contact?product=manual-vmm&model=AA-9011M
-  //
-  // Product page -> Request a Quote
-  // automatically opens the quotation form.
   // ============================================================
 
   useEffect(() => {
-    const params = new URLSearchParams(
-      window.location.search
-    )
+    const params = new URLSearchParams(window.location.search)
 
     const requestedProduct = params.get("product")
     const requestedModel = params.get("model")
@@ -90,7 +85,6 @@ export default function ContactPage() {
       (product) => product.slug === requestedProduct
     )
 
-    // Normal Contact Us visit
     if (!requested) {
       return
     }
@@ -118,7 +112,7 @@ export default function ContactPage() {
     }
 
     // ------------------------------------------------------------
-    // SCROLL DIRECTLY TO QUOTATION FORM
+    // SCROLL TO QUOTATION FORM
     // ------------------------------------------------------------
 
     requestAnimationFrame(() => {
@@ -133,8 +127,6 @@ export default function ContactPage() {
 
   // ============================================================
   // RESET SCROLL WHEN OPENING REVIEW / SUCCESS
-  //
-  // Fixes browser keeping the previous form scroll position.
   // ============================================================
 
   useEffect(() => {
@@ -208,9 +200,62 @@ export default function ContactPage() {
   }
 
   // ============================================================
+  // PHONE INPUT
+  //
+  // Allows:
+  // 9876543210
+  // 98765 43210
+  // 98765-43210
+  // +91 9876543210
+  // +919876543210
+  //
+  // Prevents letters and unsupported characters.
+  // ============================================================
+
+  function handlePhoneChange(value: string) {
+    const cleaned = value.replace(/[^\d+\s-]/g, "")
+
+    // Only allow + at the beginning
+    const formatted = cleaned.replace(
+      /(\+.*)\+/g,
+      "$1"
+    )
+
+    setPhone(formatted.slice(0, 16))
+  }
+
+  // ============================================================
+  // PHONE VALIDATION
+  // ============================================================
+
+  function isValidPhoneNumber(value: string) {
+    const normalizedPhone = value
+      .replace(/[\s-]/g, "")
+      .trim()
+
+    /*
+     * Valid formats:
+     *
+     * 9876543210
+     * +919876543210
+     *
+     * Indian mobile numbers:
+     * 6XXXXXXXXX
+     * 7XXXXXXXXX
+     * 8XXXXXXXXX
+     * 9XXXXXXXXX
+     */
+
+    const phoneRegex =
+      /^(?:\+91)?[6-9]\d{9}$/
+
+    return phoneRegex.test(normalizedPhone)
+  }
+
+  // ============================================================
   // FORM SUBMIT / VALIDATION
   //
-  // This opens the review screen.
+  // Opens review screen only after all validation passes.
   // ============================================================
 
   function handleContinue(
@@ -264,6 +309,13 @@ export default function ContactPage() {
       return
     }
 
+    if (!isValidPhoneNumber(phone)) {
+      alert(
+        "Please enter a valid 10-digit Indian mobile number."
+      )
+      return
+    }
+
     // ------------------------------------------------------------
     // PRODUCT + MODEL
     // ------------------------------------------------------------
@@ -295,11 +347,6 @@ export default function ContactPage() {
   //
   // Sends enquiry to:
   // POST /api/enquiries
-  //
-  // API saves it to:
-  // crystal_vmm -> enquiries
-  //
-  // API also sends emails through Resend.
   // ============================================================
 
   async function handleSubmit() {
@@ -310,6 +357,14 @@ export default function ContactPage() {
     if (!product || !variant) {
       setSubmitError(
         "Please select a valid product and model."
+      )
+      return
+    }
+
+    // Extra protection before sending to backend
+    if (!isValidPhoneNumber(phone)) {
+      setSubmitError(
+        "Please enter a valid 10-digit Indian mobile number."
       )
       return
     }
@@ -329,19 +384,13 @@ export default function ContactPage() {
 
           body: JSON.stringify({
             name: name.trim(),
-
             company: company.trim(),
-
             email: email.trim(),
-
             phone: phone.trim(),
-
             message: message.trim(),
 
             product: product.name,
-
             productSlug: product.slug,
-
             model: variant.model,
           }),
         }
@@ -368,10 +417,6 @@ export default function ContactPage() {
             "Unable to submit your enquiry."
         )
       }
-
-      // ----------------------------------------------------------
-      // SUCCESS
-      // ----------------------------------------------------------
 
       console.log(
         "Enquiry submitted successfully:",
@@ -469,6 +514,7 @@ export default function ContactPage() {
   if (showReview) {
     return (
       <main className="min-h-screen bg-background">
+
         {/* REVIEW HEADER */}
 
         <section className="border-b border-border bg-white">
@@ -477,7 +523,6 @@ export default function ContactPage() {
               type="button"
               onClick={() => {
                 setShowReview(false)
-
                 requestAnimationFrame(() => {
                   window.scrollTo({
                     top: 0,
@@ -489,7 +534,6 @@ export default function ContactPage() {
               className="inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground transition hover:text-primary"
             >
               <ArrowLeft className="size-4" />
-
               Edit request
             </button>
           </div>
@@ -498,6 +542,7 @@ export default function ContactPage() {
         {/* REVIEW CONTENT */}
 
         <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+
           <div className="mb-10">
             <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-primary">
               Step 02
@@ -523,6 +568,7 @@ export default function ContactPage() {
             </div>
 
             <div className="grid gap-5 p-5 sm:grid-cols-2">
+
               <div>
                 <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   Product
@@ -562,6 +608,7 @@ export default function ContactPage() {
                   {variant?.travel}
                 </p>
               </div>
+
             </div>
           </div>
 
@@ -575,6 +622,7 @@ export default function ContactPage() {
             </div>
 
             <div className="grid gap-5 p-5 sm:grid-cols-2">
+
               <div>
                 <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   Name
@@ -624,6 +672,7 @@ export default function ContactPage() {
                   {message || "No additional message"}
                 </p>
               </div>
+
             </div>
           </div>
 
@@ -649,6 +698,7 @@ export default function ContactPage() {
           {/* ACTIONS */}
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">
+
             <button
               type="button"
               disabled={submitting}
@@ -683,7 +733,9 @@ export default function ContactPage() {
                 <Send className="size-4" />
               )}
             </button>
+
           </div>
+
         </section>
       </main>
     )
@@ -695,11 +747,13 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-screen bg-background">
+
       {/* ========================================================
           SECTION 01 — NORMAL CONTACT INFORMATION
       ======================================================== */}
 
       <section className="relative overflow-hidden border-b border-border bg-white">
+
         {/* TECHNICAL GRID */}
 
         <div
@@ -714,19 +768,21 @@ export default function ContactPage() {
         />
 
         <div className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 lg:px-10 lg:py-20">
+
           <Link
             href="/"
             className="mb-8 inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-muted-foreground transition hover:text-primary"
           >
             <ArrowLeft className="size-4" />
-
             Back to home
           </Link>
 
           <div className="grid gap-10 lg:grid-cols-[.9fr_1.6fr] lg:items-center">
+
             {/* HERO TEXT */}
 
             <div>
+
               <div className="flex items-center gap-3">
                 <span className="h-px w-10 bg-primary" />
 
@@ -749,11 +805,13 @@ export default function ContactPage() {
                 with the right precision measurement
                 solution.
               </p>
+
             </div>
 
             {/* CONTACT CARDS */}
 
             <div className="grid gap-4 md:grid-cols-3">
+
               {/* LOCATION */}
 
               <div className="border border-border bg-white p-6">
@@ -824,10 +882,10 @@ export default function ContactPage() {
 
                 <div className="mt-5 flex items-center gap-2 font-mono text-[9px] font-bold uppercase tracking-widest text-primary">
                   <Phone className="size-3" />
-
                   Technical assistance available
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -842,6 +900,7 @@ export default function ContactPage() {
         ref={quoteFormRef}
         className="relative scroll-mt-24 overflow-hidden border-b border-border bg-background"
       >
+
         {/* TECHNICAL GRID */}
 
         <div
@@ -856,12 +915,15 @@ export default function ContactPage() {
         />
 
         <div className="relative mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:px-10 lg:py-20">
+
           <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr]">
+
             {/* ==================================================
                 LEFT INFORMATION PANEL
             ================================================== */}
 
             <div className="border border-border bg-white p-7 sm:p-9">
+
               <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
                 Step 01
               </p>
@@ -885,6 +947,7 @@ export default function ContactPage() {
               </p>
 
               <div className="mt-10 border border-border">
+
                 <div className="flex items-center justify-between border-b border-border px-5 py-4">
                   <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
                     Response
@@ -914,9 +977,11 @@ export default function ContactPage() {
                     Pune, India
                   </span>
                 </div>
+
               </div>
 
               <div className="mt-8 border-t border-border pt-6">
+
                 <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
                   Selected product
                 </p>
@@ -931,7 +996,9 @@ export default function ContactPage() {
                     {variant?.model}
                   </span>
                 </p>
+
               </div>
+
             </div>
 
             {/* ==================================================
@@ -942,9 +1009,11 @@ export default function ContactPage() {
               onSubmit={handleContinue}
               className="space-y-5"
             >
+
               {/* PRODUCT SELECTION */}
 
               <div className="border border-border bg-white">
+
                 <div className="border-b border-border bg-muted/20 px-5 py-4">
                   <p className="font-mono text-xs font-bold uppercase tracking-widest">
                     Product selection
@@ -952,6 +1021,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="grid gap-5 p-5 sm:grid-cols-2">
+
                   {/* PRODUCT */}
 
                   <div>
@@ -1013,14 +1083,18 @@ export default function ContactPage() {
                       ))}
                     </select>
                   </div>
+
                 </div>
 
                 {/* SELECTED CONFIGURATION */}
 
                 {product && variant && (
                   <div className="border-t border-border bg-muted/10 p-5">
+
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
                       <div>
+
                         <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
                           Selected configuration
                         </p>
@@ -1035,9 +1109,11 @@ export default function ContactPage() {
                             {variant.model}
                           </span>
                         </p>
+
                       </div>
 
                       <div className="text-left sm:text-right">
+
                         <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-muted-foreground">
                           Travel
                         </p>
@@ -1045,15 +1121,19 @@ export default function ContactPage() {
                         <p className="mt-1 text-sm font-semibold">
                           {variant.travel}
                         </p>
+
                       </div>
+
                     </div>
                   </div>
                 )}
+
               </div>
 
               {/* CONTACT INFORMATION */}
 
               <div className="border border-border bg-white">
+
                 <div className="border-b border-border bg-muted/20 px-5 py-4">
                   <p className="font-mono text-xs font-bold uppercase tracking-widest">
                     Contact information
@@ -1061,6 +1141,7 @@ export default function ContactPage() {
                 </div>
 
                 <div className="grid gap-5 p-5 sm:grid-cols-2">
+
                   {/* NAME */}
 
                   <div>
@@ -1140,18 +1221,28 @@ export default function ContactPage() {
                     <input
                       id="phone"
                       type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
                       value={phone}
                       onChange={(event) =>
-                        setPhone(event.target.value)
+                        handlePhoneChange(
+                          event.target.value
+                        )
                       }
                       placeholder="+91 XXXXX XXXXX"
+                      maxLength={16}
                       className="h-12 w-full border border-border bg-background px-4 text-sm outline-none transition placeholder:text-muted-foreground focus:border-primary"
                     />
+
+                    <p className="mt-2 text-[11px] text-muted-foreground">
+                      Enter a valid 10-digit Indian mobile number.
+                    </p>
                   </div>
 
                   {/* MESSAGE */}
 
                   <div className="sm:col-span-2">
+
                     <label
                       htmlFor="message"
                       className="mb-2 block font-mono text-[9px] font-bold uppercase tracking-widest"
@@ -1169,14 +1260,18 @@ export default function ContactPage() {
                       rows={6}
                       className="w-full resize-none border border-border bg-background px-4 py-3 text-sm outline-none transition placeholder:text-muted-foreground focus:border-primary"
                     />
+
                   </div>
+
                 </div>
               </div>
 
               {/* SUBMIT */}
 
               <div className="border border-border bg-white p-5">
+
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+
                   <p className="max-w-xl text-xs leading-5 text-muted-foreground">
                     By continuing, you can review your
                     quotation request before it is
@@ -1188,11 +1283,13 @@ export default function ContactPage() {
                     className="inline-flex items-center justify-center gap-3 bg-primary px-8 py-4 text-xs font-bold uppercase tracking-widest text-primary-foreground transition hover:-translate-y-0.5 hover:opacity-90"
                   >
                     Review request
-
                     <ArrowRight className="size-4" />
                   </button>
+
                 </div>
+
               </div>
+
             </form>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, Search } from 'lucide-react'
 import { products as catalogueProducts } from '@/lib/catalog'
-import { FeaturedProductsCarousel } from '@/components/featured-products-carousel'
+import FeaturedProductsCarousel  from '@/components/featured-products-carousel'
 //import { HelpChoose } from '@/components/help-choose'
 
 const products = catalogueProducts.map((product) => ({
@@ -329,7 +329,7 @@ export default function Page() {
         </div>
 
         <div className="mt-12">
-          <FeaturedProductsCarousel products={products} />
+          <FeaturedProductsCarousel />
         </div>
 
       </section>

@@ -5,6 +5,7 @@ import "./globals.css"
 
 import { SiteNav } from "@/components/site-nav"
 import SiteFooter from "@/components/site-footer"
+import WhatsAppButton from "@/components/WhatsAppButton"
 
 export const metadata: Metadata = {
   title: {
@@ -46,6 +47,7 @@ export default function RootLayout({
 
         {/* GLOBAL FOOTER */}
         <SiteFooter />
+         <WhatsAppButton />
 
         {/* VERCEL ANALYTICS */}
         {process.env.NODE_ENV === "production" && <Analytics />}

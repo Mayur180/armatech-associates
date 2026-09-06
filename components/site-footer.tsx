@@ -6,32 +6,76 @@ import {
   Phone,
 } from "lucide-react"
 
+// ============================================================
+// PRODUCT LINKS
+// Each product now opens its own product detail page
+// ============================================================
+
 const productLinks = [
-  "Manual VMM",
-  "Semi-Auto VMM",
-  "Fully Automatic VMM",
-  "Cabinet Integrated VMM",
-  "VMS Manual",
+  {
+    label: "Manual VMM",
+    href: "/products/manual-vmm",
+  },
+  {
+    label: "Semi-Auto VMM",
+    href: "/products/semi-automatic-vmm",
+  },
+  {
+    label: "Fully Automatic VMM",
+    href: "/products/cnc-auto-vmm",
+  },
+  {
+    label: "Cabinet Integrated VMM",
+    href: "/products/automatic-vmm-cabinet",
+  },
+  {
+    label: "VMS Manual",
+    href: "/products/vms-manual",
+  },
 ]
 
+// ============================================================
+// COMPANY LINKS
+// ============================================================
+
 const companyLinks = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/#why-armatech" },
-  { label: "Products", href: "/products" },
-  { label: "Quality", href: "/#armatech-standard" },
-  { label: "Contact Us", href: "/contact" },
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "About Us",
+    href: "/#why-armatech",
+  },
+  {
+    label: "Products",
+    href: "/products",
+  },
+  {
+    label: "Quality",
+    href: "/#armatech-standard",
+  },
+  {
+    label: "Contact Us",
+    href: "/contact",
+  },
 ]
+
+// ============================================================
+// FOOTER
+// ============================================================
 
 export default function SiteFooter() {
   return (
     <footer className="relative overflow-hidden bg-white text-[#111111]">
 
       {/* ============================================================
-          CTA
+          CTA SECTION
       ============================================================ */}
 
       <section className="relative overflow-hidden bg-[#c8102e] text-white">
 
+        {/* Technical Grid */}
         <div
           className="pointer-events-none absolute inset-0 opacity-10"
           style={{
@@ -42,6 +86,8 @@ export default function SiteFooter() {
         />
 
         <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-6 py-12 sm:px-8 lg:flex-row lg:items-center lg:justify-between lg:px-10 lg:py-14">
+
+          {/* CTA CONTENT */}
 
           <div>
             <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-white/75">
@@ -59,6 +105,8 @@ export default function SiteFooter() {
               measurement requirements and inspection process.
             </p>
           </div>
+
+          {/* CTA BUTTON */}
 
           <Link
             href="/contact"
@@ -80,7 +128,8 @@ export default function SiteFooter() {
 
       <section className="relative border-b border-[#e2e2e2]">
 
-        {/* Technical grid */}
+        {/* Technical Grid */}
+
         <div
           className="pointer-events-none absolute inset-0 opacity-40"
           style={{
@@ -100,7 +149,10 @@ export default function SiteFooter() {
 
             <div>
 
-              <Link href="/" className="inline-block">
+              <Link
+                href="/"
+                className="inline-block"
+              >
                 <div className="text-3xl font-black tracking-[-0.06em] text-[#111111]">
                   ARMA<span className="text-[#c8102e]">TECH</span>
                 </div>
@@ -115,6 +167,8 @@ export default function SiteFooter() {
                 for modern manufacturing.
               </p>
 
+              {/* BRAND QUALITY BOX */}
+
               <div className="mt-7 flex items-center gap-4 border border-[#dcdcdc] bg-white px-4 py-3">
 
                 <span className="text-xl font-black text-[#c8102e]">
@@ -124,6 +178,7 @@ export default function SiteFooter() {
                 <span className="h-7 w-px bg-[#dddddd]" />
 
                 <div>
+
                   <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#777777]">
                     Precision Engineering
                   </p>
@@ -131,6 +186,7 @@ export default function SiteFooter() {
                   <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#111111]">
                     Quality • Reliability • Support
                   </p>
+
                 </div>
 
               </div>
@@ -150,15 +206,19 @@ export default function SiteFooter() {
               <ul className="mt-6 space-y-3">
 
                 {productLinks.map((product) => (
-                  <li key={product}>
+                  <li key={product.href}>
 
                     <Link
-                      href="/products"
+                      href={product.href}
                       className="group flex items-center gap-2 text-sm font-medium text-[#444444] transition hover:text-[#c8102e]"
                     >
+
+                      {/* Hover Line */}
+
                       <span className="h-px w-0 bg-[#c8102e] transition-all duration-200 group-hover:w-4" />
 
-                      {product}
+                      {product.label}
+
                     </Link>
 
                   </li>
@@ -181,15 +241,19 @@ export default function SiteFooter() {
               <ul className="mt-6 space-y-3">
 
                 {companyLinks.map((item) => (
-                  <li key={item.label}>
+                  <li key={item.href}>
 
                     <Link
                       href={item.href}
                       className="group flex items-center gap-2 text-sm font-medium text-[#444444] transition hover:text-[#c8102e]"
                     >
+
+                      {/* Hover Line */}
+
                       <span className="h-px w-0 bg-[#c8102e] transition-all duration-200 group-hover:w-4" />
 
                       {item.label}
+
                     </Link>
 
                   </li>
@@ -211,7 +275,9 @@ export default function SiteFooter() {
 
               <div className="mt-6 space-y-5">
 
-                {/* Address */}
+                {/* ==================================================
+                    ADDRESS
+                ================================================== */}
 
                 <div className="flex gap-3">
 
@@ -237,7 +303,9 @@ export default function SiteFooter() {
 
                 </div>
 
-                {/* Phone */}
+                {/* ==================================================
+                    PHONE
+                ================================================== */}
 
                 <div className="flex gap-3">
 
@@ -250,14 +318,16 @@ export default function SiteFooter() {
                     </p>
 
                     <p className="mt-2 text-sm text-[#555555]">
-                      Contact our technical team
+                      +91 70209 91684
                     </p>
 
                   </div>
 
                 </div>
 
-                {/* Email */}
+                {/* ==================================================
+                    ENQUIRY
+                ================================================== */}
 
                 <div className="flex gap-3">
 
@@ -298,10 +368,14 @@ export default function SiteFooter() {
 
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-5 sm:px-8 md:flex-row md:items-center md:justify-between lg:px-10">
 
+          {/* COPYRIGHT */}
+
           <p className="text-[10px] font-medium text-white/70">
             © {new Date().getFullYear()} ArmaTech Associates.
             All rights reserved.
           </p>
+
+          {/* FOOTER TAGS */}
 
           <div className="flex flex-wrap items-center gap-4">
 

@@ -70,6 +70,8 @@ export function SiteNav() {
                   W-174 A, 'S' Block, M.I.D.C., Bhosari
                   <br />
                   Industrial Estate, Pune - 411 026 (India)
+                  <br/>
+                 <b> Mail: </b> clearvisiontech2026@gmail.com
                 </p>
               </div>
             </div>

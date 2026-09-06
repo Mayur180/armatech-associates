@@ -42,20 +42,11 @@ export type Product = {
 // ============================================================
 
 export const catalogImages = {
-  manual:
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maunal-L8yjCFjZiWt6iCDQZhujqswIkFjqPo.png',
-
-  semi:
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/semi-nIQvd99xxNXr13VTuwnMkOI3ip3YPp.png',
-
-  automatic:
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic-bPz5STarFfXkj1fNgBOz2KFbBnrSIY.png',
-
-  cabinet:
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic%20with%20cabinet-nMON6kS70ryrBN3q5uxzUV77A0oTbr.png',
-
-  vms:
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/vms-UyN1lpNPu7hfXst0XeCpOdBG3w6paP.png',
+  manual: '/Image/Maunal.png',
+  semi: '/Image/semi.png',
+  automatic: '/Image/automatic.png',
+  cabinet: '/Image/automatic with cabinet.png',
+  vms: '/Image/vms.png',
 }
 
 

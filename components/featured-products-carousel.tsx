@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { useState } from "react"
+import { catalogImages } from "@/lib/catalog"
 
 type Product = {
   name: string
@@ -17,40 +18,35 @@ const products: Product[] = [
     name: "MANUAL VMM",
     category: "VIDEO MEASURING MACHINE",
     code: "AA-9011M",
-    image:
-      "image/maunal.png",
+    image: catalogImages.manual,
     slug: "manual-vmm",
   },
   {
     name: "SEMI-AUTO VMM",
     category: "VIDEO MEASURING MACHINE",
     code: "AA-9021SA",
-    image:
-      "image/semi.png",
+    image: catalogImages.semi,
     slug: "semi-automatic-vmm",
   },
   {
     name: "FULLY AUTOMATIC VMM",
     category: "VIDEO MEASURING MACHINE",
     code: "AA-9031A",
-    image:
-      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic-bPz5STarFfXkj1fNgBOz2KFbBnrSIY.png",
+    image: catalogImages.automatic,
     slug: "cnc-auto-vmm",
   },
   {
     name: "AUTOMATIC VMM WITH CABINET",
     category: "VIDEO MEASURING MACHINE",
     code: "AA-9041AC",
-    image:
-      "image/automatic with cabinet.png",
+    image: catalogImages.cabinet,
     slug: "automatic-vmm-cabinet",
   },
   {
     name: "VMS MANUAL",
     category: "VISION MEASURING SYSTEM",
     code: "AA-9051V",
-    image:
-      "image/vms.png",
+    image: catalogImages.vms,
     slug: "vms-manual",
   },
 ]

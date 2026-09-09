@@ -1,81 +1,194 @@
-# ArmaTech Associates
+<a name="readme-top"></a>
+
+<div align="center">
+
+# ARMAtech Associates
 
 ### Precision Measurement & Industrial Inspection Solutions
 
-ArmaTech Associates provides precision measurement and industrial inspection solutions for manufacturing and engineering industries.
+**Professional measurement solutions for modern manufacturing and engineering industries.**
 
-Our website presents measurement equipment, inspection systems, and related solutions designed to support accurate, reliable, and efficient dimensional inspection.
+<br />
 
-🌐 **Website:** https://armatechassociates.com/
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge\&logo=next.js\&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-2026?style=for-the-badge\&logo=react\&logoColor=61DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge\&logo=typescript\&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge\&logo=tailwindcss\&logoColor=white)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge\&logo=vercel\&logoColor=white)](https://vercel.com/)
 
----
+<br />
 
-## About the Project
+[![Website](https://img.shields.io/badge/Website-Live-success?style=flat-square)](https://armatechassociates.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square\&logo=github)](https://github.com/Mayur180/armatech-associates)
+[![License](https://img.shields.io/badge/License-Private%20Business%20Project-blue?style=flat-square)](#license)
 
-This repository contains the source code for the **ArmaTech Associates official website**.
+<br />
 
-The website is designed to provide customers with:
+**[🌐 Visit Website](https://armatechassociates.com/)**
+**[📦 View Repository](https://github.com/Mayur180/armatech-associates)**
 
-* Product information
-* Precision measurement solutions
-* Video Measuring Machines (VMM)
-* Industrial inspection equipment
-* Product specifications
-* Company information
-* Contact and enquiry options
-* Easy access to product catalogs and technical information
-
-The project focuses on creating a modern, responsive, and professional digital presence for ArmaTech Associates.
+</div>
 
 ---
 
-## Key Features
+## 📌 About
 
-* 📱 Fully responsive website
-* 🖥️ Modern and professional UI
-* ⚡ Fast performance with Next.js
-* 📦 Product showcase
-* 🔍 Product and solution information
-* 📄 Product catalog integration
-* 📞 Customer enquiry/contact options
-* 💬 WhatsApp communication integration
-* 🔎 SEO-friendly page structure
-* 🚀 Vercel-ready deployment
-* 🧩 Modular and reusable components
+**ArmaTech Associates** is a precision measurement and industrial inspection solutions company.
+
+This repository contains the source code for the ArmaTech Associates digital platform, developed to provide customers with a professional online experience for discovering measurement equipment, viewing technical information, exploring products, and submitting enquiries.
+
+The website is designed with a focus on:
+
+* Precision measurement
+* Industrial inspection
+* Product presentation
+* Technical specifications
+* Customer enquiries
+* Responsive user experience
+* Search-engine-friendly content
+* Professional industrial branding
 
 ---
 
-## Technology Stack
+## 🌐 Live Website
+
+<div align="center">
+
+### ArmaTech Associates
+
+**Precision Measurement & Industrial Inspection**
+
+<br />
+
+[![Visit Website](https://img.shields.io/badge/OPEN%20WEBSITE-armatechassociates.com-000000?style=for-the-badge\&logo=googlechrome\&logoColor=white)](https://armatechassociates.com/)
+
+</div>
+
+---
+
+## 🖥️ Website Preview
+
+> Replace the image paths below with screenshots from the `public/images/` folder.
+
+### Homepage
+
+<div align="center">
+
+<img src="public/images/homepage.png" alt="ArmaTech Associates Homepage" width="900"/>
+
+</div>
+
+### Product Showcase
+
+<div align="center">
+
+<img src="public/images/products.png" alt="ArmaTech Associates Product Showcase" width="900"/>
+
+</div>
+
+### Product Details
+
+<div align="center">
+
+<img src="public/images/product-details.png" alt="ArmaTech Associates Product Details" width="900"/>
+
+</div>
+
+---
+
+## ✨ Key Features
+
+| Feature                 | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| 🎯 Product Showcase     | Professional presentation of industrial measurement products |
+| 📐 Precision Solutions  | Dedicated measurement and inspection solutions               |
+| 📱 Responsive Design    | Optimized for desktop, tablet and mobile                     |
+| ⚡ Fast Performance      | Modern Next.js architecture                                  |
+| 🔍 SEO Ready            | Structured content for search visibility                     |
+| 📄 Product Information  | Technical specifications and product details                 |
+| 📞 Enquiry System       | Customer-focused contact and enquiry options                 |
+| 💬 WhatsApp Integration | Direct communication with customers                          |
+| 🧩 Reusable Components  | Modular React component architecture                         |
+| 🚀 Deployment Ready     | Configured for modern cloud deployment                       |
+
+---
+
+# 📦 Product Solutions
+
+The platform is designed to showcase ArmaTech Associates' precision measurement and industrial inspection solutions.
+
+### 🔬 Video Measuring Machines
+
+Video Measuring Machines (VMM) provide optical, non-contact dimensional measurement for industrial components.
+
+Typical applications include:
+
+* Dimensional inspection
+* Component measurement
+* Profile inspection
+* Tool and part inspection
+* Quality control
+
+---
+
+### 🎯 Vision Measurement Systems
+
+Vision-based measurement systems combine optical imaging, precision movement and measurement software to support accurate inspection workflows.
+
+---
+
+### 📐 Precision Measurement Equipment
+
+Solutions can be presented according to customer requirements, component size, measurement accuracy and inspection application.
+
+---
+
+### 🏭 Industrial Inspection
+
+The platform is designed to support industries requiring reliable dimensional inspection and quality-control solutions.
+
+Potential applications include:
+
+* Automotive components
+* Engineering components
+* Precision machining
+* Tooling
+* Manufacturing
+* Quality assurance
+
+---
+
+# 🧠 Technology Stack
 
 ### Frontend
 
-* Next.js
-* React
-* TypeScript
-* Tailwind CSS
+| Technology   | Purpose                       |
+| ------------ | ----------------------------- |
+| Next.js      | Web application framework     |
+| React        | UI development                |
+| TypeScript   | Type-safe development         |
+| Tailwind CSS | Styling and responsive design |
+| ShadCN UI    | Reusable interface components |
 
-### UI & Components
+### Development
 
-* ShadCN UI
-* Responsive design
-* Reusable React components
-
-### Deployment
-
-* Vercel
-
-### Development Tools
-
-* Git
-* GitHub
-* npm
+| Tool   | Purpose                |
+| ------ | ---------------------- |
+| Git    | Version control        |
+| GitHub | Source code management |
+| npm    | Dependency management  |
+| Vercel | Deployment             |
 
 ---
 
-## Project Structure
+# 🏗️ Project Architecture
 
 ```text
 armatech-associates/
+│
+├── .github/
+│   └── workflows/
+│       └── ...
 │
 ├── app/
 │   ├── layout.tsx
@@ -89,64 +202,91 @@ armatech-associates/
 │   ├── WhatsAppButton.tsx
 │   └── ...
 │
+├── lib/
+│   └── ...
+│
 ├── public/
 │   ├── images/
 │   └── ...
 │
-├── lib/
-│   └── ...
-│
 ├── package.json
+├── package-lock.json
+├── next.config.mjs
 ├── tsconfig.json
-├── next.config.*
 └── README.md
 ```
 
 ---
 
-## Getting Started
+# 🚀 Getting Started
 
-### 1. Clone the repository
+## Prerequisites
+
+Make sure you have installed:
+
+* Node.js
+* npm
+* Git
+
+Check your versions:
+
+```bash
+node -v
+npm -v
+git --version
+```
+
+---
+
+## Installation
+
+Clone the repository:
 
 ```bash
 git clone https://github.com/Mayur180/armatech-associates.git
 ```
 
-### 2. Navigate to the project
+Move into the project directory:
 
 ```bash
 cd armatech-associates
 ```
 
-### 3. Install dependencies
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### 4. Start the development server
+---
+
+## 💻 Development
+
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Open the development server in your browser:
+Then open:
 
 ```text
 http://localhost:3000
 ```
 
+The application will automatically update when source files are modified.
+
 ---
 
-## Production Build
+# 🏭 Production Build
 
-To create a production build:
+Create an optimized production build:
 
 ```bash
 npm run build
 ```
 
-To start the production server:
+Start the production server:
 
 ```bash
 npm start
@@ -154,97 +294,198 @@ npm start
 
 ---
 
-## Deployment
+# ☁️ Deployment
 
-The project is configured for deployment using **Vercel**.
-
-Typical deployment workflow:
+The project is designed for deployment through **Vercel**.
 
 ```text
-GitHub Repository
-       ↓
-     Vercel
-       ↓
-Production Build
-       ↓
-armatechassociates.com
+                 ┌─────────────────┐
+                 │     GitHub      │
+                 │   Repository    │
+                 └────────┬────────┘
+                          │
+                          ▼
+                 ┌─────────────────┐
+                 │     Vercel      │
+                 │    Deployment   │
+                 └────────┬────────┘
+                          │
+                          ▼
+                 ┌─────────────────┐
+                 │  Production     │
+                 │    Website      │
+                 └────────┬────────┘
+                          │
+                          ▼
+             https://armatechassociates.com/
 ```
 
-Every update pushed to the configured GitHub branch can be deployed through Vercel.
+---
+
+# 🔄 Development Workflow
+
+```text
+Developer
+    │
+    ▼
+Local Development
+    │
+    ▼
+Git Commit
+    │
+    ▼
+GitHub
+    │
+    ▼
+Vercel Deployment
+    │
+    ▼
+Production Website
+```
 
 ---
 
-## Website
+# 📈 Future Roadmap
 
-Visit the official ArmaTech Associates website:
-
-**https://armatechassociates.com/**
-
----
-
-## Business Solutions
-
-ArmaTech Associates focuses on precision measurement and industrial inspection requirements, helping customers identify suitable measurement solutions for their applications.
-
-The website provides information about available products, specifications, applications, and enquiry options.
-
----
-
-## Product Categories
-
-The website may include information related to:
-
-* Video Measuring Machines
-* Vision Measuring Systems
-* Precision Measurement Equipment
-* Dimensional Inspection Solutions
-* Industrial Inspection Systems
-* Measurement Accessories
-* Related Metrology Solutions
+* [ ] Product-specific SEO pages
+* [ ] Product comparison system
+* [ ] Product catalogue downloads
+* [ ] Customer enquiry management
+* [ ] Automated quotation workflow
+* [ ] Gmail enquiry automation
+* [ ] IndiaMART lead automation
+* [ ] WhatsApp automation
+* [ ] Admin dashboard
+* [ ] Product database
+* [ ] Customer lead management
+* [ ] Analytics dashboard
+* [ ] Technical documentation section
 
 ---
 
-## SEO & Digital Presence
+# 🤖 Business Automation Vision
 
-The website is structured with SEO in mind, including:
+The long-term platform architecture can connect website enquiries and external customer leads with automated business workflows.
 
-* Descriptive page titles
-* Meta descriptions
-* Product-specific pages
-* Search-friendly URLs
-* Image alt text
-* Responsive design
-* Fast-loading pages
-* Structured content
+```text
+Customer
+   │
+   ├── Website
+   ├── IndiaMART
+   ├── Email
+   └── WhatsApp
+          │
+          ▼
+     Lead Capture
+          │
+          ▼
+   Product Detection
+          │
+          ▼
+    Customer Enquiry
+          │
+          ▼
+   ┌───────────────┐
+   │ CRYSTAL       │
+   │ Product Data  │
+   └───────┬───────┘
+           │
+           ▼
+    Automated Response
+           │
+     ┌─────┴─────┐
+     │           │
+     ▼           ▼
+ Product Info   Human Review
+     │           │
+     └─────┬─────┘
+           ▼
+     Customer Follow-up
+```
 
 ---
 
-## Contact
+# 🔐 Security
+
+The project follows standard web-development practices.
+
+Sensitive information such as:
+
+* API keys
+* Database credentials
+* Authentication secrets
+* Private environment variables
+
+should **never be committed to GitHub**.
+
+Use environment variables for sensitive configuration.
+
+Example:
+
+```env
+DATABASE_URL=
+NEXT_PUBLIC_API_URL=
+NEXT_PUBLIC_WHATSAPP_NUMBER=
+```
+
+> Never commit `.env.local` or other secret files to the repository.
+
+---
+
+# 📊 Repository Status
+
+| Category             | Status       |
+| -------------------- | ------------ |
+| Website              | 🟢 Live      |
+| Next.js Application  | 🟢 Active    |
+| Responsive UI        | 🟢 Active    |
+| Product Showcase     | 🟢 Active    |
+| SEO                  | 🟡 Improving |
+| Lead Automation      | 🟡 Planned   |
+| WhatsApp Automation  | 🟡 Planned   |
+| Admin Dashboard      | 🟡 Planned   |
+| Automated Quotations | 🟡 Planned   |
+
+---
+
+# 📞 Contact
 
 ### ArmaTech Associates
 
-For product information, technical requirements, quotations, or business enquiries, please visit the official website:
+For product information, technical requirements, quotations and business enquiries:
 
-🌐 **https://armatechassociates.com/**
+🌐 **Website:**
+https://armatechassociates.com/
 
----
-
-## Repository
-
-GitHub:
-
+💻 **GitHub:**
 https://github.com/Mayur180/armatech-associates
 
 ---
 
-## License
+# 📄 License
 
-This project and its website content are intended for **ArmaTech Associates**.
+This repository contains proprietary business website code and materials for **ArmaTech Associates**.
 
-All company branding, product information, images, logos, catalogs, and related materials are the property of their respective owners and should not be reproduced or redistributed without appropriate permission.
+Company branding, product information, product images, catalogs, documentation and other business materials may be subject to intellectual-property rights.
+
+Unauthorized reproduction or redistribution of proprietary business materials is not permitted.
 
 ---
 
+<div align="center">
+
 ### ArmaTech Associates
 
-**Precision Measurement. Reliable Solutions.**
+**Precision Measurement • Industrial Inspection • Reliable Solutions**
+
+<br />
+
+[![Website](https://img.shields.io/badge/🌐%20Website-armatechassociates.com-black?style=for-the-badge)](https://armatechassociates.com/)
+
+<br />
+
+**© ArmaTech Associates**
+
+</div>
+
+<p align="right"><a href="#readme-top">⬆ Back to top</a></p>

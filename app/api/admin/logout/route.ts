@@ -1,0 +1,30 @@
+import { NextResponse } from "next/server"
+
+export async function POST() {
+  try {
+    const response = NextResponse.json({
+      success: true,
+      message: "Logout successful.",
+    })
+
+    response.cookies.set("crystal_admin_session", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 0,
+    })
+
+    return response
+  } catch (error) {
+    console.error("Admin logout error:", error)
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Unable to logout.",
+      },
+      { status: 500 }
+    )
+  }
+}

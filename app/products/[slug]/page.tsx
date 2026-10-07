@@ -1,20 +1,22 @@
 import Link from "next/link"
-import { ArrowLeft, Download } from "lucide-react"
+import { ArrowLeft, ArrowRight, Check } from "lucide-react"
 import { notFound } from "next/navigation"
 
 import ProductViewer from "@/components/ProductViewer"
-import ModelSelector from "@/components/ModelSelector"
+import { getProduct, products } from "@/lib/catalog"
 
-import {
-  getProduct,
-  products,
-} from "@/lib/catalog"
+// ============================================================
+// TYPES
+// ============================================================
 
-type PageProps = {
-  params: Promise<{
-    slug: string
-  }>
+type Specification = {
+  label: string
+  values: string[]
 }
+
+// ============================================================
+// STATIC PRODUCT PAGES
+// ============================================================
 
 export function generateStaticParams() {
   return products.map((product) => ({
@@ -22,190 +24,179 @@ export function generateStaticParams() {
   }))
 }
 
+// ============================================================
+// PRODUCT DETAIL PAGE
+// ============================================================
+
 export default async function ProductDetail({
   params,
-}: PageProps) {
+}: {
+  params: Promise<{ slug: string }>
+}) {
   const { slug } = await params
 
-  const product = getProduct(slug)
+  const rawProduct = getProduct(slug)
 
-  if (!product) {
+  if (!rawProduct) {
     notFound()
   }
 
+  const product = rawProduct as typeof rawProduct & {
+    specifications?: Specification[]
+  }
+
+  const specifications = product.specifications ?? []
+  const modelCount = product.variants.length
+
+  // ============================================================
+  // PAGE
+  // ============================================================
+
   return (
-    <main className="min-h-screen bg-white text-zinc-900">
+    <main className="min-h-screen bg-background">
 
-      {/* ========================================================
-          PRODUCT PAGE
-      ======================================================== */}
+      {/* ======================================================
+          HERO
+      ====================================================== */}
 
-      <section className="bg-white">
+      <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-16">
 
-        <div className="mx-auto max-w-[1500px] px-6 py-8 lg:px-10 lg:py-10">
+        {/* BACK */}
 
-          {/* ====================================================
-              BACK
-          ==================================================== */}
+        <Link
+          href="/products"
+          className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-muted-foreground transition hover:text-primary"
+        >
+          <ArrowLeft className="size-4" />
+          Back to catalogue
+        </Link>
 
-          <Link
-            href="/products"
-            className="
-              inline-flex
-              items-center
-              gap-2
-              text-xs
-              font-medium
-              text-zinc-500
-              transition
-              hover:text-red-600
-            "
-          >
-            <ArrowLeft size={15} />
-            Back to catalogue
-          </Link>
+        <div className="mt-8 grid gap-10 lg:grid-cols-[1.08fr_.92fr] lg:gap-14">
 
-          {/* ====================================================
-              TWO COLUMN AREA
-          ==================================================== */}
+          {/* ==================================================
+              PRODUCT VIEWER
+          ================================================== */}
 
-          <div className="mt-7 grid gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10">
+          <ProductViewer
+            image={product.image}
+            name={product.name}
+            badge={product.badge}
+            model={product.variants[0]?.model}
+          />
+
+          {/* ==================================================
+              PRODUCT INFORMATION
+          ================================================== */}
+
+          <div className="flex flex-col justify-center">
+
+            <p className="font-mono text-xs font-bold uppercase tracking-[.22em] text-primary">
+              {product.family}
+            </p>
+
+            <h1 className="mt-5 max-w-2xl font-mono text-4xl font-bold uppercase tracking-[-.05em] sm:text-6xl lg:text-7xl">
+              {product.name}
+            </h1>
+
+            <p className="mt-7 max-w-xl text-base leading-8 text-muted-foreground">
+              {product.summary}
+            </p>
 
             {/* ==================================================
-                LEFT SIDE
-                PRODUCT TITLE + IMAGE
+                AVAILABLE MODELS
             ================================================== */}
 
-            <div className="min-w-0">
+            <div className="mt-9">
 
-              {/* PRODUCT TITLE ABOVE IMAGE */}
+              <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
+                Available model series
+              </p>
 
-              <div className="mb-5 border-l-4 border-red-600 pl-4">
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
 
-                <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-red-600">
-                  {product.badge}
-                </p>
+                {product.variants.map((variant, index) => (
+                  <Link
+                    key={variant.model}
+                    href={`/contact?product=${encodeURIComponent(
+                      product.slug
+                    )}&model=${encodeURIComponent(
+                      variant.model
+                    )}`}
+                    className={`group flex items-center justify-between border px-4 py-3 transition ${
+                      index === 0
+                        ? "border-primary"
+                        : "border-border hover:border-primary"
+                    }`}
+                  >
+                    <div>
+                      <span className="font-mono text-xs font-bold tracking-widest">
+                        {variant.model}
+                      </span>
 
-                <h1 className="mt-1 text-3xl font-black tracking-tight text-zinc-950 sm:text-4xl lg:text-5xl">
-                  {product.name}
-                </h1>
-
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-zinc-500 sm:text-base">
-                  {product.summary}
-                </p>
-
-              </div>
-
-              {/* ==================================================
-                  PRODUCT IMAGE
-              ================================================== */}
-
-              <div className="relative">
-
-                {/* CORNERS */}
-
-                <div className="absolute left-0 top-0 z-20 h-7 w-7 border-l-2 border-t-2 border-red-600" />
-
-                <div className="absolute right-0 top-0 z-20 h-7 w-7 border-r-2 border-t-2 border-red-600" />
-
-                <div className="absolute bottom-0 left-0 z-20 h-7 w-7 border-b-2 border-l-2 border-red-600" />
-
-                <div className="absolute bottom-0 right-0 z-20 h-7 w-7 border-b-2 border-r-2 border-red-600" />
-
-                <div className="relative overflow-hidden border border-zinc-200 bg-zinc-50">
-
-                  <ProductViewer
-                    image={product.image}
-                    name={product.name}
-                    badge={product.badge}
-                    model={product.variants[0]?.model}
-                  />
-
-                  {/* ==================================================
-                      PRODUCT FEATURE OVERLAYS
-                  ================================================== */}
-
-                  {/* CAMERA */}
-
-                  <div className="absolute left-5 top-7 z-30 hidden items-center gap-2 sm:flex">
-
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full border border-red-500 bg-white text-red-600 shadow-sm">
-                      <span className="text-sm">◉</span>
+                      <span className="ml-2 text-xs text-muted-foreground">
+                        {variant.travel} mm
+                      </span>
                     </div>
 
-                    <div className="border border-zinc-100 bg-white px-2 py-1 shadow-sm">
-
-                      <p className="text-[8px] font-bold uppercase leading-3 tracking-wide text-zinc-900">
-                        Industrial
-                        <br />
-                        CCD Camera
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                  {/* LED */}
-
-                  <div className="absolute right-5 top-7 z-30 hidden items-center gap-2 sm:flex">
-
-                    <div className="border border-zinc-100 bg-white px-2 py-1 text-right shadow-sm">
-
-                      <p className="text-[8px] font-bold uppercase leading-3 tracking-wide text-zinc-900">
-                        LED Ring
-                        <br />
-                        Illumination
-                      </p>
-
-                    </div>
-
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full border border-red-500 bg-white text-red-600 shadow-sm">
-                      <span className="text-sm">♧</span>
-                    </div>
-
-                  </div>
-
-                  {/* PRECISION */}
-
-                  <div className="absolute bottom-7 left-5 z-30 hidden items-center gap-2 sm:flex">
-
-
-                  </div>
-
-                  {/* GRANITE BASE */}
-
-                  <div className="absolute bottom-7 right-5 z-30 hidden items-center gap-2 sm:flex">
-
-                    <div className="border border-zinc-100 bg-white px-2 py-1 text-right shadow-sm">
-
-                      <p className="text-[8px] font-bold uppercase leading-3 tracking-wide text-zinc-900">
-                        Heavy Duty
-                        <br />
-                        Granite Base
-                      </p>
-
-                    </div>
-
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full border border-red-500 bg-white text-red-600 shadow-sm">
-                      <span className="text-sm">◇</span>
-                    </div>
-
-                  </div>
-
-                </div>
+                    <ArrowRight className="size-4 text-primary transition-transform group-hover:translate-x-1" />
+                  </Link>
+                ))}
 
               </div>
 
             </div>
 
             {/* ==================================================
-                RIGHT SIDE
-                MODEL SELECTOR
+                QUICK INFORMATION
             ================================================== */}
 
-            <div className="min-w-0 lg:border-l lg:border-zinc-200 lg:pl-10">
+            <div className="mt-9 grid border-y border-border sm:grid-cols-2">
 
-              <ModelSelector product={product} />
+              <div className="border-b border-border py-5 sm:border-b-0 sm:border-r sm:pr-6">
+
+                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Travel range
+                </p>
+
+                <p className="mt-2 text-sm font-semibold">
+                  {product.travel}
+                </p>
+
+              </div>
+
+              <div className="py-5 sm:pl-6">
+
+                <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  Configurations
+                </p>
+
+                <p className="mt-2 text-sm font-semibold">
+                  {modelCount} models
+                </p>
+
+              </div>
+
+            </div>
+
+            {/* ==================================================
+                BUTTONS
+            ================================================== */}
+
+            <div className="mt-9 flex flex-wrap gap-3">
+
+              <Link
+                href={`/contact?product=${encodeURIComponent(
+                  product.slug
+                )}&model=${encodeURIComponent(
+                  product.variants[0]?.model ?? ""
+                )}`}
+                className="inline-flex items-center gap-3 bg-primary px-6 py-4 text-xs font-bold uppercase tracking-widest text-primary-foreground transition hover:opacity-90"
+              >
+                Request a quote
+
+                <ArrowRight className="size-4" />
+              </Link>
+
 
             </div>
 
@@ -215,135 +206,228 @@ export default async function ProductDetail({
 
       </section>
 
-      {/* ========================================================
-          TECHNICAL HIGHLIGHTS
-      ======================================================== */}
+      {/* ======================================================
+          HIGHLIGHTS
+      ====================================================== */}
 
-      {product.highlights.length > 0 && (
-        <section className="border-y border-zinc-200 bg-zinc-50">
+      <section className="border-y border-border bg-secondary">
 
-          <div className="mx-auto max-w-[1500px] px-6 py-9 lg:px-10">
+        <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
 
-            <div className="grid gap-7 lg:grid-cols-[280px_1fr] lg:items-center">
+          <div className="grid gap-10 lg:grid-cols-[.65fr_1.35fr]">
 
-              {/* TITLE */}
+            <div>
 
-              <div>
+              <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+                System architecture
+              </p>
 
-                <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-red-600">
-                  Technical Highlights
-                </p>
+              <h2 className="mt-4 font-mono text-3xl font-bold uppercase tracking-[-.04em]">
+                What is inside.
+              </h2>
 
-                <h2 className="mt-2 text-2xl font-black uppercase tracking-tight text-zinc-950">
-                  System Architecture
-                </h2>
+              <p className="mt-5 max-w-md text-sm leading-7 text-muted-foreground">
+                Designed around optical precision, repeatability and dependable
+                dimensional inspection.
+              </p>
 
-                <div className="mt-3 h-1 w-14 bg-red-600" />
+            </div>
 
-              </div>
+            <div className="grid border border-border bg-background sm:grid-cols-2">
 
-              {/* FEATURES */}
+              {product.highlights.map((highlight, index) => {
 
-              <div className="grid grid-cols-2 border-l border-zinc-200 sm:grid-cols-3 lg:grid-cols-6">
+                const isLastRow =
+                  index >=
+                  product.highlights.length -
+                    (product.highlights.length % 2 === 0 ? 2 : 1)
 
-                {product.highlights
-                  .slice(0, 6)
-                  .map((highlight, index) => (
+                return (
+                  <div
+                    key={highlight}
+                    className={`flex gap-4 p-6 ${
+                      !isLastRow
+                        ? "border-b border-border"
+                        : ""
+                    } ${
+                      index % 2 === 0
+                        ? "sm:border-r sm:border-border"
+                        : ""
+                    }`}
+                  >
 
-                    <div
-                      key={`${highlight}-${index}`}
-                      className="
-                        flex
-                        min-h-[60px]
-                        items-center
-                        gap-2
-                        border-b
-                        border-r
-                        border-zinc-200
-                        px-4
-                        py-3
-                        last:border-b-0
-                        lg:border-b-0
-                      "
-                    >
+                    <div className="flex size-8 shrink-0 items-center justify-center border border-primary/40">
 
-                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white">
-                        ✓
-                      </div>
-
-                      <span className="text-[10px] font-semibold leading-4 text-zinc-700">
-                        {highlight}
-                      </span>
+                      <Check className="size-4 text-primary" />
 
                     </div>
 
-                  ))}
+                    <p className="text-sm font-semibold leading-6">
+                      {highlight}
+                    </p>
 
-              </div>
+                  </div>
+                )
+              })}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ======================================================
+          COMPLETE TECHNICAL SPECIFICATIONS
+      ====================================================== */}
+
+      {specifications.length > 0 && (
+
+        <section className="border-y border-border bg-secondary">
+
+          <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
+
+            {/* ==================================================
+                SECTION HEADER
+            ================================================== */}
+
+            <div className="mb-10">
+
+              <p className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+                Technical specifications
+              </p>
+
+              <h2 className="mt-4 font-mono text-3xl font-bold uppercase tracking-[-.04em] sm:text-4xl">
+                Complete specifications.
+              </h2>
+
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
+                Technical information for every available model configuration.
+              </p>
+
+            </div>
+
+            {/* ==================================================
+                SPECIFICATION TABLE
+            ================================================== */}
+
+            <div className="overflow-x-auto border border-border bg-background">
+
+              <table className="w-full min-w-[950px] border-collapse text-left">
+
+                {/* ==================================================
+                    TABLE HEADER
+                ================================================== */}
+
+                <thead>
+
+                  <tr className="bg-foreground text-background">
+
+                    <th className="w-[28%] px-5 py-4 text-left font-mono text-[11px] font-bold uppercase tracking-widest">
+                      Item
+                    </th>
+
+                    {product.variants.map((variant) => (
+
+                      <th
+                        key={variant.model}
+                        className="min-w-[180px] px-5 py-4 text-center font-mono text-[11px] font-bold uppercase tracking-widest"
+                      >
+                        {variant.model}
+                      </th>
+
+                    ))}
+
+                  </tr>
+
+                </thead>
+
+                {/* ==================================================
+                    TABLE BODY
+                ================================================== */}
+
+                <tbody>
+
+                  {specifications.map(
+                    (specification, specificationIndex) => (
+
+                      <tr
+                        key={specification.label}
+                        className="border-t border-border align-top"
+                      >
+
+                        {/* ==================================================
+                            SPECIFICATION NAME
+                        ================================================== */}
+
+                        <td className="bg-secondary px-5 py-4 font-semibold text-foreground">
+                          {specification.label}
+                        </td>
+
+                        {/* ==================================================
+                            MODEL VALUES
+                        ================================================== */}
+
+                        {product.variants.map(
+                          (variant, variantIndex) => {
+
+                            /*
+                             * IMPORTANT:
+                             *
+                             * Each specification row contains
+                             * one value for each model.
+                             *
+                             * Example:
+                             *
+                             * values: [
+                             *   "200 × 100 × 150",
+                             *   "300 × 200 × 200",
+                             *   "400 × 300 × 200"
+                             * ]
+                             *
+                             * index 0 → first model
+                             * index 1 → second model
+                             * index 2 → third model
+                             */
+
+                            const value =
+                              specification.values[
+                                variantIndex
+                              ]
+
+                            return (
+                              <td
+                                key={`${specification.label}-${variant.model}`}
+                                className={`px-5 py-4 text-center text-sm leading-6 text-muted-foreground ${
+                                  variantIndex <
+                                  product.variants.length - 1
+                                    ? "border-r border-border"
+                                    : ""
+                                }`}
+                              >
+                                {value || "—"}
+                              </td>
+                            )
+                          }
+                        )}
+
+                      </tr>
+
+                    )
+                  )}
+
+                </tbody>
+
+              </table>
 
             </div>
 
           </div>
 
         </section>
+
       )}
-
-      {/* ========================================================
-          BROCHURE
-      ======================================================== */}
-
-      <section className="bg-white">
-
-        <div className="mx-auto max-w-[1500px] px-6 py-10 lg:px-10">
-
-          <div className="flex flex-col justify-between gap-5 border border-zinc-200 bg-zinc-50 p-6 sm:flex-row sm:items-center">
-
-            <div>
-
-              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-red-600">
-                Technical Catalogue
-              </p>
-
-              <h2 className="mt-1 text-xl font-black text-zinc-950">
-                Complete {product.name} specifications
-              </h2>
-
-              <p className="mt-1 text-xs text-zinc-500">
-                Download the complete technical documentation.
-              </p>
-
-            </div>
-
-            <a
-              href={product.brochure}
-              download
-              className="
-                inline-flex
-                shrink-0
-                items-center
-                justify-center
-                gap-2
-                bg-zinc-950
-                px-6
-                py-3.5
-                text-[10px]
-                font-bold
-                uppercase
-                tracking-[0.15em]
-                text-white
-                transition
-                hover:bg-red-600
-              "
-            >
-              <Download size={15} />
-              Download PDF
-            </a>
-
-          </div>
-
-        </div>
-
-      </section>
 
     </main>
   )

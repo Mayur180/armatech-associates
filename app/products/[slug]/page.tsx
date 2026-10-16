@@ -110,7 +110,7 @@ export default async function ProductPage({
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-white text-neutral-900 pt-[70px]">
+    <main className="min-h-screen overflow-x-hidden bg-white text-neutral-900">
 
       {/* ================================================================== */}
       {/* BREADCRUMB                                                         */}

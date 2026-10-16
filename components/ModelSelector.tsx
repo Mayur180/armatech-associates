@@ -80,9 +80,6 @@ export default function ModelSelector({
   }
 
   const accuracy = getSpec("accuracy")
-  const resolution = getSpec("resolution")
-  const weight = getSpec("weight")
-  const dimension = getSpec("dimension")
 
   // ============================================================
   // PREVENT BACKGROUND SCROLL
@@ -105,15 +102,15 @@ export default function ModelSelector({
   // ============================================================
 
   useEffect(() => {
+    if (!selectedModel) return
+
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setSelectedModel(null)
       }
     }
 
-    if (selectedModel) {
-      window.addEventListener("keydown", handleEscape)
-    }
+    window.addEventListener("keydown", handleEscape)
 
     return () => {
       window.removeEventListener(
@@ -148,21 +145,16 @@ export default function ModelSelector({
   return (
     <>
       {/* ========================================================
-          OUTER DESIGN
-          EXACTLY BASED ON YOUR REFERENCE CODE
+          MODEL HEADER
       ======================================================== */}
 
       <div>
-        {/* ======================================================
-            MODEL HEADER
-        ====================================================== */}
-
         <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-red-600">
           Configure Your System
         </p>
 
-        <div className="mt-2 flex items-end justify-between">
-          <div>
+        <div className="mt-2 flex items-end justify-between gap-4">
+          <div className="min-w-0">
             <h2 className="text-3xl font-black uppercase tracking-tight text-zinc-950 sm:text-4xl">
               Select Model
             </h2>
@@ -170,7 +162,7 @@ export default function ModelSelector({
             <div className="mt-3 h-1 w-14 bg-red-600" />
           </div>
 
-          <span className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
+          <span className="mb-1 shrink-0 text-right text-[10px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
             {product.variants.length} Options
           </span>
         </div>
@@ -224,20 +216,22 @@ export default function ModelSelector({
 
               {/* MAIN MODEL ROW */}
 
-              <div className="flex items-center gap-4 px-5 py-5 sm:px-6">
+              <div className="flex items-center gap-3 px-4 py-4 sm:gap-4 sm:px-6 sm:py-5">
                 {/* NUMBER */}
 
                 <div
                   className={`
                     flex
-                    h-11
-                    w-11
+                    h-10
+                    w-10
                     shrink-0
                     items-center
                     justify-center
                     border
                     text-[10px]
                     font-bold
+                    sm:h-11
+                    sm:w-11
                     ${
                       index === 0
                         ? "border-red-600 bg-red-600 text-white"
@@ -251,8 +245,8 @@ export default function ModelSelector({
                 {/* MODEL INFORMATION */}
 
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="text-base font-black tracking-[0.08em] text-zinc-950 sm:text-lg">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <h3 className="break-words text-sm font-black tracking-[0.06em] text-zinc-950 sm:text-lg sm:tracking-[0.08em]">
                       {variant.model}
                     </h3>
 
@@ -263,12 +257,12 @@ export default function ModelSelector({
                     )}
                   </div>
 
-                  <div className="mt-1.5 flex items-center gap-2">
-                    <span className="text-xs text-zinc-500">
+                  <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="text-[11px] text-zinc-500 sm:text-xs">
                       Travel
                     </span>
 
-                    <span className="text-xs font-bold text-zinc-900">
+                    <span className="text-[11px] font-bold text-zinc-900 sm:text-xs">
                       {variant.travel}
                     </span>
 
@@ -283,8 +277,8 @@ export default function ModelSelector({
                 <div
                   className="
                     flex
-                    h-10
-                    w-10
+                    h-9
+                    w-9
                     shrink-0
                     items-center
                     justify-center
@@ -293,15 +287,19 @@ export default function ModelSelector({
                     transition
                     group-hover:border-red-600
                     group-hover:bg-red-600
+                    sm:h-10
+                    sm:w-10
                   "
                 >
                   <ArrowRight
-                    size={17}
+                    size={16}
                     className="
                       text-red-600
                       transition
                       group-hover:translate-x-1
                       group-hover:text-white
+                      sm:h-[17px]
+                      sm:w-[17px]
                     "
                   />
                 </div>
@@ -309,12 +307,12 @@ export default function ModelSelector({
 
               {/* CARD FOOTER */}
 
-              <div className="flex items-center justify-between border-t border-zinc-200 bg-zinc-50 px-5 py-2.5 sm:px-6">
-                <span className="text-[8px] font-semibold uppercase tracking-[0.16em] text-zinc-500">
+              <div className="flex min-h-[36px] items-center justify-between gap-3 border-t border-zinc-200 bg-zinc-50 px-4 py-2.5 sm:px-6">
+                <span className="min-w-0 truncate text-[8px] font-semibold uppercase tracking-[0.12em] text-zinc-500 sm:tracking-[0.16em]">
                   Precision Configuration
                 </span>
 
-                <span className="text-[8px] font-bold uppercase tracking-[0.16em] text-zinc-700 transition group-hover:text-red-600">
+                <span className="shrink-0 text-[8px] font-bold uppercase tracking-[0.12em] text-zinc-700 transition group-hover:text-red-600 sm:tracking-[0.16em]">
                   Select →
                 </span>
               </div>
@@ -324,8 +322,7 @@ export default function ModelSelector({
       </div>
 
       {/* ========================================================
-          INNER MODEL MODAL
-          BASED ON YOUR 3RD REFERENCE IMAGE
+          MODEL MODAL
       ======================================================== */}
 
       {selectedModel && (
@@ -335,17 +332,20 @@ export default function ModelSelector({
             inset-0
             z-[9999]
             flex
-            items-center
+            items-start
             justify-center
+            overflow-y-auto
             bg-black/70
-            px-4
-            py-6
+            px-2
+            py-2
             backdrop-blur-sm
+            sm:items-center
+            sm:px-4
+            sm:py-6
           "
           onMouseDown={(event) => {
             if (
-              event.target ===
-              event.currentTarget
+              event.target === event.currentTarget
             ) {
               closeModal()
             }
@@ -358,11 +358,13 @@ export default function ModelSelector({
           <div
             className="
               relative
+              my-auto
               w-full
               max-w-[1450px]
               overflow-hidden
               bg-white
               shadow-2xl
+              sm:max-h-[94vh]
             "
             onMouseDown={(event) =>
               event.stopPropagation()
@@ -379,51 +381,56 @@ export default function ModelSelector({
             <button
               type="button"
               onClick={closeModal}
-              aria-label="Close"
+              aria-label="Close model details"
               className="
                 absolute
-                right-4
-                top-4
+                right-2
+                top-2
                 z-50
                 flex
-                h-10
-                w-10
+                h-9
+                w-9
                 items-center
                 justify-center
                 border
                 border-zinc-200
                 bg-white
                 text-zinc-700
+                shadow-sm
                 transition
                 hover:border-red-600
                 hover:bg-red-600
                 hover:text-white
+                sm:right-4
+                sm:top-4
+                sm:h-10
+                sm:w-10
               "
             >
-              <X size={18} />
+              <X size={17} />
             </button>
 
             {/* ==================================================
                 SCROLL AREA
             ================================================== */}
 
-            <div className="max-h-[90vh] overflow-y-auto">
+            <div className="max-h-[96vh] overflow-y-auto overscroll-contain sm:max-h-[94vh]">
 
               {/* =================================================
                   INNER HEADER
               ================================================= */}
 
-              <div className="border-b border-zinc-200 px-6 pb-6 pt-9 sm:px-9">
-                <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-red-600">
+              <div className="border-b border-zinc-200 px-4 pb-5 pt-8 pr-14 sm:px-9 sm:pb-6 sm:pt-9 sm:pr-20">
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-red-600 sm:tracking-[0.25em]">
                   {product.name}
                 </p>
 
-                <div className="mt-2 flex flex-wrap items-center gap-3">
-                  <h2 className="font-serif text-3xl font-black tracking-[0.08em] text-zinc-950 sm:text-4xl">
+                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                  <h2 className="break-words font-serif text-2xl font-black tracking-[0.06em] text-zinc-950 sm:text-4xl sm:tracking-[0.08em]">
                     {selectedModel.model}
                   </h2>
 
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-400">
+                  <span className="text-[8px] font-bold uppercase tracking-[0.16em] text-zinc-400 sm:text-[9px] sm:tracking-widest">
                     Selected Configuration
                   </span>
                 </div>
@@ -431,15 +438,6 @@ export default function ModelSelector({
 
               {/* =================================================
                   INNER CONTENT
-
-                  LEFT:
-                  IMAGE
-                  RANGE
-                  ACCURACY
-                  KEY FEATURES
-
-                  RIGHT:
-                  TECHNICAL SPECIFICATIONS
               ================================================= */}
 
               <div className="grid lg:grid-cols-2">
@@ -448,46 +446,47 @@ export default function ModelSelector({
                     LEFT COLUMN
                 ================================================= */}
 
-                <div className="border-b border-zinc-200 p-5 sm:p-7 lg:border-b-0 lg:border-r">
+                <div className="border-b border-zinc-200 p-3 sm:p-7 lg:border-b-0 lg:border-r">
 
                   {/* ===============================================
                       MACHINE IMAGE
                   =============================================== */}
 
-                  <div className="flex min-h-[350px] items-center justify-center bg-white sm:min-h-[390px]">
+                  <div className="flex min-h-[230px] items-center justify-center bg-white sm:min-h-[390px]">
                     <img
                       src={product.image}
                       alt={`${product.name} ${selectedModel.model}`}
                       className="
-                        max-h-[360px]
+                        max-h-[240px]
                         w-full
                         object-contain
-                        p-6
+                        p-3
                         sm:max-h-[390px]
+                        sm:p-6
                       "
                     />
                   </div>
 
                   {/* ===============================================
-                      MEASURING RANGE + ACCURACY
+                      RANGE + ACCURACY
                   =============================================== */}
 
-                  <div className="mt-4 grid grid-cols-2 gap-3">
+                  <div className="mt-3 grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 sm:mt-4">
 
                     {/* MEASURING RANGE */}
 
                     <div className="border border-zinc-200 bg-white p-4 sm:p-5">
                       <div className="flex items-center gap-2 text-red-600">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-50">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-50">
                           <Ruler size={14} />
                         </div>
 
-                        <span className="text-[8px] font-bold uppercase tracking-widest sm:text-[9px]">
+                        <span className="text-[8px] font-bold uppercase tracking-[0.12em] sm:text-[9px] sm:tracking-widest">
                           Measuring Range
                         </span>
                       </div>
 
-                      <p className="mt-4 font-serif text-lg font-black text-zinc-950 sm:text-xl">
+                      <p className="mt-4 break-words font-serif text-lg font-black text-zinc-950 sm:text-xl">
                         {selectedModel.travel}
                       </p>
 
@@ -500,16 +499,16 @@ export default function ModelSelector({
 
                     <div className="border border-zinc-200 bg-white p-4 sm:p-5">
                       <div className="flex items-center gap-2 text-red-600">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-50">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-50">
                           <Target size={14} />
                         </div>
 
-                        <span className="text-[8px] font-bold uppercase tracking-widest sm:text-[9px]">
+                        <span className="text-[8px] font-bold uppercase tracking-[0.12em] sm:text-[9px] sm:tracking-widest">
                           Accuracy
                         </span>
                       </div>
 
-                      <p className="mt-4 font-serif text-lg font-black text-zinc-950 sm:text-xl">
+                      <p className="mt-4 break-words font-serif text-lg font-black text-zinc-950 sm:text-xl">
                         {accuracy}
                       </p>
                     </div>
@@ -518,25 +517,19 @@ export default function ModelSelector({
 
                   {/* ===============================================
                       KEY FEATURES
-                      BELOW RANGE + ACCURACY
                   =============================================== */}
 
-                  <section className="mt-7">
-
-                    {/* HEADING */}
+                  <section className="mt-6 sm:mt-7">
 
                     <div className="flex items-center gap-3">
-                      <div className="h-7 w-1 bg-red-600" />
+                      <div className="h-7 w-1 shrink-0 bg-red-600" />
 
-                      <h3 className="font-serif text-base font-black uppercase tracking-[0.18em] text-zinc-900 sm:text-lg">
+                      <h3 className="font-serif text-base font-black uppercase tracking-[0.12em] text-zinc-900 sm:text-lg sm:tracking-[0.18em]">
                         Key Features
                       </h3>
                     </div>
 
-                    {/* FEATURES */}
-
                     <div className="mt-5 space-y-3">
-
                       {product.highlights.map(
                         (highlight, index) => (
                           <div
@@ -563,13 +556,12 @@ export default function ModelSelector({
                               />
                             </div>
 
-                            <p className="text-sm leading-6 text-zinc-700">
+                            <p className="min-w-0 text-[13px] leading-6 text-zinc-700 sm:text-sm">
                               {highlight}
                             </p>
                           </div>
                         )
                       )}
-
                     </div>
                   </section>
 
@@ -577,23 +569,19 @@ export default function ModelSelector({
 
                 {/* =================================================
                     RIGHT COLUMN
-                    TECHNICAL SPECIFICATIONS
                 ================================================= */}
 
-                <div className="p-5 sm:p-7">
+                <div className="p-3 sm:p-7">
 
                   {/* ===============================================
                       TECHNICAL SPECIFICATIONS
                   =============================================== */}
 
                   <section>
-
-                    {/* HEADING */}
-
                     <div className="flex items-center gap-3">
-                      <div className="h-7 w-1 bg-red-600" />
+                      <div className="h-7 w-1 shrink-0 bg-red-600" />
 
-                      <h3 className="font-serif text-base font-black uppercase tracking-[0.18em] text-zinc-900 sm:text-lg">
+                      <h3 className="font-serif text-base font-black uppercase tracking-[0.12em] text-zinc-900 sm:text-lg sm:tracking-[0.18em]">
                         Technical Specifications
                       </h3>
                     </div>
@@ -601,14 +589,14 @@ export default function ModelSelector({
                     {/* SPECIFICATION TABLE */}
 
                     <div className="mt-5 overflow-hidden border border-zinc-200">
-
                       {selectedSpecifications.map(
                         (specification, index) => (
                           <div
                             key={`${specification.label}-${index}`}
                             className={`
                               grid
-                              grid-cols-[42%_58%]
+                              grid-cols-[40%_60%]
+                              sm:grid-cols-[42%_58%]
                               ${
                                 index <
                                 selectedSpecifications.length - 1
@@ -617,52 +605,46 @@ export default function ModelSelector({
                               }
                             `}
                           >
-
                             {/* LABEL */}
 
-                            <div className="bg-zinc-50 px-4 py-3 sm:px-5 sm:py-4">
-                              <p className="font-serif text-xs font-bold leading-5 text-zinc-700 sm:text-sm">
+                            <div className="min-w-0 bg-zinc-50 px-3 py-3 sm:px-5 sm:py-4">
+                              <p className="break-words font-serif text-[11px] font-bold leading-5 text-zinc-700 sm:text-sm">
                                 {specification.label}
                               </p>
                             </div>
 
                             {/* VALUE */}
 
-                            <div className="bg-white px-4 py-3 sm:px-5 sm:py-4">
-                              <p className="text-xs leading-5 text-zinc-700 sm:text-sm">
+                            <div className="min-w-0 bg-white px-3 py-3 sm:px-5 sm:py-4">
+                              <p className="break-words text-[11px] leading-5 text-zinc-700 sm:text-sm">
                                 {specification.value}
                               </p>
                             </div>
-
                           </div>
                         )
                       )}
-
                     </div>
-
                   </section>
 
                   {/* ===============================================
                       SELECTED MODEL
                   =============================================== */}
 
-                  <div className="mt-7 border border-zinc-200 bg-zinc-50 p-5">
-
+                  <div className="mt-5 border border-zinc-200 bg-zinc-50 p-4 sm:mt-7 sm:p-5">
                     <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-400">
                       Selected Model
                     </p>
 
-                    <p className="mt-2 font-serif text-2xl font-black tracking-wide text-zinc-950">
+                    <p className="mt-2 break-words font-serif text-xl font-black tracking-wide text-zinc-950 sm:text-2xl">
                       {selectedModel.model}
                     </p>
 
-                    <p className="mt-2 text-sm text-zinc-600">
+                    <p className="mt-2 text-[13px] leading-5 text-zinc-600 sm:text-sm">
                       Measuring range:{" "}
                       <span className="font-bold text-zinc-900">
                         {selectedModel.travel} mm
                       </span>
                     </p>
-
                   </div>
 
                   {/* ===============================================
@@ -670,14 +652,12 @@ export default function ModelSelector({
                   =============================================== */}
 
                   {product.variants.length > 1 && (
-                    <div className="mt-7">
-
+                    <div className="mt-6 sm:mt-7">
                       <p className="mb-3 text-[8px] font-bold uppercase tracking-[0.2em] text-zinc-400">
                         Other Configurations
                       </p>
 
-                      <div className="flex flex-wrap gap-2">
-
+                      <div className="grid grid-cols-2 gap-2 min-[480px]:flex min-[480px]:flex-wrap">
                         {product.variants.map(
                           (variant) => {
                             const isSelected =
@@ -692,12 +672,15 @@ export default function ModelSelector({
                                   openModel(variant)
                                 }
                                 className={`
+                                  min-h-[40px]
                                   border
-                                  px-4
+                                  px-3
                                   py-2
-                                  text-[10px]
+                                  text-[9px]
                                   font-bold
                                   transition
+                                  sm:px-4
+                                  sm:text-[10px]
                                   ${
                                     isSelected
                                       ? "border-red-600 bg-red-600 text-white"
@@ -710,7 +693,6 @@ export default function ModelSelector({
                             )
                           }
                         )}
-
                       </div>
                     </div>
                   )}
@@ -727,14 +709,15 @@ export default function ModelSelector({
                     )}`}
                     onClick={closeModal}
                     className="
-                      mt-7
+                      mt-6
                       flex
+                      min-h-[48px]
                       w-full
                       items-center
                       justify-center
                       gap-2
                       bg-red-600
-                      px-6
+                      px-5
                       py-3.5
                       text-[10px]
                       font-black
@@ -743,6 +726,7 @@ export default function ModelSelector({
                       text-white
                       transition
                       hover:bg-red-700
+                      sm:mt-7
                     "
                   >
                     Request a Quote
@@ -757,7 +741,7 @@ export default function ModelSelector({
                   INNER FOOTER
               ================================================= */}
 
-              <div className="flex items-center justify-between border-t border-zinc-200 bg-zinc-50 px-6 py-4 sm:px-9">
+              <div className="flex flex-col gap-3 border-t border-zinc-200 bg-zinc-50 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-9">
 
                 <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-400">
                   Precision Measurement
@@ -768,8 +752,10 @@ export default function ModelSelector({
                   onClick={closeModal}
                   className="
                     inline-flex
+                    min-h-[36px]
                     items-center
                     gap-2
+                    self-start
                     text-[9px]
                     font-bold
                     uppercase
@@ -777,6 +763,7 @@ export default function ModelSelector({
                     text-zinc-500
                     transition
                     hover:text-red-600
+                    sm:self-auto
                   "
                 >
                   <ArrowLeft size={13} />

@@ -137,7 +137,7 @@ export default function FeaturedProductsCarousel() {
             className="flex w-max gap-6"
             style={{
               animation: `featured-products-scroll ${
-                orderedProducts.length * 8
+                orderedProducts.length * 2
               }s linear infinite`,
               animationPlayState: paused ? "paused" : "running",
             }}

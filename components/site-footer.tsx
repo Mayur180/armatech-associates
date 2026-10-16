@@ -154,7 +154,7 @@ export default function SiteFooter() {
                 className="inline-block"
               >
                 <div className="text-3xl font-black tracking-[-0.06em] text-[#111111]">
-                  ARMA<span className="text-[#c8102e]">TECH</span>
+                  Armatech
                 </div>
 
                 <div className="mt-1 text-[10px] font-bold uppercase tracking-[0.28em] text-[#666666]">
@@ -371,7 +371,7 @@ export default function SiteFooter() {
           {/* COPYRIGHT */}
 
           <p className="text-[10px] font-medium text-white/70">
-            © {new Date().getFullYear()} ArmaTech Associates.
+            © {new Date().getFullYear()} Armatech Associates.
             All rights reserved.
           </p>
 

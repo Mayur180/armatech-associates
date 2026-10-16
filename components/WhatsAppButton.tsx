@@ -18,7 +18,7 @@ export default function WhatsAppButton() {
   const whatsappNumber = "917020991684"
 
   const message =
-    "Hello ArmaTech Associates, I would like to enquire about your precision measurement machines."
+    "Hello ArmaTech Associates, I would like to enquire about your Video measurement machines."
 
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     message

@@ -14,126 +14,179 @@ export default function ProductViewer({
   model,
 }: ProductViewerProps) {
   return (
-    <div className="relative flex h-full min-h-[360px] w-full items-center justify-center overflow-hidden bg-white">
+    <div className="relative isolate w-full overflow-hidden border border-neutral-200 bg-neutral-50">
 
-      {/* ========================================================
-          TECHNICAL BACKGROUND
-      ======================================================== */}
+      {/* ============================================================
+          TECHNICAL GRID BACKGROUND
+          Decorative only — NO PRODUCT IMAGE
+      ============================================================ */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 opacity-60"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(17,17,17,.045) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(17,17,17,.045) 1px, transparent 1px)
+          `,
+          backgroundSize: "32px 32px",
+        }}
+      />
 
-      <div className="pointer-events-none absolute inset-0">
+      {/* ============================================================
+          RED TECHNICAL CORNER MARKERS
+      ============================================================ */}
 
-        {/* CENTER VERTICAL */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-5 top-5 z-20 h-8 w-8 border-l-2 border-t-2 border-red-600"
+      />
 
-        <div className="absolute left-1/2 top-0 h-full w-px bg-red-50" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-5 top-5 z-20 h-8 w-8 border-r-2 border-t-2 border-red-600"
+      />
 
-        {/* CENTER HORIZONTAL */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-5 left-5 z-20 h-8 w-8 border-b-2 border-l-2 border-red-600"
+      />
 
-        <div className="absolute left-0 top-1/2 h-px w-full bg-red-50" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-5 right-5 z-20 h-8 w-8 border-b-2 border-r-2 border-red-600"
+      />
 
-        {/* CIRCLES */}
+      {/* ============================================================
+          CENTER CROSSHAIR
+          Decorative only — NO PRODUCT IMAGE
+      ============================================================ */}
 
-        <div
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-1/2 z-[1] -translate-x-1/2 -translate-y-1/2"
+      >
+        <div className="relative flex size-24 items-center justify-center">
+
+          <div className="absolute h-px w-24 bg-red-600/20" />
+
+          <div className="absolute h-24 w-px bg-red-600/20" />
+
+          <div className="absolute size-12 rounded-full border border-red-600/15" />
+
+          <div className="absolute size-2 rounded-full bg-red-600/30" />
+
+        </div>
+      </div>
+
+      {/* ============================================================
+          PRODUCT IMAGE
+          EXACTLY ONE IMAGE
+      ============================================================ */}
+
+      <div className="relative z-10 flex aspect-[4/3] w-full items-center justify-center p-8 sm:p-10 lg:p-12">
+
+        <img
+          src={image}
+          alt={model ? `${name} ${model}` : name}
+          loading="eager"
+          decoding="async"
+          draggable={false}
           className="
-            absolute
-            left-1/2
-            top-1/2
-            h-72
-            w-72
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            border
-            border-red-50
-          "
-        />
-
-        <div
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            h-48
-            w-48
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            border
-            border-red-50
+            block
+            h-full
+            w-full
+            select-none
+            object-contain
+            object-center
+            mix-blend-multiply
           "
         />
 
       </div>
 
-      {/* ========================================================
-          CORNER MARKERS
-      ======================================================== */}
+      {/* ============================================================
+          PRODUCT BADGE
+      ============================================================ */}
 
-      <div className="absolute left-3 top-3 h-7 w-7 border-l-2 border-t-2 border-red-500" />
+      {badge && (
+        <div className="absolute bottom-5 left-5 z-30">
 
-      <div className="absolute right-3 top-3 h-7 w-7 border-r-2 border-t-2 border-red-500" />
-
-      <div className="absolute bottom-3 left-3 h-7 w-7 border-b-2 border-l-2 border-red-500" />
-
-      <div className="absolute bottom-3 right-3 h-7 w-7 border-b-2 border-r-2 border-red-500" />
-
-      {/* ========================================================
-          PRODUCT IMAGE
-      ======================================================== */}
-
-      <img
-        src={image}
-        alt={model ? `${name} ${model}` : name}
-        className="
-          relative
-          z-10
-          max-h-[360px]
-          w-full
-          object-contain
-        "
-      />
-
-      {/* ========================================================
-          PRODUCT LABEL
-      ======================================================== */}
-
-      <div className="absolute bottom-4 left-4 z-20">
-
-        {badge && (
-          <div
+          <span
             className="
-              mb-1
-              inline-block
+              inline-flex
+              border
+              border-red-600
               bg-red-600
-              px-2
-              py-1
-              text-[8px]
+              px-4
+              py-2
+              font-mono
+              text-[9px]
               font-bold
               uppercase
-              tracking-widest
+              tracking-[0.16em]
               text-white
             "
           >
             {badge}
-          </div>
-        )}
+          </span>
 
-        {model && (
-          <div
+        </div>
+      )}
+
+      {/* ============================================================
+          MODEL LABEL
+      ============================================================ */}
+
+      {model && (
+        <div className="absolute right-5 top-5 z-30">
+
+          <span
             className="
+              border
+              border-neutral-300
               bg-white/95
-              px-2
-              py-1
+              px-3
+              py-2
+              font-mono
               text-[9px]
-              font-black
+              font-bold
+              uppercase
               tracking-widest
-              text-zinc-900
-              shadow-sm
+              text-neutral-800
+              backdrop-blur-sm
             "
           >
             {model}
-          </div>
-        )}
+          </span>
 
+        </div>
+      )}
+
+      {/* ============================================================
+          TECHNICAL COORDINATE LABEL
+      ============================================================ */}
+
+      <div
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          bottom-5
+          right-5
+          z-20
+          hidden
+          font-mono
+          text-[8px]
+          uppercase
+          leading-5
+          tracking-widest
+          text-neutral-400
+          sm:block
+        "
+      >
+        <div>X — 000.000 MM</div>
+        <div>Y — 000.000 MM</div>
+        <div>Z — 000.000 MM</div>
       </div>
 
     </div>

@@ -153,7 +153,7 @@ export default function SiteFooter() {
                 href="/"
                 className="inline-block"
               >
-                <div className="text-3xl font-black tracking-[-0.06em] text-[#111111]">
+                <div className="flex items-baseline gap-2"><span className="text-3xl font-black tracking-[-0.06em] text-[#111111]">
                   Armatech
                 </div>
 

@@ -1,6 +1,8 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import clientPromise from "@/lib/mongodb"
+import { getMongoClient } from "@/lib/mongodb"
+
+export const dynamic = "force-dynamic"
 
 type Enquiry = {
   _id: string
@@ -16,7 +18,7 @@ type Enquiry = {
 }
 
 export default async function EnquiriesPage() {
-  const client = await clientPromise
+  const client = await getMongoClient()
 
   const db = client.db("crystal_vmm")
 

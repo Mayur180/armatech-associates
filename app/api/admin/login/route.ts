@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
-import clientPromise from "@/lib/mongodb"
+import { getMongoClient } from "@/lib/mongodb"
 
 // ============================================================
 // TYPES
@@ -159,7 +159,7 @@ export async function POST(request: Request) {
     // 5. CONNECT TO MONGODB
     // ========================================================
 
-    const client = await clientPromise
+    const client = await getMongoClient()
 
     const db = client.db("crystal_vmm")
 
@@ -868,7 +868,7 @@ export async function GET(request: Request) {
     // DATABASE
     // ========================================================
 
-    const client = await clientPromise
+    const client = await getMongoClient()
 
     const db = client.db("crystal_vmm")
 

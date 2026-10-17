@@ -52,7 +52,7 @@ export const catalogImages = {
   semi:
     "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/semi-nIQvd99xxNXr13VTuwnMkOI3ip3YPp.png",
 
-  automatic: "/image/automatic.png",
+  automatic: "/Image/automatic.png",
 
   cabinet:
     "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic%20with%20cabinet-nMON6kS70ryrBN3q5uxzUV77A0oTbr.png",

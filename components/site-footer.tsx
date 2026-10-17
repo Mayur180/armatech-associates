@@ -155,12 +155,10 @@ export default function SiteFooter() {
               >
                 <div className="flex items-baseline gap-2">
                   <span className="text-3xl font-black tracking-[-0.06em] text-[#111111]">
-                    Armatech
+                    Armatech Associates
                   </span>
 
-                  <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#666666]">
-                    Associates
-                  </span>
+                  
                 </div>
               </Link>
 

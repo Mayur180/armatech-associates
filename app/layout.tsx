@@ -7,6 +7,7 @@ import { SiteNav } from "@/components/site-nav"
 import SiteFooter from "@/components/site-footer"
 import WhatsAppButton from "@/components/WhatsAppButton"
 
+import { ScrollToTop } from "@/components/scroll-to-top"
 export const metadata: Metadata = {
   title: {
     default: "ArmaTech Associates | Precision Measurement",
@@ -38,7 +39,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
-      <body className="min-h-screen bg-background text-foreground antialiased">
+      <body className="pt-4 min-h-screen bg-background text-foreground antialiased">
+        <ScrollToTop />
         {/* GLOBAL NAVIGATION */}
         <SiteNav />
 

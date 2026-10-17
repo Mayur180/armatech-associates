@@ -15,14 +15,14 @@ export default function ProductsPage() {
   }), [category, query])
 
   return <main className="min-h-screen bg-background">
-    <section className="bg-foreground px-5 py-20 text-background lg:px-8 lg:py-28"><div className="mx-auto max-w-7xl"><p className="font-mono text-xs uppercase tracking-[.22em] text-primary">ArmaTech / Crystal VMM series</p><h1 className="mt-5 max-w-4xl font-mono text-5xl font-bold uppercase tracking-[-.06em] sm:text-7xl">The complete<br /><span className="text-primary">VMM catalogue.</span></h1><p className="mt-7 max-w-2xl text-base leading-7 text-background/70">Five machine families. Eighteen configurations. Compare the exact travel range, optics and controls behind every model.</p></div></section>
+    <section className="bg-white px-5 py-20 text-neutral-900 lg:px-8 lg:py-28"><div className="mx-auto max-w-7xl"><p className="font-mono text-xs uppercase tracking-[.22em] text-primary">ArmaTech / Crystal VMM series</p><h1 className="mt-5 max-w-4xl font-mono text-5xl font-bold uppercase tracking-[-.06em] sm:text-7xl">The complete<br /><span className="text-primary">VMM catalogue.</span></h1><p className="mt-7 max-w-2xl text-base leading-7 text-neutral-600">Five machine families. Eighteen configurations. Compare the exact travel range, optics and controls behind every model.</p></div></section>
     <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
       <div className="flex flex-col gap-6 border-b border-border pb-8 lg:flex-row lg:items-center lg:justify-between"><div className="flex flex-wrap gap-2">{categories.map((item) => <button key={item} onClick={() => setCategory(item)} className={`px-4 py-3 text-xs font-bold uppercase tracking-widest ${category === item ? 'bg-primary text-primary-foreground' : 'border border-border hover:border-primary'}`}>{item}</button>)}</div><label className="flex items-center gap-3 border border-border px-4 py-3 lg:w-72"><Search className="size-4 text-muted-foreground" /><span className="sr-only">Search catalogue</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search model or series" className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground" /></label></div>
       <div className="mt-12 grid gap-px bg-border md:grid-cols-2 lg:grid-cols-3">{filtered.map((product) => <Link key={product.slug} href={`/products/${product.slug}`} className="group bg-background p-5"><div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-secondary"><img src={product.image} alt={`${product.name} catalogue reference`} loading="lazy" decoding="async" className="size-full object-contain mix-blend-multiply transition duration-500 group-hover:scale-[1.03]" /><span className="absolute left-4 top-4 bg-foreground px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-background">{product.badge}</span></div><div className="flex items-start justify-between gap-4 py-6"><div><p className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">{product.family}</p><h2 className="mt-2 font-mono text-xl font-bold uppercase">{product.name}</h2><p className="mt-3 text-sm leading-6 text-muted-foreground">{product.summary}</p></div><ArrowRight className="mt-1 size-5 shrink-0 transition group-hover:translate-x-1" /></div><div className="flex items-center justify-between border-t border-border pt-4 text-[10px] font-bold uppercase tracking-widest"><span>{product.variants.length} models</span><span className="text-muted-foreground">{product.travel}</span></div><div className="mt-4 flex flex-wrap gap-2">{product.variants.map((variant) => <span key={variant.model} className="border border-border px-2 py-1 font-mono text-[10px] font-bold tracking-widest text-muted-foreground">{variant.model}</span>)}</div></Link>)}</div>
       {filtered.length === 0 && <p className="py-20 text-center font-mono text-sm uppercase tracking-widest text-muted-foreground">No matching systems found.</p>}
     </section>
-    <section className="bg-primary px-5 py-14 text-primary-foreground lg:px-8"><div className="mx-auto flex max-w-7xl flex-col gap-5 md:flex-row md:items-center md:justify-between"><div><p className="font-mono text-xs font-bold uppercase tracking-widest">Download the technical set</p><h2 className="mt-3 font-mono text-2xl font-bold uppercase">All VMM specifications, in one file.</h2></div><a href="https://blobs.vusercontent.net/blob/VMM-catalog%201-AVSXq7UUFKs3md35QB7w7o1sEEr216.pdf" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-foreground px-5 py-4 text-xs font-bold uppercase tracking-widest text-background"><Download className="size-4" /> Download catalogue</a></div></section>
-  </main>
+                <a href="/Pdf/VMM_merged.pdf" download="VMM_Merged.pdf" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-foreground px-5 py-4 text-xs font-bold uppercase tracking-widest text-background"><Download className="size-4" /> Download Catalogue</a>
+    <a href="/Pdf/Comparison_vmm.pdf" download="Comparison_VMM.pdf" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-foreground px-5 py-4 text-xs font-bold uppercase tracking-widest text-background"><Download className="size-4" /> Download Technical Set</a>
 }
 */
 
@@ -63,7 +63,7 @@ export default function ProductsPage() {
           HERO SECTION
       ================================= */}
 
-      <section className="bg-foreground px-5 py-20 text-background lg:px-8 lg:py-28">
+      <section className="bg-white px-5 py-20 text-neutral-900 lg:px-8 lg:py-28">
         <div className="mx-auto max-w-7xl">
 
           <p className="font-mono text-xs uppercase tracking-[.22em] text-primary">
@@ -78,7 +78,7 @@ export default function ProductsPage() {
             </span>
           </h1>
 
-          <p className="mt-7 max-w-2xl text-base leading-7 text-background/70">
+          <p className="mt-7 max-w-2xl text-base leading-7 text-neutral-600">
             Five machine families. Eighteen configurations.
             Compare the exact travel range, optics and controls
             behind every model.
@@ -274,50 +274,26 @@ export default function ProductsPage() {
       ================================= */}
 
       <section className="bg-primary px-5 py-14 text-primary-foreground lg:px-8">
-
         <div className="mx-auto flex max-w-7xl flex-col gap-5 md:flex-row md:items-center md:justify-between">
-
-          {/* DOWNLOAD TEXT */}
-
           <div>
-
-            <p className="font-mono text-xs font-bold uppercase tracking-widest">
-              Technical library
-            </p>
-
-            <h2 className="mt-3 font-mono text-2xl font-bold uppercase">
-              VMM specifications and catalogues.
-            </h2>
-
+            <p className="font-mono text-xs font-bold uppercase tracking-widest">Download the technical set</p>
+            <h2 className="mt-3 font-mono text-2xl font-bold uppercase">All VMM specifications, in one file.</h2>
           </div>
-
-
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="/Pdf/VMS_VMM.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-3 bg-foreground px-5 py-4 text-xs font-bold uppercase tracking-widest text-background"
-            >
-              <Download className="size-4" />
-              Download technical set
+          
+          <div className="flex flex-wrap gap-4">
+            <a href="/Pdf/Comparison_vmm.pdf" download="Comparison_VMM.pdf" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 border border-primary-foreground/40 px-5 py-4 text-xs font-bold uppercase tracking-widest text-primary-foreground transition hover:bg-primary-foreground hover:text-primary">
+              <Download className="size-4" /> Technical Set
             </a>
-
-            <a
-              href="/Pdf/Manual_VMM.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-3 border border-primary-foreground/40 px-5 py-4 text-xs font-bold uppercase tracking-widest text-primary-foreground transition hover:bg-primary-foreground hover:text-primary"
-            >
-              <Download className="size-4" />
-              Download catalogue
+            
+            <a href="/Pdf/VMM_merged.pdf" download="VMM_Merged.pdf" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 bg-foreground px-5 py-4 text-xs font-bold uppercase tracking-widest text-background transition hover:bg-neutral-800">
+              <Download className="size-4" /> Download Catalogue
             </a>
           </div>
-
         </div>
-
       </section>
 
     </main>
+
+    
   )
 }

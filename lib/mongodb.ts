@@ -1,13 +1,5 @@
 import { MongoClient } from "mongodb"
 
-const uri = process.env.MONGODB_URI
-
-if (!uri) {
-  throw new Error(
-    "MONGODB_URI is not defined. Add it to your environment variables."
-  )
-}
-
 const options = {
   serverSelectionTimeoutMS: 10000,
   connectTimeoutMS: 10000,
@@ -18,26 +10,25 @@ const options = {
   retryReads: true,
 }
 
-let client: MongoClient
-let clientPromise: Promise<MongoClient>
-
 declare global {
   // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined
 }
 
-if (process.env.NODE_ENV === "development") {
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options)
+export function getMongoClient(): Promise<MongoClient> {
+  const uri = process.env.MONGODB_URI
 
-    global._mongoClientPromise = client.connect()
+  if (!uri) {
+    throw new Error("MONGODB_URI is not defined. Add it to your environment variables.")
   }
 
-  clientPromise = global._mongoClientPromise
-} else {
-  client = new MongoClient(uri, options)
+  if (process.env.NODE_ENV === "development") {
+    if (!global._mongoClientPromise) {
+      global._mongoClientPromise = new MongoClient(uri, options).connect()
+    }
 
-  clientPromise = client.connect()
+    return global._mongoClientPromise
+  }
+
+  return new MongoClient(uri, options).connect()
 }
-
-export default clientPromise

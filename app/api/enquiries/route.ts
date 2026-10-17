@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { ObjectId } from "mongodb"
 import { Resend } from "resend"
 
-import clientPromise from "@/lib/mongodb"
+import { getMongoClient } from "@/lib/mongodb"
 
 // ============================================================
 // CONFIGURATION
@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
     // Connect to MongoDB
     // ----------------------------------------------------------
 
-    const client = await clientPromise
+    const client = await getMongoClient()
 
     const db = client.db(DB_NAME)
 
@@ -577,7 +577,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const client = await clientPromise
+    const client = await getMongoClient()
 
     const db = client.db(DB_NAME)
 
@@ -643,7 +643,7 @@ export async function DELETE(request: NextRequest) {
     const id = searchParams.get("id")
     const deleteAll = searchParams.get("all")
 
-    const client = await clientPromise
+    const client = await getMongoClient()
 
     const db = client.db(DB_NAME)
 

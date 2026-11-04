@@ -5,6 +5,8 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Search } from 'lucide-react'
 import { products as catalogueProducts } from '@/lib/catalog'
 import FeaturedProductsCarousel from '@/components/featured-products-carousel'
+import Testimonials from '@/components/Testimonials';
+import CTASection from '@/components/CTASection';
 
 const products = catalogueProducts.map((product) => ({
   name: product.name,
@@ -302,6 +304,11 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      {/* NEW SECTIONS ADDED HERE */}
+      <Testimonials />
+      
+      <CTASection />
 
     </main>
   )

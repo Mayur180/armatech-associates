@@ -300,10 +300,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </Link>
           </div>
           <Link
-            href={`/contact?product=${product.slug}`}
+            href="/products"
             className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:text-primary"
           >
-            Request a quote <ArrowRight className="h-4 w-4" />
+            Compare all models <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </section>

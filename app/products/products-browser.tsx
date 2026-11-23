@@ -97,12 +97,12 @@ export default function ProductsBrowser() {
             PRODUCT GRID
         ================================= */}
 
-        <div className="mt-8 grid gap-px bg-border md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((product) => (
             <Link
               key={product.slug}
               href={`/products/${product.slug}`}
-              className="group bg-background p-5"
+              className="group border border-border bg-background p-5 transition-colors hover:border-primary"
             >
               {/* PRODUCT IMAGE */}
               <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-secondary">
@@ -169,50 +169,65 @@ export default function ProductsBrowser() {
           DOWNLOAD CATALOGUE SECTION
       ================================= */}
 
-      <section className="bg-primary px-5 py-12 text-primary-foreground lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-start md:justify-between">
+      <section className="border-t border-border bg-foreground text-background">
+        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 lg:grid-cols-[1.25fr_0.75fr] lg:items-center lg:px-8 lg:py-12">
           <div>
-            <p className="font-mono text-xs font-bold uppercase tracking-widest">
-              Download the technical set
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-primary">
+              Downloads
             </p>
-            <h2 className="mt-3 font-mono text-2xl font-bold uppercase">
-              All VMM specifications, in one file.
+            <h2 className="mt-3 font-mono text-2xl font-bold uppercase tracking-[-0.03em] sm:text-3xl">
+              All VMM specifications, one file.
             </h2>
+            <p className="mt-3 max-w-xl text-xs leading-6 text-background/60">
+              Five family brochures and the full comparison set, as published
+              PDFs.
+            </p>
 
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
+            <div className="mt-6 grid gap-px bg-background/15 sm:grid-cols-2">
               {products.map((product) => (
                 <a
                   key={product.slug}
                   href={product.brochure}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-[11px] font-bold uppercase tracking-widest text-primary-foreground/80 underline decoration-primary-foreground/30 underline-offset-4 transition hover:text-primary-foreground"
+                  className="group flex items-center justify-between gap-3 bg-foreground px-4 py-3 transition-colors hover:bg-neutral-900"
                 >
-                  {product.name} PDF
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.12em]">
+                    {product.name}
+                  </span>
+                  <Download className="size-3.5 shrink-0 text-primary" />
                 </a>
               ))}
+
+              <a
+                href="/Pdf/Comparison_vmm.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="group flex items-center justify-between gap-3 bg-foreground px-4 py-3 transition-colors hover:bg-neutral-900"
+              >
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.12em]">
+                  Comparison sheet
+                </span>
+                <Download className="size-3.5 shrink-0 text-primary" />
+              </a>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4">
-            <a
-              href="/Pdf/Comparison_vmm.pdf"
-              download="Comparison_VMM.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-3 border border-primary-foreground/40 px-5 py-4 text-xs font-bold uppercase tracking-widest text-primary-foreground transition hover:bg-primary-foreground hover:text-primary"
-            >
-              <Download className="size-4" /> Technical Set
-            </a>
-
+          <div className="border border-background/20 p-5">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-background/60">
+              Complete catalogue
+            </p>
+            <p className="mt-3 text-xs leading-6 text-background/60">
+              All five families merged into a single PDF, for sending to a
+              colleague or attaching to an enquiry.
+            </p>
             <a
               href="/Pdf/VMM_merged.pdf"
-              download="VMM_Merged.pdf"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-3 bg-foreground px-5 py-4 text-xs font-bold uppercase tracking-widest text-background transition hover:bg-neutral-800"
+              className="mt-4 flex w-full items-center justify-center gap-2 bg-primary px-4 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              <Download className="size-4" /> Download Catalogue
+              <Download className="size-4" /> Download catalogue
             </a>
           </div>
         </div>

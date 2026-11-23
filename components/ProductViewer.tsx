@@ -58,7 +58,7 @@ export default function ProductViewer({
       {/* ZOOM BUTTON */}
       <button
         onClick={() => setIsZoomed(!isZoomed)}
-        className="absolute right-4 top-4 z-30 flex h-8 w-8 items-center justify-center border border-neutral-300 bg-white text-neutral-500 transition-colors hover:border-red-500 hover:text-red-600"
+        className="absolute right-4 top-4 z-30 flex h-8 w-8 items-center justify-center border border-neutral-300 bg-white text-neutral-500 transition-colors hover:border-primary hover:text-primary"
         aria-label="Zoom image"
       >
         <Maximize2 className="h-4 w-4" />
@@ -67,7 +67,7 @@ export default function ProductViewer({
       {/* CAPTION STRIP */}
       <div className="relative z-20 flex flex-wrap items-center justify-between gap-2 border-t border-neutral-200 bg-white px-4 py-2.5">
         {badge ? (
-          <span className="bg-red-600 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-white">
+          <span className="bg-primary px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-white">
             {badge}
           </span>
         ) : (

@@ -29,7 +29,7 @@ export function SiteNav() {
           TOP COMPANY INFORMATION HEADER
           ========================================================= */}
 
-      <div className="border-t-[5px] border-red-700 bg-white">
+      <div className="border-t-[5px] border-primary-deep bg-white">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-2 lg:px-8">
 
           {/* =====================================================
@@ -58,7 +58,7 @@ export function SiteNav() {
 
             <div className="flex items-start gap-3">
               <MapPin
-                className="mt-1 h-6 w-6 shrink-0 text-red-600"
+                className="mt-1 h-6 w-6 shrink-0 text-primary"
               />
 
               <div>
@@ -78,7 +78,7 @@ export function SiteNav() {
 
             <div className="flex items-start gap-3">
               <Clock
-                className="mt-1 h-6 w-6 shrink-0 text-red-600"
+                className="mt-1 h-6 w-6 shrink-0 text-primary"
               />
 
               <div>
@@ -102,7 +102,7 @@ export function SiteNav() {
           RED NAVIGATION BAR
           ========================================================= */}
 
-      <div className="bg-red-600">
+      <div className="bg-primary">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 lg:px-8">
 
           {/* =====================================================
@@ -118,7 +118,7 @@ export function SiteNav() {
 
             <Link
               href="/"
-              className="flex h-[52px] w-[85px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+              className="flex h-[52px] w-[85px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-primary-dark"
             >
               Home
             </Link>
@@ -127,7 +127,7 @@ export function SiteNav() {
 
             <Link
               href="/about"
-              className="flex h-[52px] w-[105px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+              className="flex h-[52px] w-[105px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-primary-dark"
             >
               About Us
             </Link>
@@ -145,7 +145,7 @@ export function SiteNav() {
                 type="button"
                 aria-expanded={mega}
                 onClick={() => setMega(!mega)}
-                className="flex h-[52px] w-[130px] items-center justify-center gap-1 text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+                className="flex h-[52px] w-[130px] items-center justify-center gap-1 text-[15px] font-semibold text-white transition-colors hover:bg-primary-dark"
               >
                 Products
 
@@ -163,7 +163,7 @@ export function SiteNav() {
                   {groups.map((group) => (
                     <div key={group.category}>
 
-                      <p className="border-b border-red-200 pb-2 text-xs font-bold uppercase tracking-widest text-red-600">
+                      <p className="border-b border-primary/25 pb-2 text-xs font-bold uppercase tracking-widest text-primary">
                         {group.label}
                       </p>
 
@@ -178,7 +178,7 @@ export function SiteNav() {
                               key={p.slug}
                               href={`/products/${p.slug}`}
                               onClick={() => setMega(false)}
-                              className="text-sm font-semibold text-gray-800 transition-colors hover:text-red-600"
+                              className="text-sm font-semibold text-gray-800 transition-colors hover:text-primary"
                             >
                               {p.name}
                             </Link>
@@ -198,7 +198,7 @@ export function SiteNav() {
 
             <Link
               href="/service-support"
-              className="flex h-[52px] w-[105px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+              className="flex h-[52px] w-[105px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-primary-dark"
             >
               Service
             </Link>
@@ -207,7 +207,7 @@ export function SiteNav() {
 
             <Link
               href="/services"
-              className="flex h-[52px] w-[90px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+              className="flex h-[52px] w-[90px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-primary-dark"
             >
               Quality
             </Link>
@@ -216,7 +216,7 @@ export function SiteNav() {
 
             <Link
               href="/contact"
-              className="flex h-[52px] w-[115px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+              className="flex h-[52px] w-[115px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-primary-dark"
             >
               Contact Us
             </Link>
@@ -229,7 +229,7 @@ export function SiteNav() {
 
           <Link
             href="/contact"
-            className="hidden h-[52px] items-center justify-center bg-amber-400 px-[26px] text-[15px] font-bold text-black transition-colors hover:bg-amber-300 sm:flex"
+            className="hidden h-[52px] items-center justify-center bg-background px-[26px] text-[15px] font-bold text-primary transition-colors hover:bg-primary-light sm:flex"
           >
             Get A Free Quote
           </Link>
@@ -247,7 +247,7 @@ export function SiteNav() {
             }
             aria-expanded={open}
             onClick={() => setOpen(!open)}
-            className="my-3 border border-white p-2 text-white transition-colors hover:bg-white hover:text-red-600 lg:hidden"
+            className="my-3 border border-white p-2 text-white transition-colors hover:bg-white hover:text-primary lg:hidden"
           >
             {open ? (
               <X className="h-5 w-5" />
@@ -265,7 +265,7 @@ export function SiteNav() {
         {open && (
           <nav
             aria-label="Mobile navigation"
-            className="border-t border-red-500 bg-red-600 px-5 pb-4 lg:hidden"
+            className="border-t border-white/20 bg-primary px-5 pb-4 lg:hidden"
           >
 
             {/* HOME */}
@@ -273,7 +273,7 @@ export function SiteNav() {
             <Link
               href="/"
               onClick={() => setOpen(false)}
-              className="block border-b border-red-500 py-4 font-bold text-white"
+              className="block border-b border-white/20 py-4 font-bold text-white"
             >
               Home
             </Link>
@@ -283,14 +283,14 @@ export function SiteNav() {
             <Link
               href="/about"
               onClick={() => setOpen(false)}
-              className="block border-b border-red-500 py-4 font-bold text-white"
+              className="block border-b border-white/20 py-4 font-bold text-white"
             >
               About Us
             </Link>
 
             {/* PRODUCTS */}
 
-            <details className="group border-b border-red-500">
+            <details className="group border-b border-white/20">
               <summary className="flex cursor-pointer list-none items-center justify-between py-4 font-bold text-white [&::-webkit-details-marker]:hidden">
                 Products
                 <ChevronDown className="h-4 w-4 transition-transform duration-200 group-open:rotate-180" />
@@ -320,7 +320,7 @@ export function SiteNav() {
             <Link
               href="/service-support"
               onClick={() => setOpen(false)}
-              className="block border-b border-red-500 py-4 font-bold text-white"
+              className="block border-b border-white/20 py-4 font-bold text-white"
             >
               Service &amp; Support
             </Link>
@@ -330,7 +330,7 @@ export function SiteNav() {
             <Link
               href="/services"
               onClick={() => setOpen(false)}
-              className="block border-b border-red-500 py-4 font-bold text-white"
+              className="block border-b border-white/20 py-4 font-bold text-white"
             >
               Quality
             </Link>
@@ -340,7 +340,7 @@ export function SiteNav() {
             <Link
               href="/faq"
               onClick={() => setOpen(false)}
-              className="block border-b border-red-500 py-4 font-bold text-white"
+              className="block border-b border-white/20 py-4 font-bold text-white"
             >
               FAQ
             </Link>
@@ -348,7 +348,7 @@ export function SiteNav() {
             <Link
               href="/pricing-guide"
               onClick={() => setOpen(false)}
-              className="block border-b border-red-500 py-4 font-bold text-white"
+              className="block border-b border-white/20 py-4 font-bold text-white"
             >
               Pricing Guide
             </Link>
@@ -358,7 +358,7 @@ export function SiteNav() {
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="block border-b border-red-500 py-4 font-bold text-white"
+              className="block border-b border-white/20 py-4 font-bold text-white"
             >
               Contact Us
             </Link>
@@ -368,7 +368,7 @@ export function SiteNav() {
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="mt-4 block bg-amber-400 px-5 py-4 text-center font-bold text-black transition-colors hover:bg-amber-300"
+              className="mt-4 block bg-background px-5 py-4 text-center font-bold text-primary transition-colors hover:bg-primary-light"
             >
               Get A Free Quote
             </Link>

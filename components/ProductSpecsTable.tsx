@@ -45,7 +45,7 @@ export default function ProductSpecsTable({ modelName, specs }: SpecProps) {
       </table>
       {/* Download CTA inside the table area */}
       <div className="bg-gray-50 px-6 py-4 border-t border-gray-200 text-right">
-        <button className="inline-flex items-center rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+        <button className="inline-flex items-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
           Download Full Datasheet (PDF)
         </button>
       </div>

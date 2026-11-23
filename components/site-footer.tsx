@@ -87,7 +87,7 @@ export default function SiteFooter() {
           CTA SECTION
       ============================================================ */}
 
-      <section className="relative overflow-hidden bg-[#c8102e] text-white">
+      <section className="relative overflow-hidden bg-primary text-white">
 
         {/* Technical Grid */}
         <div
@@ -173,7 +173,7 @@ export default function SiteFooter() {
                   </span>
                 </div>
 
-                <p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#c8102e]">
+                <p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
                   VMM Division
                 </p>
               </Link>
@@ -187,7 +187,7 @@ export default function SiteFooter() {
                 href={PARENT_SITE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[#555555] transition-colors hover:text-[#c8102e]"
+                className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[#555555] transition-colors hover:text-primary"
               >
                 Main company website
                 <ArrowUpRight className="h-3.5 w-3.5" />
@@ -197,7 +197,7 @@ export default function SiteFooter() {
 
               <div className="mt-6 flex items-center gap-4 border border-[#dcdcdc] bg-white px-4 py-3">
 
-                <span className="text-xl font-black text-[#c8102e]">
+                <span className="text-xl font-black text-primary">
                   AT
                 </span>
 
@@ -225,7 +225,7 @@ export default function SiteFooter() {
 
             <div>
 
-              <h3 className="text-xs font-black uppercase tracking-[0.18em] text-[#c8102e]">
+              <h3 className="text-xs font-black uppercase tracking-[0.18em] text-primary">
                 Products
               </h3>
 
@@ -236,12 +236,12 @@ export default function SiteFooter() {
 
                     <Link
                       href={product.href}
-                      className="group flex items-center gap-2 text-sm font-medium text-[#444444] transition hover:text-[#c8102e]"
+                      className="group flex items-center gap-2 text-sm font-medium text-[#444444] transition hover:text-primary"
                     >
 
                       {/* Hover Line */}
 
-                      <span className="h-px w-0 bg-[#c8102e] transition-all duration-200 group-hover:w-4" />
+                      <span className="h-px w-0 bg-primary transition-all duration-200 group-hover:w-4" />
 
                       {product.label}
 
@@ -260,7 +260,7 @@ export default function SiteFooter() {
 
             <div>
 
-              <h3 className="text-xs font-black uppercase tracking-[0.18em] text-[#c8102e]">
+              <h3 className="text-xs font-black uppercase tracking-[0.18em] text-primary">
                 Company
               </h3>
 
@@ -271,12 +271,12 @@ export default function SiteFooter() {
 
                     <Link
                       href={item.href}
-                      className="group flex items-center gap-2 text-sm font-medium text-[#444444] transition hover:text-[#c8102e]"
+                      className="group flex items-center gap-2 text-sm font-medium text-[#444444] transition hover:text-primary"
                     >
 
                       {/* Hover Line */}
 
-                      <span className="h-px w-0 bg-[#c8102e] transition-all duration-200 group-hover:w-4" />
+                      <span className="h-px w-0 bg-primary transition-all duration-200 group-hover:w-4" />
 
                       {item.label}
 
@@ -295,7 +295,7 @@ export default function SiteFooter() {
 
             <div>
 
-              <h3 className="text-xs font-black uppercase tracking-[0.18em] text-[#c8102e]">
+              <h3 className="text-xs font-black uppercase tracking-[0.18em] text-primary">
                 Contact Us
               </h3>
 
@@ -307,7 +307,7 @@ export default function SiteFooter() {
 
                 <div className="flex gap-3">
 
-                  <MapPin className="mt-1 h-5 w-5 shrink-0 text-[#c8102e]" />
+                  <MapPin className="mt-1 h-5 w-5 shrink-0 text-primary" />
 
                   <div>
 
@@ -335,7 +335,7 @@ export default function SiteFooter() {
 
                 <div className="flex gap-3">
 
-                  <Phone className="mt-1 h-5 w-5 shrink-0 text-[#c8102e]" />
+                  <Phone className="mt-1 h-5 w-5 shrink-0 text-primary" />
 
                   <div>
 
@@ -346,21 +346,21 @@ export default function SiteFooter() {
                     <p className="mt-2 text-sm text-[#555555]">
                       <a
                         href="tel:+912027122385"
-                        className="transition hover:text-[#c8102e]"
+                        className="transition hover:text-primary"
                       >
                         +91 20 2712 2385
                       </a>
                       <br />
                       <a
                         href="tel:+912027120241"
-                        className="transition hover:text-[#c8102e]"
+                        className="transition hover:text-primary"
                       >
                         +91 20 2712 0241
                       </a>
                       <br />
                       <a
                         href="tel:+917020991684"
-                        className="transition hover:text-[#c8102e]"
+                        className="transition hover:text-primary"
                       >
                         +91 70209 91684
                       </a>
@@ -376,7 +376,7 @@ export default function SiteFooter() {
 
                 <div className="flex gap-3">
 
-                  <Mail className="mt-1 h-5 w-5 shrink-0 text-[#c8102e]" />
+                  <Mail className="mt-1 h-5 w-5 shrink-0 text-primary" />
 
                   <div>
 
@@ -386,7 +386,7 @@ export default function SiteFooter() {
 
                     <a
                       href="mailto:armatechsales@gmail.com"
-                      className="mt-2 inline-block break-all text-sm font-semibold text-[#555555] transition hover:text-[#c8102e]"
+                      className="mt-2 inline-block break-all text-sm font-semibold text-[#555555] transition hover:text-primary"
                     >
                       armatechsales@gmail.com
                     </a>
@@ -428,7 +428,7 @@ export default function SiteFooter() {
               Precision Measurement Systems
             </span>
 
-            <span className="h-1 w-1 rounded-full bg-[#c8102e]" />
+            <span className="h-1 w-1 rounded-full bg-primary" />
 
             <span className="text-[9px] font-bold uppercase tracking-[0.16em] text-white/55">
               Pune, India

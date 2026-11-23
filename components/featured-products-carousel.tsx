@@ -49,7 +49,7 @@ export default function FeaturedProductsCarousel() {
 
         <div className="mb-10 flex items-end justify-between">
           <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-red-600">
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-primary">
               Our Products
             </p>
 
@@ -190,7 +190,7 @@ function ProductCard({
 
         {/* Red corner */}
 
-        <div className="absolute bottom-5 right-5 z-20 h-9 w-9 border-b-2 border-r-2 border-zinc-200 transition-colors duration-300 group-hover/card:border-red-600" />
+        <div className="absolute bottom-5 right-5 z-20 h-9 w-9 border-b-2 border-r-2 border-zinc-200 transition-colors duration-300 group-hover/card:border-primary" />
 
         {/* Product Image */}
 
@@ -219,7 +219,7 @@ function ProductCard({
 
         {/* Category */}
 
-        <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-red-600">
+        <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
           {product.family}
         </p>
 
@@ -249,7 +249,7 @@ function ProductCard({
 
         <div className="flex items-center justify-between">
 
-          <span className="text-sm font-bold uppercase tracking-[0.18em] text-zinc-900 transition-colors duration-300 group-hover/card:text-red-600">
+          <span className="text-sm font-bold uppercase tracking-[0.18em] text-zinc-900 transition-colors duration-300 group-hover/card:text-primary">
             View Product
           </span>
 
@@ -266,8 +266,8 @@ function ProductCard({
               text-zinc-900
               transition-all
               duration-300
-              group-hover/card:border-red-600
-              group-hover/card:bg-red-600
+              group-hover/card:border-primary
+              group-hover/card:bg-primary
               group-hover/card:text-white
             "
           >

@@ -11,6 +11,9 @@
     --color-foreground: var(--foreground);
     --color-primary: var(--primary);
     --color-primary-foreground: var(--primary-foreground);
+    --color-primary-dark: var(--primary-dark);
+    --color-primary-deep: var(--primary-deep);
+    --color-primary-light: var(--primary-light);
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
     --color-muted-foreground: var(--muted-foreground);
@@ -28,13 +31,16 @@
     color-scheme: light;
     --background: #ffffff;
     --foreground: #111111;
-    --primary: #c8102e;
+    --primary: #9a0e2a;
     --primary-foreground: #ffffff;
+    --primary-dark: #7b0a21;
+    --primary-deep: #5c0717;
+    --primary-light: #f7eaed;
     --secondary: #f5f5f5;
     --secondary-foreground: #111111;
     --muted-foreground: #666666;
     --border: #e2e2e2;
-    --accent-red: #a60d24;
+    --accent-red: #7b0a21;
 }
 
 
@@ -392,7 +398,7 @@ button {
     right: -100px;
     top: -100px;
     border-radius: 999px;
-    background: rgba(200, 16, 46, 0.08);
+    background: rgba(154, 14, 42, 0.08);
     filter: blur(55px);
     pointer-events: none;
     animation: red-glow 5s ease-in-out infinite;

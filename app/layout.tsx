@@ -69,7 +69,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: "light",
-  themeColor: "#c8102e",
+  themeColor: "#9a0e2a",
 }
 
 const localBusinessJsonLd = {

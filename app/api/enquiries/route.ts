@@ -53,12 +53,12 @@ function escapeHtml(value: string) {
 function emailShell(title: string, body: string) {
   return `
     <div style="font-family:Arial,Helvetica,sans-serif;max-width:680px;margin:0 auto;background:#ffffff;color:#222222;border:1px solid #e5e5e5">
-      <div style="background:#c8102e;padding:24px 30px">
+      <div style="background:#9a0e2a;padding:24px 30px">
         <h1 style="margin:0;color:#ffffff;font-size:24px">Crystal VMM</h1>
         <p style="margin:6px 0 0;color:#ffffff;font-size:13px">Armatech Associates</p>
       </div>
       <div style="padding:30px">
-        <h2 style="margin-top:0;color:#c8102e;font-size:20px">${title}</h2>
+        <h2 style="margin-top:0;color:#9a0e2a;font-size:20px">${title}</h2>
         ${body}
       </div>
       <div style="background:#f5f5f5;padding:16px 30px;color:#777777;font-size:12px">
@@ -170,7 +170,7 @@ export async function POST(request: NextRequest) {
         ${detailRow("Email", email)}
         ${detailRow("Phone", phone)}
       </div>
-      <div style="background:#fff7f7;border-left:4px solid #c8102e;padding:18px;margin:20px 0">
+      <div style="background:#f7eaed;border-left:4px solid #9a0e2a;padding:18px;margin:20px 0">
         ${detailRow("Product", product)}
         ${detailRow("Model", model)}
       </div>

@@ -78,7 +78,7 @@ export default function ContactForm() {
       product: selectedMachine || "General enquiry",
       productSlug: currentMachine?.slug ?? "",
       model: selectedModel,
-      website: formData.get("website"),
+      hp_field: formData.get("website"),
     }
 
     try {

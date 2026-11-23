@@ -117,7 +117,7 @@ export const products: Product[] = [
       "Industrial-grade color CCD camera",
       "Manual zoom objective 0.7–4.5X",
       "18–195X magnification",
-      "0.5 μm linear scale resolution",
+      "0.5 µm linear scale resolution",
       "Programmable LED 8-section ring surface light",
       "LED bottom parallel light",
       "X/Y/Z axis manual control",
@@ -158,7 +158,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Measuring Accuracy (μm)",
+        label: "Measuring Accuracy (µm)",
         values: [
           "2.5 + L/100",
           "2.5 + L/100",
@@ -167,7 +167,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Repeatability (μm)",
+        label: "Repeatability (µm)",
         values: [
           "2.5",
           "2.5",
@@ -230,7 +230,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Linear Scale Resolution (μm)",
+        label: "Linear Scale Resolution (µm)",
         values: [
           "0.5 (0.1 optional)",
           "0.5 (0.1 optional)",
@@ -305,7 +305,7 @@ export const products: Product[] = [
       "Industrial-grade color CCD camera",
       "0.7–4.5X manual zoom lens",
       "Computer-controlled Z axis",
-      "0.5 μm linear scale resolution",
+      "0.5 µm linear scale resolution",
       "LED surface illumination",
       "LED parallel contour illumination",
       "2-axis measurement software",
@@ -346,7 +346,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Measuring Accuracy (μm)",
+        label: "Measuring Accuracy (µm)",
         values: [
           "2.5 + L/100",
           "2.5 + L/100",
@@ -355,7 +355,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Repeatability (μm)",
+        label: "Repeatability (µm)",
         values: [
           "±2.5",
           "±2.5",
@@ -391,7 +391,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Linear Scale Resolution (μm)",
+        label: "Linear Scale Resolution (µm)",
         values: [
           "0.5 (0.1 optional)",
           "0.5 (0.1 optional)",
@@ -498,7 +498,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Measuring Accuracy (μm)",
+        label: "Measuring Accuracy (µm)",
         values: [
           "2.5 + L/100",
           "2.5 + L/100",
@@ -507,7 +507,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Repeatability (μm)",
+        label: "Repeatability (µm)",
         values: [
           "2.5",
           "2.5",
@@ -647,7 +647,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Measuring Accuracy (μm)",
+        label: "Measuring Accuracy (µm)",
         values: [
           "2 + L/100",
           "2 + L/100",
@@ -657,7 +657,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Repeatability (μm)",
+        label: "Repeatability (µm)",
         values: [
           "2",
           "2",
@@ -727,7 +727,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Linear Scale Resolution (μm)",
+        label: "Linear Scale Resolution (µm)",
         values: [
           "0.5 (0.1 optional)",
           "0.5 (0.1 optional)",
@@ -846,7 +846,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Measuring Accuracy (μm)",
+        label: "Measuring Accuracy (µm)",
         values: [
           "2.5 + L/100",
           "2.5 + L/100",
@@ -855,7 +855,7 @@ export const products: Product[] = [
       },
 
       {
-        label: "Repeatability (μm)",
+        label: "Repeatability (µm)",
         values: [
           "2.5",
           "2.5",

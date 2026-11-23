@@ -10,6 +10,21 @@ type ModelPageProps = {
   params: Promise<{ slug: string; model: string }>
 }
 
+function SpecLabel({ label }: { label: string }) {
+  const suffix = "(µm)"
+
+  if (!label.endsWith(suffix)) {
+    return <>{label}</>
+  }
+
+  return (
+    <>
+      {label.slice(0, -suffix.length).trimEnd()}{" "}
+      <span className="normal-case">(µm)</span>
+    </>
+  )
+}
+
 export async function generateMetadata({ params }: ModelPageProps): Promise<Metadata> {
   const { slug, model } = await params
   const product = getProduct(slug)
@@ -171,7 +186,7 @@ export default async function ModelSpecsPage({ params }: ModelPageProps) {
                   }`}
                 >
                   <p className="font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                    {spec.label}
+                    <SpecLabel label={spec.label} />
                   </p>
                   <p className="text-sm font-semibold text-foreground">
                     {spec.values[variantIndex]}

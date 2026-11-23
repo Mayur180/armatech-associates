@@ -98,9 +98,9 @@ export default function Page() {
                 </div>
               )}
             </div>
-            <div className="absolute bottom-2 left-0 font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Scale res. 0.5 µm</div>
+            <div className="absolute bottom-2 left-0 font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Scale res. 0.5 <span className="normal-case">µm</span></div>
             <div className="absolute right-0 top-2 font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Zoom 0.7–4.5X</div>
-            <div className="absolute bottom-14 right-0 font-mono text-[10px] font-bold uppercase tracking-widest text-primary">Accuracy 2.5 + L/100 µm</div>
+            <div className="absolute bottom-14 right-0 font-mono text-[10px] font-bold uppercase tracking-widest text-primary">Accuracy 2.5 + L/100 <span className="normal-case">µm</span></div>
             <span className="absolute left-[12%] top-[27%] size-2 bg-primary" />
             <span className="absolute right-[15%] top-[33%] size-2 bg-primary" />
             <span className="absolute bottom-[24%] left-[20%] size-1.5 bg-primary" />

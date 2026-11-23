@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "What does an accuracy of 2.5 + L/100 µm mean?",
-    a: "It means the stated accuracy is 2.5 µm plus 2.5 µm for every 100 mm of measured length. A 100 mm measurement therefore has a stated accuracy of about 5 µm, and a 200 mm measurement about 7.5 µm. The formula reflects the way length-dependent errors accumulate on a real machine, and it is the figure to compare when you evaluate quotations.",
+    a: "It means the stated accuracy is 2.5 µm plus 1 µm for every 100 mm of measured length — the L/100 term, with L in millimetres. A 100 mm measurement therefore has a stated accuracy of about 3.5 µm, and a 200 mm measurement about 4.5 µm. The formula reflects the way length-dependent errors accumulate on a real machine, and it is the figure to compare when you evaluate quotations.",
   },
   {
     q: "What is the difference between accuracy and resolution?",

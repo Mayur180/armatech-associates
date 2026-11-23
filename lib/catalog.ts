@@ -86,7 +86,7 @@ export const products: Product[] = [
     badge: "Operator controlled",
 
     summary:
-      "A dependable optical measurement platform for precise dimensional inspection with manual X/Y/Z axis control.",
+      "Three manual models with 0.7–4.5X zoom and 0.5 µm scales, from 200 × 100 × 150 mm to 400 × 300 × 200 mm travel.",
 
     travel:
       "200 × 100 × 150 mm → 400 × 300 × 200 mm",
@@ -274,7 +274,7 @@ export const products: Product[] = [
     badge: "Signal feedback",
 
     summary:
-      "A semi-automatic optical measurement system combining manual X/Y operation with Computer-controlled Z-axis movement.",
+      "Manual X/Y with a computer-controlled Z axis and two-axis measurement software, in three travel sizes.",
 
     travel:
       "200 × 100 × 150 mm → 400 × 300 × 200 mm",
@@ -435,7 +435,7 @@ export const products: Product[] = [
     badge: "Programmable inspection",
 
     summary:
-      "A Computer-controlled video measuring system designed for automated and repeatable dimensional inspection.",
+      "Servo-driven X/Y/Z axes, automatic zoom and 2D/3D software for programmed, repeatable inspection.",
 
     travel:
       "200 × 200 × 200 mm → 400 × 300 × 200 mm",
@@ -569,7 +569,7 @@ export const products: Product[] = [
     badge: "Enclosed Computer system",
 
     summary:
-      "A fully enclosed Computer video measuring system with servo-driven axes, automatic zoom and integrated machine cabinet.",
+      "Enclosed servo-driven system with 1–10X automatic zoom and a 1.3 MP camera, in four travels up to 600 × 500 × 200 mm.",
 
     travel:
       "300 × 200 × 200 mm → 600 × 500 × 200 mm",
@@ -774,7 +774,7 @@ export const products: Product[] = [
     badge: "Manual adjustment",
 
     summary:
-      "A manual video measuring system designed for accurate dimensional inspection with manual zoom and optical measurement.",
+      "Manual adjustment and a 108 mm working distance, with 0.001 mm linear scales across three travel sizes.",
 
     travel:
       "200 × 100 × 150 mm → 400 × 300 × 200 mm",

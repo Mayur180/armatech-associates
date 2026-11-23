@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     canonical: "/contact",
   },
   openGraph: {
-    title: "Contact Armatech Associates | Crystal VMM",
+    title: "Contact Armatech Associates | CRYSTAL VMM",
     description:
       "Request a quotation, technical guidance or a free part inspection from our Pune team.",
     url: `${SITE_URL}/contact`,
@@ -24,8 +24,10 @@ export default function ContactPage() {
   return (
     <Suspense
       fallback={
-        <main className="flex min-h-screen items-center justify-center bg-neutral-50">
-          <p className="text-sm font-semibold text-neutral-500">Loading contact form...</p>
+        <main className="flex min-h-screen items-center justify-center bg-background">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+            Loading contact form...
+          </p>
         </main>
       }
     >

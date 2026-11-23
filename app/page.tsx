@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Search } from 'lucide-react'
 import { products as catalogueProducts } from '@/lib/catalog'
 import FeaturedProductsCarousel from '@/components/featured-products-carousel'
-import Testimonials from '@/components/Testimonials';
 import CTASection from '@/components/CTASection';
 
 const products = catalogueProducts.map((product) => ({
@@ -17,10 +16,10 @@ const products = catalogueProducts.map((product) => ({
 }))
 
 const capabilities = [
-  'Metrology equipment',
-  'Precision instruments',
-  'Quality control systems',
-  'Technical support',
+  'Manual control',
+  'Powered Z axis',
+  'Programmed routines',
+  'Enclosed cabinet',
 ]
 
 export default function Page() {
@@ -41,7 +40,7 @@ export default function Page() {
         />
         <div className="pointer-events-none absolute right-[10%] top-[15%] size-72 rounded-full bg-primary/5 blur-3xl" />
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-5 pt-16 pb-16 sm:pt-20 sm:pb-20 grid-cols-1 lg:grid-cols-[1fr_1fr] lg:px-8 lg:pt-24 lg:pb-24">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-5 pb-10 pt-10 sm:pb-12 sm:pt-12 grid-cols-1 lg:grid-cols-[1fr_1fr] lg:px-8 lg:pb-14 lg:pt-14">
           {/* LEFT SIDE */}
           <div className="relative z-10">
             <p className="mb-6 font-mono text-xs font-bold uppercase tracking-[0.25em] text-primary">
@@ -54,7 +53,9 @@ export default function Page() {
             </h1>
             <div className="mt-7 h-1 w-20 bg-primary" />
             <p className="mt-7 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
-              High-precision optical measurement solutions for modern manufacturing and quality inspection.
+              Five machine families, sixteen configurations. Manual benchtop
+              systems to enclosed servo machines, with 0.5 µm scales and
+              2.5 + L/100 µm stated accuracy.
             </p>
             <div className="mt-9 flex flex-wrap gap-4">
               <Link href="/products" className="inline-flex items-center gap-3 bg-primary px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
@@ -64,7 +65,7 @@ export default function Page() {
                 Request Quote <ArrowRight className="size-4" />
               </Link>
             </div>
-            <div className="mt-10 grid max-w-xl grid-cols-2 gap-6 border-t border-border pt-12">
+            <div className="mt-8 grid max-w-xl grid-cols-2 gap-6 border-t border-border pt-8">
               <div>
                 <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Technology</p>
                 <p className="mt-2 font-mono text-xs font-bold uppercase sm:text-sm">Optical Measurement</p>
@@ -97,9 +98,9 @@ export default function Page() {
                 </div>
               )}
             </div>
-            <div className="absolute bottom-2 left-0 font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">X — 000.000 mm</div>
-            <div className="absolute right-0 top-2 font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Y + 000.000 mm</div>
-            <div className="absolute bottom-14 right-0 font-mono text-[10px] font-bold uppercase tracking-widest text-primary">Z — 000.000 mm</div>
+            <div className="absolute bottom-2 left-0 font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Scale res. 0.5 µm</div>
+            <div className="absolute right-0 top-2 font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Zoom 0.7–4.5X</div>
+            <div className="absolute bottom-14 right-0 font-mono text-[10px] font-bold uppercase tracking-widest text-primary">Accuracy 2.5 + L/100 µm</div>
             <span className="absolute left-[12%] top-[27%] size-2 bg-primary" />
             <span className="absolute right-[15%] top-[33%] size-2 bg-primary" />
             <span className="absolute bottom-[24%] left-[20%] size-1.5 bg-primary" />
@@ -124,21 +125,13 @@ export default function Page() {
           }}
           className="mx-auto grid max-w-7xl divide-y border-x border-border sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4"
         >
-          <motion.div 
-            variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
-            className="p-7"
-          >
-            <p className="font-mono text-3xl font-bold">01</p>
-            <p className="mt-4 text-sm font-bold uppercase tracking-widest">Precision first</p>
-          </motion.div>
-
-          {capabilities.slice(1).map((item, i) => (
+          {capabilities.map((item, i) => (
             <motion.div 
               key={item} 
               variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
-              className="p-7"
+              className="p-6"
             >
-              <p className="font-mono text-3xl font-bold text-primary">0{i + 2}</p>
+              <p className={`font-mono text-3xl font-bold ${i === 0 ? "" : "text-primary"}`}>0{i + 1}</p>
               <p className="mt-4 text-sm font-bold uppercase tracking-widest">{item}</p>
             </motion.div>
           ))}
@@ -146,7 +139,7 @@ export default function Page() {
       </section>
 
       {/* FEATURED PRODUCTS */}
-      <section className="mx-auto max-w-7xl px-5 py-12 sm:py-16 lg:px-8 lg:py-28">
+      <section className="mx-auto max-w-7xl px-5 py-10 sm:py-12 lg:px-8 lg:py-16">
         <div className="flex items-end justify-between gap-6">
           <div>
             <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-primary">Featured systems</p>
@@ -158,7 +151,7 @@ export default function Page() {
             View all products <ArrowRight className="ml-2 inline size-4" />
           </Link>
         </div>
-        <div className="mt-12">
+        <div className="mt-8">
           <FeaturedProductsCarousel />
         </div>
       </section>
@@ -175,14 +168,14 @@ export default function Page() {
             backgroundSize: '44px 44px',
           }}
         />
-        <div className="relative mx-auto max-w-7xl px-5 py-12 sm:py-16 lg:px-8 lg:py-28">
+        <div className="relative mx-auto max-w-7xl px-5 py-10 sm:py-12 lg:px-8 lg:py-16">
           <div className="max-w-3xl">
             <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-primary">Why ArmaTech</p>
             <h2 className="mt-5 font-mono text-3xl font-bold uppercase leading-tight tracking-[-0.04em] sm:text-3xl">
               Precision you can build your process around.
             </h2>
             <p className="mt-6 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
-              ArmaTech Associates delivers precision measurement and quality inspection solutions designed to support accurate, reliable, and efficient manufacturing operations.
+              Five machine families, manual benchtop to enclosed servo. Specified around the part, installed and verified on your floor, and supported from Pune.
             </p>
           </div>
 
@@ -208,7 +201,7 @@ export default function Page() {
               <div className="mt-10 h-px w-10 bg-primary transition-all duration-300 group-hover:w-20" />
               <h3 className="mt-6 font-mono text-lg font-bold uppercase">Precision Focused</h3>
               <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                Measurement solutions designed to help manufacturers maintain accuracy, consistency, and tighter inspection standards.
+                Stated accuracy is verified after installation, with the result recorded for your quality file.
               </p>
             </motion.div>
 
@@ -224,7 +217,7 @@ export default function Page() {
               <div className="mt-10 h-px w-10 bg-primary transition-all duration-300 group-hover:w-20" />
               <h3 className="mt-6 font-mono text-lg font-bold uppercase">Reliable Equipment</h3>
               <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                Carefully selected inspection and metrology equipment for demanding production and quality-control environments.
+                Axis movement, scale feedback and optics are checked against the build sheet before dispatch.
               </p>
             </motion.div>
 
@@ -240,7 +233,7 @@ export default function Page() {
               <div className="mt-10 h-px w-10 bg-primary transition-all duration-300 group-hover:w-20" />
               <h3 className="mt-6 font-mono text-lg font-bold uppercase">Application Driven</h3>
               <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                Solutions selected around your components, tolerances, inspection requirements, and manufacturing workflow.
+                Specification starts with the features, tolerances and parts per shift on your drawing, not a stock model.
               </p>
             </motion.div>
 
@@ -256,7 +249,7 @@ export default function Page() {
               <div className="mt-10 h-px w-10 bg-primary transition-all duration-300 group-hover:w-20" />
               <h3 className="mt-6 font-mono text-lg font-bold uppercase">Technical Support</h3>
               <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                Support from product selection through technical discussions, helping you identify the right measurement solution.
+                Installed, calibrated and supported from Bhosari MIDC, Pune, by the team that supplied the machine.
               </p>
             </motion.div>
           </motion.div>
@@ -279,7 +272,7 @@ export default function Page() {
 
       {/* ARMATECH STANDARD */}
       <section id="armatech-standard" className="bg-secondary">
-        <div className="mx-auto grid max-w-7xl gap-12 px-5 py-10 lg:grid-cols-[0.8fr_1.2fr] lg:px-8 lg:py-28">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-10 lg:grid-cols-[0.8fr_1.2fr] lg:px-8 lg:py-16">
           <div>
             <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-primary">The ArmaTech standard</p>
             <h2 className="mt-5 font-mono text-3xl font-bold uppercase tracking-[-0.04em] sm:text-5xl">
@@ -291,23 +284,74 @@ export default function Page() {
               <Search className="size-6 text-primary" />
               <h3 className="mt-5 font-mono text-lg font-bold uppercase">Specify with confidence</h3>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                A considered catalogue of measurement equipment, selected for demanding production environments.
+                Travel, accuracy and repeatability figures are published for all sixteen configurations, so a shortlist can be made before the first call.
               </p>
             </div>
             <div>
               <ArrowRight className="size-6 text-primary" />
               <h3 className="mt-5 font-mono text-lg font-bold uppercase">Support that responds</h3>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                From product selection to technical conversations, our team helps you move from requirement to resolution.
+                Installation, operator training and calibration are handled by the team that supplied the machine.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* NEW SECTIONS ADDED HERE */}
-      <Testimonials />
-      
+      {/* RESOURCES */}
+      <section className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-5 py-10 sm:py-12 lg:px-8 lg:py-16">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-primary">
+                Resources
+              </p>
+              <h2 className="mt-3 font-mono text-3xl font-bold uppercase tracking-[-0.04em] sm:text-4xl">
+                Before you ask.
+              </h2>
+            </div>
+            <Link href="/contact" className="text-xs font-bold uppercase tracking-widest underline decoration-primary underline-offset-8 transition-colors hover:text-primary">
+              Ask our team <ArrowRight className="ml-2 inline size-4" />
+            </Link>
+          </div>
+
+          <div className="mt-8 grid border border-border md:grid-cols-3">
+            <Link href="/service-support" className="group border-b border-border p-6 transition-colors hover:bg-secondary md:border-b-0 md:border-r">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">01 / Service</p>
+              <h3 className="mt-4 font-mono text-lg font-bold uppercase">Installation, training, AMC</h3>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                What happens after the machine arrives, and how calibration and maintenance are handled.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.16em] transition-colors group-hover:text-primary">
+                Service &amp; support <ArrowRight className="size-3.5" />
+              </span>
+            </Link>
+
+            <Link href="/faq" className="group border-b border-border p-6 transition-colors hover:bg-secondary md:border-b-0 md:border-r">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">02 / FAQ</p>
+              <h3 className="mt-4 font-mono text-lg font-bold uppercase">Accuracy, software, lead time</h3>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Straight answers on the questions that decide which machine you specify.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.16em] transition-colors group-hover:text-primary">
+                Read the FAQ <ArrowRight className="size-3.5" />
+              </span>
+            </Link>
+
+            <Link href="/pricing-guide" className="group p-6 transition-colors hover:bg-secondary">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">03 / Pricing</p>
+              <h3 className="mt-4 font-mono text-lg font-bold uppercase">What drives the cost</h3>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Travel, drive system, optics and options — the lines to compare before you sign.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.16em] transition-colors group-hover:text-primary">
+                Pricing guide <ArrowRight className="size-3.5" />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <CTASection />
 
     </main>

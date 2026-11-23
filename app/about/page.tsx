@@ -1,106 +1,218 @@
 import Link from "next/link"
 import type { Metadata } from "next"
-import { ArrowRight, CheckCircle2, MapPin, Factory, Award, Users } from "lucide-react"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
+
+import { ADDRESS, COMPANY, CONTACT, PARENT_SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = {
-  title: "About Us | Metrology Equipment Supplier in Pune",
+  title: "About Us | VMM Division of Armatech Associates, Pune",
   description:
-    "ArmaTech Associates is a metrology equipment supplier and VMM dealer based in Bhosari MIDC, Pune, serving manufacturers across Maharashtra and India.",
+    "Armatech Associates has supplied measurement equipment to Indian manufacturing since 1980. This is the dedicated VMM division: CRYSTAL video measuring machines, installed and supported from Bhosari MIDC, Pune.",
   alternates: { canonical: "/about" },
 }
 
+const facts = [
+  { label: "Established", value: "1980" },
+  { label: "Machine families", value: "05" },
+  { label: "Model configurations", value: "16" },
+  { label: "Base", value: "Pune" },
+]
+
+const sectors = [
+  "Automotive components",
+  "Tool rooms and dies",
+  "Sheet-metal stamping",
+  "Plastic mouldings",
+  "Electronics and connectors",
+  "General engineering",
+]
+
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-white pb-24 text-neutral-900">
-      
-      {/* HERO SECTION */}
-      <section className="mx-auto max-w-7xl px-5 sm:px-8 mb-20">
-        <div className="max-w-4xl">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-600 mb-4">
-            About Armatech Associates
+    <main className="min-h-screen bg-background">
+      {/* HEADER */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
+          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+            About / {COMPANY.division}
           </p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight text-neutral-950 mb-6 leading-[1.1]">
-            Engineering clarity into every measurement.
+          <h1 className="mt-4 max-w-4xl font-mono text-3xl font-black uppercase leading-[0.98] tracking-[-0.05em] sm:text-5xl">
+            A metrology house since 1980.
+            <br />
+            A division focused on vision.
           </h1>
-          <p className="text-lg text-neutral-600 leading-relaxed max-w-3xl">
-            Armatech Associates brings precision measurement and quality control equipment into sharper focus for industrial teams. As a leading <strong>Metrology equipment supplier in Bhosari MIDC</strong> and a trusted <strong>VMM machine dealer in Maharashtra</strong>, we empower manufacturers to achieve absolute accuracy.
+          <p className="mt-6 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+            Armatech Associates has supplied measurement and quality-control
+            equipment to Indian manufacturing for over four decades. This site is
+            the company&apos;s VMM division: the CRYSTAL range of video measuring
+            machines, from manual benchtop systems to enclosed automatic machines,
+            supplied and supported from Bhosari MIDC, Pune.
           </p>
         </div>
       </section>
 
-      {/* APPROACH SECTION */}
-      <section className="border-y border-neutral-200 bg-neutral-50 py-16 mb-20">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-600 mb-3">
-                Our Approach
+      {/* FACTS STRIP */}
+      <section className="border-b border-border">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 border-x border-border lg:grid-cols-4">
+          {facts.map((fact) => (
+            <div key={fact.label} className="border-b border-r border-border p-6 last:border-b-0 lg:border-b-0">
+              <p className="font-mono text-3xl font-black tracking-[-0.04em] text-foreground">
+                {fact.value}
               </p>
-              <h2 className="text-3xl font-bold text-neutral-950 mb-6">
-                The right instrument is the beginning.
-              </h2>
-              <p className="text-neutral-600 leading-relaxed mb-4">
-                Every manufacturing process has its own language of tolerance, repeatability, and assurance. We help teams navigate the equipment and technical decisions behind dependable quality control.
-              </p>
-              <p className="text-neutral-600 leading-relaxed">
-                Our catalogue is structured around practical industrial needs: surface analysis, coordinate measurement, and vision-based inspection. Whether you are looking for a <strong>High precision VMM machine Pune</strong> or <strong>Precision measurement tools in pune</strong>, we have the solution.
+              <p className="mt-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                {fact.label}
               </p>
             </div>
-            
-            {/* 3 PILLARS */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
-                <CheckCircle2 className="h-8 w-8 text-red-600 mb-4" />
-                <h3 className="font-bold text-neutral-950 mb-2">Precision-Led</h3>
-                <p className="text-sm text-neutral-600">Clear information and considered guidance for better measurement decisions.</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
-                <Factory className="h-8 w-8 text-red-600 mb-4" />
-                <h3 className="font-bold text-neutral-950 mb-2">Process-Aware</h3>
-                <p className="text-sm text-neutral-600">We understand the manufacturing floor and deliver <strong>Optical measurement equipment for manufacturing</strong>.</p>
-              </div>
-              <div className="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm sm:col-span-2">
-                <Users className="h-8 w-8 text-red-600 mb-4" />
-                <h3 className="font-bold text-neutral-950 mb-2">Built to Support</h3>
-                <p className="text-sm text-neutral-600">Our team provides complete calibration, training, and <strong>VMM manufacturing in pune</strong> support to keep your quality lab running.</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* TRUST & LOCATION SECTION */}
-      <section className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      {/* WHAT WE DO */}
+      <section className="border-b border-border">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-12 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-16">
           <div>
-             <h2 className="text-3xl font-bold text-neutral-950 mb-6">Serving Indian Manufacturing Since 1980</h2>
-             <p className="text-neutral-600 leading-relaxed mb-6">
-               For over four decades, Armatech Associates has been the premier <strong>VMM Supplier Near Chakan MIDC</strong> and across India. We partner with top global manufacturers to bring the best <strong>Video measuring machine for quality inspection</strong> to your facility.
-             </p>
-             <ul className="space-y-3">
-               <li className="flex items-center gap-3 text-neutral-700"><CheckCircle2 className="h-5 w-5 text-red-600" /> Authorized dealer for top metrology brands.</li>
-               <li className="flex items-center gap-3 text-neutral-700"><CheckCircle2 className="h-5 w-5 text-red-600" /> Local service team in Pune for rapid response.</li>
-               <li className="flex items-center gap-3 text-neutral-700"><CheckCircle2 className="h-5 w-5 text-red-600" /> Expert consultation on <strong>Measuring VMM for automotive connectors</strong>.</li>
-             </ul>
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+              What the division does
+            </p>
+            <h2 className="mt-4 font-mono text-2xl font-bold uppercase tracking-[-0.03em] sm:text-3xl">
+              Supply, specify, install, support.
+            </h2>
+            <div className="mt-6 space-y-5 text-sm leading-7 text-muted-foreground">
+              <p>
+                Video measuring machines are specified around the part, not the
+                other way round. We start from the features you need to measure,
+                the tolerances on the drawing and the number of parts per shift,
+                then match that against travel, optics, control system and
+                software.
+              </p>
+              <p>
+                The CRYSTAL range covers five families and sixteen model
+                configurations. Manual models keep the operator in direct control;
+                semi-automatic models power the Z axis; automatic and enclosed
+                models run stored routines on servo-driven axes. The catalogue on
+                this site carries the travel, accuracy and repeatability figures
+                for every model, so a shortlist can be made before you speak to
+                anyone.
+              </p>
+              <p>
+                After supply, the same team installs the machine, verifies it
+                against its stated accuracy, trains your operators and supports it
+                through maintenance and calibration.
+              </p>
+            </div>
           </div>
-          <div className="bg-neutral-950 p-8 rounded-2xl text-white">
-            <MapPin className="h-10 w-10 text-red-500 mb-6" />
-            <h3 className="text-2xl font-bold mb-4">Visit Our Facility</h3>
-            <p className="text-neutral-400 mb-6">
-              Our demonstration center and calibration lab are located in the heart of Pune's industrial belt.
-            </p>
-            <p className="font-mono text-sm leading-relaxed text-neutral-300 mb-8">
-              W-174 A, 'S' Block, M.I.D.C.,<br/>
-              Bhosari Industrial Estate,<br/>
-              Pune - 411 026 (India)
-            </p>
-            <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-neutral-950 px-6 py-3 rounded-xl font-bold hover:bg-red-600 hover:text-white transition-colors">
-              Get Directions <ArrowRight className="h-4 w-4" />
-            </Link>
+
+          <div className="border border-border">
+            <div className="border-b border-border p-6">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Typical sectors
+              </p>
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                {sectors.map((sector) => (
+                  <li
+                    key={sector}
+                    className="flex items-center gap-2 text-sm text-foreground"
+                  >
+                    <span className="h-1.5 w-1.5 bg-primary" />
+                    {sector}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="p-6">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Part of
+              </p>
+              <a
+                href={PARENT_SITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group mt-3 inline-flex items-center gap-2 text-sm font-bold transition-colors hover:text-primary"
+              >
+                Armatech Associates — main website
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+              <p className="mt-4 text-sm leading-6 text-muted-foreground">
+                The main site covers the company&apos;s wider metrology and
+                quality-control range. This division covers video measuring
+                machines.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* FACILITY */}
+      <section className="border-b border-border bg-secondary">
+        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16 lg:px-8 lg:py-16">
+          <div>
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+              Facility
+            </p>
+            <h2 className="mt-4 font-mono text-2xl font-bold uppercase tracking-[-0.03em] sm:text-3xl">
+              Bhosari MIDC, Pune.
+            </h2>
+            <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
+              The demonstration room and service base are in the Bhosari
+              industrial belt, within reach of Chakan, Pimpri-Chinchwad and the
+              wider Pune manufacturing cluster. Machines can be seen and discussed
+              at the facility before an order is placed.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-4">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-3 bg-primary px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-primary/90"
+              >
+                Book a visit <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/service-support"
+                className="inline-flex items-center gap-3 border border-foreground/25 px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:border-primary hover:text-primary"
+              >
+                Service & support
+              </Link>
+            </div>
+          </div>
+
+          <div className="border border-border bg-background p-6">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Address
+            </p>
+            <p className="mt-3 text-sm leading-6">
+              {ADDRESS.lines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </p>
+            <p className="mt-5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Hours
+            </p>
+            <p className="mt-3 text-sm leading-6">
+              {CONTACT.hours[0]}
+              <br />
+              {CONTACT.hours[1]}
+            </p>
+            <p className="mt-5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Phone
+            </p>
+            <p className="mt-3 text-sm leading-6">
+              <a
+                href={`tel:${CONTACT.landlines[0].replace(/[^\d+]/g, "")}`}
+                className="block transition-colors hover:text-primary"
+              >
+                {CONTACT.landlines[0]}
+              </a>
+              <a
+                href={`tel:${CONTACT.mobile.replace(/[^\d+]/g, "")}`}
+                className="block transition-colors hover:text-primary"
+              >
+                {CONTACT.mobile}
+              </a>
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   )
 }

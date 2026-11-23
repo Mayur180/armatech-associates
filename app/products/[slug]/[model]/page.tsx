@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { ArrowRight, ArrowLeft, CheckCircle2, Download, Settings, ShieldCheck, Ruler, Box, Layers } from "lucide-react"
+import { ArrowLeft, ArrowRight, FileText } from "lucide-react"
 import { getProduct } from "@/lib/catalog"
+import { getModelCopy } from "@/lib/model-copy"
+import { CONTACT, SITE_URL, mailtoHref, telHref } from "@/lib/site"
 import { notFound } from "next/navigation"
 
 type ModelPageProps = {
@@ -12,14 +14,17 @@ export async function generateMetadata({ params }: ModelPageProps): Promise<Meta
   const { slug, model } = await params
   const product = getProduct(slug)
   const variant = product?.variants.find((item) => item.model === model)
+  const copy = getModelCopy(model)
 
   if (!product || !variant) {
     return { title: "Model Not Found" }
   }
 
   return {
-    title: `${variant.model} Specifications | ${product.name}`,
-    description: `Technical specifications, ${variant.travel} mm travel range and configuration options for the CRYSTAL ${variant.model} ${product.name}.`,
+    title: `${variant.model} | ${product.name} Specifications`,
+    description:
+      copy?.paragraphs[0] ??
+      `Technical specifications, ${variant.travel} mm travel range and configuration options for the CRYSTAL ${variant.model} ${product.name}.`,
     alternates: {
       canonical: `/products/${product.slug}/${variant.model}`,
     },
@@ -29,132 +34,264 @@ export async function generateMetadata({ params }: ModelPageProps): Promise<Meta
 export default async function ModelSpecsPage({ params }: ModelPageProps) {
   const { slug, model } = await params
   const product = getProduct(slug)
-  
+
   if (!product) notFound()
-  
-  const variant = product.variants.find((v) => v.model === model)
+
+  const variantIndex = product.variants.findIndex((v) => v.model === model)
+  const variant = product.variants[variantIndex]
   if (!variant) notFound()
 
-  return (
-    <main className="min-h-screen bg-white pb-24 px-5">
-      <div className="max-w-5xl mx-auto">
-        
-        {/* BREADCRUMB */}
-        <Link href={`/products/${slug}`} className="inline-flex items-center gap-2 text-sm font-bold text-neutral-500 hover:text-red-600 mb-8 transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to {product.name}
-        </Link>
-        
-        {/* HEADER */}
-        <div className="border-b border-neutral-200 pb-8 mb-8">
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-600 mb-2">{product.family}</p>
-          <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight mb-4 text-neutral-950">{variant.model} Specifications</h1>
-          <p className="text-lg text-neutral-600 max-w-3xl">
-            Detailed technical data, configuration options, and inspection capabilities for the {variant.model}.
-          </p>
-        </div>
+  const copy = getModelCopy(variant.model)
+  const pageUrl = `${SITE_URL}/products/${product.slug}/${variant.model}`
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* LEFT COLUMN: DETAILED SPECS */}
-          <div className="lg:col-span-2 space-y-8">
-            
-            {/* CORE SPECS CARD */}
-            <div className="border border-neutral-200 rounded-2xl bg-white overflow-hidden shadow-sm">
-              <div className="bg-neutral-50 border-b border-neutral-200 px-6 py-4 flex items-center gap-2">
-                <Settings className="w-5 h-5 text-red-600" />
-                <h2 className="text-lg font-bold text-neutral-900">Core Technical Specifications</h2>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2">
-                <div className="p-6 border-b sm:border-b-0 sm:border-r border-neutral-100">
-                  <p className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">Travel Range (X x Y x Z)</p>
-                  <p className="text-2xl font-bold text-neutral-950">{variant.travel} mm</p>
-                </div>
-                <div className="p-6">
-                  <p className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">Machine Category</p>
-                  <p className="text-2xl font-bold text-neutral-950">{product.category}</p>
-                </div>
-                <div className="p-6 border-t border-neutral-100 sm:border-r">
-                  <p className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">Product Family</p>
-                  <p className="text-lg font-semibold text-neutral-900">{product.family}</p>
-                </div>
-                <div className="p-6 border-t border-neutral-100">
-                  <p className="text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1">Status</p>
-                  <p className="text-lg font-semibold text-green-600 flex items-center gap-1">
-                    <CheckCircle2 className="w-4 h-4" /> Available
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `CRYSTAL ${variant.model} ${product.name}`,
+    sku: variant.model,
+    description:
+      copy?.paragraphs.join(" ") ?? product.summary,
+    image: `${SITE_URL}${product.image}`,
+    category: "Video Measuring Machine",
+    brand: { "@type": "Brand", name: "CRYSTAL" },
+    url: pageUrl,
+  }
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Products",
+        item: `${SITE_URL}/products`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: product.name,
+        item: `${SITE_URL}/products/${product.slug}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: variant.model,
+        item: pageUrl,
+      },
+    ],
+  }
+
+  return (
+    <main className="min-h-screen bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
+      {/* HEADER */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-7xl px-5 py-10 lg:px-8 lg:py-12">
+          <Link
+            href={`/products/${slug}`}
+            className="inline-flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-primary"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" /> {product.name}
+          </Link>
+
+          <p className="mt-8 font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+            {variant.model} / {product.category}
+          </p>
+
+          <h1 className="mt-4 max-w-4xl font-mono text-3xl font-black uppercase leading-[0.98] tracking-[-0.05em] sm:text-5xl">
+            {copy?.headline ?? `${variant.model} specifications`}
+          </h1>
+
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+            {product.imageAlt}.
+          </p>
+
+          <div className="mt-6 flex flex-wrap gap-x-10 gap-y-3 border-t border-border pt-5">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.14em]">
+              Travel <span className="ml-2 text-primary">{variant.travel} mm</span>
+            </p>
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.14em]">
+              Category <span className="ml-2 text-primary">{product.category}</span>
+            </p>
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.14em]">
+              Brand <span className="ml-2 text-primary">CRYSTAL</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-10 lg:grid-cols-[1.35fr_0.65fr] lg:gap-14 lg:px-8 lg:py-14">
+        {/* MAIN COLUMN */}
+        <div>
+          <section className="border-b border-border pb-8">
+            <div className="relative overflow-hidden border border-border bg-secondary">
+              <img
+                src={product.image}
+                alt={product.imageAlt}
+                className="mx-auto h-[260px] w-full object-contain p-4 mix-blend-multiply sm:h-[320px]"
+              />
+              <span className="absolute left-0 top-0 bg-foreground px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-background">
+                {variant.model}
+              </span>
+            </div>
+
+            {copy?.paragraphs.map((paragraph) => (
+              <p key={paragraph} className="mt-6 text-sm leading-7 text-muted-foreground">
+                {paragraph}
+              </p>
+            ))}
+          </section>
+
+          {/* SPECIFICATIONS */}
+          <section className="mt-8">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+              Specifications
+            </p>
+            <h2 className="mt-3 font-mono text-xl font-bold uppercase tracking-[-0.02em]">
+              {variant.model} technical data
+            </h2>
+
+            <div className="mt-5 border border-border">
+              {product.specifications.map((spec, index) => (
+                <div
+                  key={spec.label}
+                  className={`grid gap-1 px-4 py-3 sm:grid-cols-[1.1fr_1fr] ${
+                    index !== product.specifications.length - 1
+                      ? "border-b border-border"
+                      : ""
+                  }`}
+                >
+                  <p className="font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                    {spec.label}
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">
+                    {spec.values[variantIndex]}
                   </p>
                 </div>
-              </div>
+              ))}
             </div>
+          </section>
 
-            {/* FEATURES / HIGHLIGHTS */}
-            {product.highlights && product.highlights.length > 0 && (
-              <div className="border border-neutral-200 rounded-2xl bg-white p-6 shadow-sm">
-                <h2 className="text-lg font-bold text-neutral-900 mb-4 flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-red-600" /> Key Features & Capabilities
-                </h2>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {product.highlights.map((highlight, i) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                      <span className="text-neutral-700 text-sm leading-relaxed">{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* ADDITIONAL INFO (Placeholder for future data) */}
-            <div className="border border-neutral-200 rounded-2xl bg-white p-6 shadow-sm">
-               <h2 className="text-lg font-bold text-neutral-900 mb-4 flex items-center gap-2">
-                  <Layers className="w-5 h-5 text-red-600" /> Configuration Options
-               </h2>
-               <p className="text-sm text-neutral-600 mb-4">
-                 The {variant.model} can be customized with various lens options, probes, and software modules depending on your specific measurement requirements.
-               </p>
-               <ul className="space-y-3 text-sm text-neutral-700">
-                  <li className="flex items-center gap-2"><Ruler className="w-4 h-4 text-neutral-400" /> Optional High-Precision Renishaw Probes</li>
-                  <li className="flex items-center gap-2"><Box className="w-4 h-4 text-neutral-400" /> Custom Fixturing for Complex Parts</li>
-                  <li className="flex items-center gap-2"><Download className="w-4 h-4 text-neutral-400" /> Advanced CAD Comparison Software</li>
-               </ul>
-            </div>
-
-          </div>
-
-          {/* RIGHT COLUMN: CTA CARD */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-24 border border-neutral-200 rounded-2xl bg-neutral-50 p-6 shadow-sm">
-              <h3 className="text-xl font-bold text-neutral-950 mb-2">Interested in the {variant.model}?</h3>
-              <p className="text-sm text-neutral-600 mb-6">
-                Contact our engineering team to discuss your specific application, request a formal quotation, or schedule a demonstration.
+          {/* BEST FOR */}
+          {copy && (
+            <section className="mt-8">
+              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+                Best for
               </p>
-              
-              <Link 
+              <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                {copy.bestFor.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-sm">
+                    <span className="h-1.5 w-1.5 bg-primary" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {/* HIGHLIGHTS */}
+          <section className="mt-8">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+              Features
+            </p>
+            <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+              {product.highlights.map((highlight) => (
+                <li key={highlight} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-primary" />
+                  {highlight}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* SCOPE */}
+          {copy && (
+            <section className="mt-8 border-t border-border pt-6">
+              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+                Delivery scope
+              </p>
+              <ul className="mt-4 space-y-2">
+                {copy.scope.map((item) => (
+                  <li key={item} className="text-sm text-muted-foreground">
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
+
+        {/* SIDEBAR */}
+        <aside>
+          <div className="sticky top-24 border border-border">
+            <div className="border-b border-border bg-secondary p-5">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Enquire about this model
+              </p>
+              <p className="mt-2 font-mono text-lg font-bold uppercase">
+                {variant.model}
+              </p>
+            </div>
+
+            <div className="p-5">
+              <Link
                 href={`/contact?product=${slug}&model=${variant.model}`}
-                className="w-full inline-flex items-center justify-center gap-2 bg-red-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-red-700 transition-colors"
+                className="flex w-full items-center justify-center gap-2 bg-primary px-5 py-4 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-primary/90"
               >
-                Request a Quote
-                <ArrowRight className="w-4 h-4" />
+                Request a quote <ArrowRight className="h-4 w-4" />
               </Link>
-              
-              <div className="mt-6 pt-6 border-t border-neutral-200 text-xs text-neutral-500">
-                <p className="mb-2"><strong>Need help?</strong></p>
-                <p>
-                  Call us:{" "}
-                  <a href="tel:+912027122385" className="hover:text-red-600">
-                    +91 20 2712 2385
-                  </a>
+
+              <a
+                href={product.brochure}
+                download
+                className="mt-3 flex w-full items-center justify-center gap-2 border border-border px-5 py-4 text-xs font-bold uppercase tracking-[0.14em] transition-colors hover:border-primary hover:text-primary"
+              >
+                <FileText className="h-4 w-4" /> {product.name} brochure
+              </a>
+
+              <div className="mt-5 border-t border-border pt-4 text-xs leading-6 text-muted-foreground">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-foreground">
+                  Talk to us
                 </p>
-                <p>
-                  Email:{" "}
-                  <a href="mailto:armatechsales@gmail.com" className="hover:text-red-600">
-                    armatechsales@gmail.com
+                <p className="mt-2">
+                  <a href={telHref(CONTACT.landlines[0])} className="font-semibold transition-colors hover:text-primary">
+                    {CONTACT.landlines[0]}
+                  </a>
+                  <br />
+                  <a href={mailtoHref()} className="break-all font-semibold transition-colors hover:text-primary">
+                    {CONTACT.email}
                   </a>
                 </p>
               </div>
+
+              <div className="mt-5 border-t border-border pt-4">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                  Before you ask
+                </p>
+                <div className="mt-2 grid gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.12em]">
+                  <Link href="/faq" className="transition-colors hover:text-primary">
+                    Accuracy, software, lead time
+                  </Link>
+                  <Link href="/pricing-guide" className="transition-colors hover:text-primary">
+                    What drives the price
+                  </Link>
+                  <Link href="/service-support" className="transition-colors hover:text-primary">
+                    Installation & calibration
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
-
-        </div>
+        </aside>
       </div>
     </main>
   )

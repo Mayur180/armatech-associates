@@ -4,7 +4,16 @@ import { products } from "@/lib/catalog"
 import { SITE_URL } from "@/lib/site"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["", "/about", "/services", "/products", "/contact"]
+  const staticRoutes = [
+    "",
+    "/about",
+    "/services",
+    "/service-support",
+    "/products",
+    "/pricing-guide",
+    "/faq",
+    "/contact",
+  ]
 
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${SITE_URL}${route}`,

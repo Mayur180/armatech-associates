@@ -16,15 +16,10 @@ export default function ModelSelector({ product }: { product: Product }) {
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex items-center justify-between border-b border-neutral-200 pb-4">
-        <p className="font-mono text-[11px] font-bold uppercase tracking-widest text-red-600">Configure Your System</p>
-        <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-neutral-400">{product.variants.length} Options</span>
-      </div>
-      <h3 className="mb-6 text-3xl font-black uppercase tracking-tight text-neutral-950">Select Model</h3>
-      <div className="space-y-4">
+      <div className="space-y-3">
         {product.variants.map((variant, index) => (
           <motion.button key={variant.model} onClick={() => handleSelect(variant)} className="group block w-full text-left cursor-pointer">
-            <div className={`relative overflow-hidden border transition-all duration-300 hover:border-red-500 hover:shadow-lg ${index === 0 ? "border-red-200 bg-red-50/20" : "border-neutral-200 bg-white"}`}>
+            <div className={`relative overflow-hidden border transition-all duration-300 hover:border-red-500 ${index === 0 ? "border-red-300 bg-red-50/30" : "border-neutral-200 bg-white"}`}>
               <div className="flex items-center justify-between p-5">
                 <div>
                   <div className="flex items-center gap-3">
@@ -33,7 +28,7 @@ export default function ModelSelector({ product }: { product: Product }) {
                   </div>
                   <p className="mt-2 pl-11 text-xs text-neutral-500">Travel: <span className="font-bold text-neutral-900">{variant.travel} mm</span></p>
                 </div>
-                <div className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-400 group-hover:border-red-200 group-hover:text-red-600">
+                <div className="flex h-8 w-8 items-center justify-center border border-neutral-300 bg-white text-neutral-400 transition-colors group-hover:border-red-300 group-hover:text-red-600">
                   <ArrowRight className="h-4 w-4" />
                 </div>
               </div>

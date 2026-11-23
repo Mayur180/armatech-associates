@@ -8,10 +8,12 @@ export default function ProductViewer({
   image,
   name,
   badge,
+  travel,
 }: {
   image: string
   name: string
   badge?: string
+  travel?: string
 }) {
   const [isZoomed, setIsZoomed] = useState(false)
 
@@ -56,28 +58,26 @@ export default function ProductViewer({
       {/* ZOOM BUTTON */}
       <button
         onClick={() => setIsZoomed(!isZoomed)}
-        className="absolute right-4 top-4 z-30 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-900 text-white transition-colors hover:bg-red-600"
+        className="absolute right-4 top-4 z-30 flex h-8 w-8 items-center justify-center border border-neutral-300 bg-white text-neutral-500 transition-colors hover:border-red-500 hover:text-red-600"
         aria-label="Zoom image"
       >
         <Maximize2 className="h-4 w-4" />
       </button>
 
-      {/* BADGE */}
-      {badge && (
-        <div className="absolute bottom-5 left-5 z-30">
-          <span className="inline-flex border border-red-600 bg-red-600 px-4 py-2 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-white">
+      {/* CAPTION STRIP */}
+      <div className="relative z-20 flex flex-wrap items-center justify-between gap-2 border-t border-neutral-200 bg-white px-4 py-2.5">
+        {badge ? (
+          <span className="bg-red-600 px-2 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.16em] text-white">
             {badge}
           </span>
-        </div>
-      )}
-
-      {/* MEASUREMENT LABELS (Optional decorative) */}
-      <div className="absolute bottom-5 right-5 z-20 font-mono text-[9px] font-bold uppercase tracking-widest text-neutral-400">
-        X — 000.000 MM
-        <br />
-        Y — 000.000 MM
-        <br />
-        <span className="text-red-600">Z — 000.000 MM</span>
+        ) : (
+          <span />
+        )}
+        {travel && (
+          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.14em] text-neutral-500">
+            Travel <span className="ml-1 text-neutral-900">{travel}</span>
+          </span>
+        )}
       </div>
     </motion.div>
   )

@@ -38,17 +38,17 @@ export default function ProductsBrowser() {
           HERO SECTION
       ================================= */}
 
-      <section className="bg-white px-5 py-20 text-neutral-900 lg:px-8 lg:py-28">
+      <section className="bg-white px-5 py-10 text-neutral-900 lg:px-8 lg:py-14">
         <div className="mx-auto max-w-7xl">
           <p className="font-mono text-xs uppercase tracking-[.22em] text-primary">
             ArmaTech / Crystal VMM Series
           </p>
-          <h1 className="mt-5 max-w-4xl font-mono text-5xl font-bold uppercase tracking-[-.06em] sm:text-7xl">
+          <h1 className="mt-4 max-w-4xl font-mono text-3xl font-black uppercase tracking-[-.05em] sm:text-5xl">
             The complete
             <br />
             <span className="text-primary">VMM catalogue.</span>
           </h1>
-          <p className="mt-7 max-w-2xl text-base leading-7 text-neutral-600">
+          <p className="mt-5 max-w-2xl text-sm leading-7 text-neutral-600 sm:text-base">
             Five machine families. {totalModels} configurations.
             Compare the exact travel range, optics and controls
             behind every model.
@@ -62,7 +62,7 @@ export default function ProductsBrowser() {
 
       <section className="mx-auto max-w-7xl px-5 py-12 lg:px-8 lg:py-16">
         {/* FILTER + SEARCH */}
-        <div className="flex flex-col gap-6 border-b border-border pb-8 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-5 border-b border-border pb-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap gap-2">
             {categories.map((item) => (
               <button
@@ -97,7 +97,7 @@ export default function ProductsBrowser() {
             PRODUCT GRID
         ================================= */}
 
-        <div className="mt-12 grid gap-px bg-border md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-px bg-border md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((product) => (
             <Link
               key={product.slug}
@@ -119,7 +119,7 @@ export default function ProductsBrowser() {
               </div>
 
               {/* PRODUCT INFORMATION */}
-              <div className="flex items-start justify-between gap-4 py-6">
+              <div className="flex items-start justify-between gap-4 py-5">
                 <div>
                   <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-primary">
                     {product.family}
@@ -159,7 +159,7 @@ export default function ProductsBrowser() {
 
         {/* NO PRODUCTS FOUND */}
         {filtered.length === 0 && (
-          <p className="py-20 text-center font-mono text-sm uppercase tracking-widest text-muted-foreground">
+          <p className="py-16 text-center font-mono text-xs uppercase tracking-widest text-muted-foreground">
             No matching systems found.
           </p>
         )}
@@ -169,8 +169,8 @@ export default function ProductsBrowser() {
           DOWNLOAD CATALOGUE SECTION
       ================================= */}
 
-      <section className="bg-primary px-5 py-14 text-primary-foreground lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-start md:justify-between">
+      <section className="bg-primary px-5 py-12 text-primary-foreground lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-start md:justify-between">
           <div>
             <p className="font-mono text-xs font-bold uppercase tracking-widest">
               Download the technical set

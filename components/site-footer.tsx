@@ -6,6 +6,8 @@ import {
   Phone,
 } from "lucide-react"
 
+import { PARENT_SITE_URL } from "@/lib/site"
+
 // ============================================================
 // PRODUCT LINKS
 // Each product now opens its own product detail page
@@ -52,8 +54,20 @@ const companyLinks = [
     href: "/products",
   },
   {
+    label: "Service & Support",
+    href: "/service-support",
+  },
+  {
     label: "Quality",
     href: "/services",
+  },
+  {
+    label: "FAQ",
+    href: "/faq",
+  },
+  {
+    label: "Pricing Guide",
+    href: "/pricing-guide",
   },
   {
     label: "Contact Us",
@@ -139,9 +153,9 @@ export default function SiteFooter() {
           }}
         />
 
-        <div className="relative mx-auto max-w-7xl px-6 py-14 sm:px-8 lg:px-10 lg:py-16">
+        <div className="relative mx-auto max-w-7xl px-6 py-12 sm:px-8 lg:px-10 lg:py-14">
 
-          <div className="grid gap-12 lg:grid-cols-[1.35fr_.8fr_.8fr_1.2fr]">
+          <div className="grid gap-10 lg:grid-cols-[1.35fr_.8fr_.8fr_1.2fr]">
 
             {/* ======================================================
                 BRAND
@@ -157,19 +171,31 @@ export default function SiteFooter() {
                   <span className="text-3xl font-black tracking-[-0.06em] text-[#111111]">
                     Armatech Associates
                   </span>
-
-                  
                 </div>
+
+                <p className="mt-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-[#c8102e]">
+                  VMM Division
+                </p>
               </Link>
 
-              <p className="mt-6 max-w-sm text-sm leading-7 text-[#555555]">
+              <p className="mt-5 max-w-sm text-sm leading-7 text-[#555555]">
                 Precision measurement and quality control solutions
                 for modern manufacturing.
               </p>
 
+              <a
+                href={PARENT_SITE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[#555555] transition-colors hover:text-[#c8102e]"
+              >
+                Main company website
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+
               {/* BRAND QUALITY BOX */}
 
-              <div className="mt-7 flex items-center gap-4 border border-[#dcdcdc] bg-white px-4 py-3">
+              <div className="mt-6 flex items-center gap-4 border border-[#dcdcdc] bg-white px-4 py-3">
 
                 <span className="text-xl font-black text-[#c8102e]">
                   AT
@@ -203,7 +229,7 @@ export default function SiteFooter() {
                 Products
               </h3>
 
-              <ul className="mt-6 space-y-3">
+              <ul className="mt-5 space-y-2.5">
 
                 {productLinks.map((product) => (
                   <li key={product.href}>
@@ -238,7 +264,7 @@ export default function SiteFooter() {
                 Company
               </h3>
 
-              <ul className="mt-6 space-y-3">
+              <ul className="mt-5 space-y-2.5">
 
                 {companyLinks.map((item) => (
                   <li key={item.href}>
@@ -273,7 +299,7 @@ export default function SiteFooter() {
                 Contact Us
               </h3>
 
-              <div className="mt-6 space-y-5">
+              <div className="mt-5 space-y-5">
 
                 {/* ==================================================
                     ADDRESS

@@ -1,7 +1,16 @@
-export const SITE_URL = "https://armatechassociates.com"
+// Main company website. This VMM site is a separate property, so it links to
+// the parent site for brand authority and cross-referencing.
+export const PARENT_SITE_URL = "https://armatechassociates.com"
+
+// Public address of THIS site. Set NEXT_PUBLIC_SITE_URL in the hosting
+// environment; canonicals, the sitemap and structured data all depend on it.
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/+$/, "") ||
+  "https://vmm.armatechassociates.com"
 
 export const COMPANY = {
   name: "Armatech Associates",
+  division: "VMM Division",
   brand: "CRYSTAL",
   tagline: "Precision Measurement Solutions",
 }

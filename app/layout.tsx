@@ -8,7 +8,7 @@ import SiteFooter from "@/components/site-footer"
 import WhatsAppButton from "@/components/WhatsAppButton"
 
 import { ScrollToTop } from "@/components/scroll-to-top"
-import { CONTACT, SITE_URL } from "@/lib/site"
+import { CONTACT, PARENT_SITE_URL, SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = {
   title: {
@@ -77,6 +77,7 @@ const localBusinessJsonLd = {
   "@type": "LocalBusiness",
   name: "ArmaTech Associates",
   url: SITE_URL,
+  sameAs: [PARENT_SITE_URL],
   image: `${SITE_URL}/Image/automatic.png`,
   logo: `${SITE_URL}/logo.png`,
   email: CONTACT.email,

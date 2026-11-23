@@ -118,7 +118,7 @@ export function SiteNav() {
 
             <Link
               href="/"
-              className="flex h-[52px] w-[110px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+              className="flex h-[52px] w-[85px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
             >
               Home
             </Link>
@@ -127,7 +127,7 @@ export function SiteNav() {
 
             <Link
               href="/about"
-              className="flex h-[52px] w-[125px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+              className="flex h-[52px] w-[105px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
             >
               About Us
             </Link>
@@ -145,7 +145,7 @@ export function SiteNav() {
                 type="button"
                 aria-expanded={mega}
                 onClick={() => setMega(!mega)}
-                className="flex h-[52px] w-[145px] items-center justify-center gap-1 text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+                className="flex h-[52px] w-[130px] items-center justify-center gap-1 text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
               >
                 Products
 
@@ -194,11 +194,20 @@ export function SiteNav() {
 
 
 
+            {/* SERVICE */}
+
+            <Link
+              href="/service-support"
+              className="flex h-[52px] w-[105px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+            >
+              Service
+            </Link>
+
             {/* QUALITY */}
 
             <Link
               href="/services"
-              className="flex h-[52px] w-[110px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+              className="flex h-[52px] w-[90px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
             >
               Quality
             </Link>
@@ -207,7 +216,7 @@ export function SiteNav() {
 
             <Link
               href="/contact"
-              className="flex h-[52px] w-[135px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
+              className="flex h-[52px] w-[115px] items-center justify-center text-[15px] font-semibold text-white transition-colors hover:bg-red-700"
             >
               Contact Us
             </Link>
@@ -306,6 +315,16 @@ export function SiteNav() {
 
 
 
+            {/* SERVICE */}
+
+            <Link
+              href="/service-support"
+              onClick={() => setOpen(false)}
+              className="block border-b border-red-500 py-4 font-bold text-white"
+            >
+              Service &amp; Support
+            </Link>
+
             {/* QUALITY */}
 
             <Link
@@ -314,6 +333,24 @@ export function SiteNav() {
               className="block border-b border-red-500 py-4 font-bold text-white"
             >
               Quality
+            </Link>
+
+            {/* RESOURCES */}
+
+            <Link
+              href="/faq"
+              onClick={() => setOpen(false)}
+              className="block border-b border-red-500 py-4 font-bold text-white"
+            >
+              FAQ
+            </Link>
+
+            <Link
+              href="/pricing-guide"
+              onClick={() => setOpen(false)}
+              className="block border-b border-red-500 py-4 font-bold text-white"
+            >
+              Pricing Guide
             </Link>
 
             {/* CONTACT US */}

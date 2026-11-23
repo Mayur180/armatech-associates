@@ -21,18 +21,20 @@ export default function DeleteEnquiryButton({
     try {
       setDeleting(true)
 
-      const response = await fetch("/api/enquiries", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      })
+      const response = await fetch(
+        `/api/enquiries?id=${encodeURIComponent(id)}`,
+        { method: "DELETE" }
+      )
+
+      if (response.status === 401) {
+        window.location.href = "/admin/login"
+        return
+      }
 
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to delete enquiry")
+        throw new Error(data.error || data.message || "Failed to delete enquiry")
       }
 
       window.location.reload()

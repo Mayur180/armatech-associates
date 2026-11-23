@@ -14,7 +14,7 @@ import { products } from '@/lib/catalog'
 const groups = [
   { label: 'Manual', category: 'Manual' },
   { label: 'Semi-Automatic', category: 'Semi-auto' },
-  { label: 'Automatic', category: 'CNC auto' },
+  { label: 'Computer Automatic', category: 'Computer auto' },
   { label: 'Cabinet Integrated', category: 'Cabinet integrated' },
 ]
 
@@ -111,7 +111,7 @@ export function SiteNav() {
 
           <nav
             aria-label="Primary navigation"
-            className="hidden items-stretch md:flex"
+            className="hidden items-stretch lg:flex"
           >
 
             {/* HOME */}
@@ -220,7 +220,7 @@ export function SiteNav() {
 
           <Link
             href="/contact"
-            className="hidden h-[52px] items-center justify-center bg-amber-400 px-[26px] text-[15px] font-bold text-black transition-colors hover:bg-amber-300 md:flex"
+            className="hidden h-[52px] items-center justify-center bg-amber-400 px-[26px] text-[15px] font-bold text-black transition-colors hover:bg-amber-300 sm:flex"
           >
             Get A Free Quote
           </Link>
@@ -238,7 +238,7 @@ export function SiteNav() {
             }
             aria-expanded={open}
             onClick={() => setOpen(!open)}
-            className="my-3 border border-white p-2 text-white transition-colors hover:bg-white hover:text-red-600 md:hidden"
+            className="my-3 border border-white p-2 text-white transition-colors hover:bg-white hover:text-red-600 lg:hidden"
           >
             {open ? (
               <X className="h-5 w-5" />
@@ -256,7 +256,7 @@ export function SiteNav() {
         {open && (
           <nav
             aria-label="Mobile navigation"
-            className="border-t border-red-500 bg-red-600 px-5 pb-4 md:hidden"
+            className="border-t border-red-500 bg-red-600 px-5 pb-4 lg:hidden"
           >
 
             {/* HOME */}
@@ -281,9 +281,10 @@ export function SiteNav() {
 
             {/* PRODUCTS */}
 
-            <details className="border-b border-red-500">
-              <summary className="cursor-pointer list-none py-4 font-bold text-white">
+            <details className="group border-b border-red-500">
+              <summary className="flex cursor-pointer list-none items-center justify-between py-4 font-bold text-white [&::-webkit-details-marker]:hidden">
                 Products
+                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-open:rotate-180" />
               </summary>
 
               <div className="grid gap-3 pb-4 pl-4">

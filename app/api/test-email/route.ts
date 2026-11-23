@@ -1,7 +1,15 @@
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
+import { isAdminAuthenticated } from "@/lib/auth"
 
-export async function GET() {
+export async function GET(request: Request) {
+  if (!isAdminAuthenticated(request)) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized." },
+      { status: 401 }
+    )
+  }
+
   try {
     const apiKey = process.env.RESEND_API_KEY
     const adminEmail = process.env.ADMIN_EMAIL

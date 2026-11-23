@@ -1,8 +1,17 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import type { Metadata } from "next"
+
+import { ADMIN_COOKIE, verifySessionToken } from "@/lib/auth"
 import { getMongoClient } from "@/lib/mongodb"
+import DeleteEnquiryButton from "@/components/admin/DeleteEnquiryButton"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  title: "Enquiries",
+  robots: { index: false, follow: false },
+}
 
 type Enquiry = {
   _id: string
@@ -18,30 +27,43 @@ type Enquiry = {
 }
 
 export default async function EnquiriesPage() {
-  const client = await getMongoClient()
+  const cookieStore = await cookies()
 
-  const db = client.db("crystal_vmm")
+  if (!verifySessionToken(cookieStore.get(ADMIN_COOKIE)?.value)) {
+    redirect("/admin/login")
+  }
 
-  const enquiries = await db
-    .collection("enquiries")
-    .find({})
-    .sort({ createdAt: -1 })
-    .toArray()
+  let formattedEnquiries: Enquiry[] = []
+  let databaseError = false
 
-  const formattedEnquiries: Enquiry[] = enquiries.map((item) => ({
-    _id: item._id.toString(),
-    name: item.name || "",
-    email: item.email || "",
-    phone: item.phone || "",
-    company: item.company || "",
-    message: item.message || "",
-    product: item.product || "",
-    productSlug: item.productSlug || "",
-    model: item.model || "",
-    createdAt: item.createdAt
-      ? new Date(item.createdAt).toISOString()
-      : "",
-  }))
+  try {
+    const client = await getMongoClient()
+
+    const enquiries = await client
+      .db("crystal_vmm")
+      .collection("enquiries")
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray()
+
+    formattedEnquiries = enquiries.map((item) => ({
+      _id: item._id.toString(),
+      name: item.name || "",
+      email: item.email || "",
+      phone: item.phone || "",
+      company: item.company || "",
+      message: item.message || "",
+      product: item.product || "",
+      productSlug: item.productSlug || "",
+      model: item.model || "",
+      createdAt: item.createdAt
+        ? new Date(item.createdAt).toISOString()
+        : "",
+    }))
+  } catch (error) {
+    console.error("ADMIN ENQUIRIES DATABASE ERROR:", error)
+    databaseError = true
+  }
 
   return (
     <main className="min-h-screen bg-background">
@@ -64,18 +86,44 @@ export default async function EnquiriesPage() {
               </p>
             </div>
 
-            <div className="border border-border bg-secondary px-5 py-4">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                Total enquiries
-              </p>
+            <div className="flex items-center gap-4">
+              <div className="border border-border bg-secondary px-5 py-4">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                  Total enquiries
+                </p>
 
-              <p className="mt-1 font-mono text-2xl font-black text-primary">
-                {formattedEnquiries.length}
-              </p>
+                <p className="mt-1 font-mono text-2xl font-black text-primary">
+                  {formattedEnquiries.length}
+                </p>
+              </div>
+
+              <form action="/api/admin/logout" method="post">
+                <button
+                  type="submit"
+                  className="border border-border px-4 py-3 font-mono text-[10px] font-bold uppercase tracking-widest transition-colors hover:bg-secondary"
+                >
+                  Log out
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </section>
+
+      {databaseError && (
+        <section className="mx-auto max-w-7xl px-5 pt-8 lg:px-8">
+          <div className="border border-red-500/30 bg-red-500/5 px-5 py-4">
+            <p className="font-mono text-xs font-bold uppercase tracking-widest text-red-600">
+              Database unavailable
+            </p>
+
+            <p className="mt-1 text-sm text-red-600">
+              Enquiries could not be loaded. Check the MONGODB_URI
+              setting and the Atlas network allowlist.
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* Enquiries */}
       <section className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
@@ -109,22 +157,26 @@ export default async function EnquiriesPage() {
                     </h2>
                   </div>
 
-                  <div className="text-left sm:text-right">
-                    <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                      Submitted
-                    </p>
+                  <div className="flex items-center gap-6">
+                    <div className="text-left sm:text-right">
+                      <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                        Submitted
+                      </p>
 
-                    <p className="mt-1 text-xs font-semibold">
-                      {enquiry.createdAt
-                        ? new Date(enquiry.createdAt).toLocaleString(
-                            "en-IN",
-                            {
-                              dateStyle: "medium",
-                              timeStyle: "short",
-                            }
-                          )
-                        : "Unknown"}
-                    </p>
+                      <p className="mt-1 text-xs font-semibold">
+                        {enquiry.createdAt
+                          ? new Date(enquiry.createdAt).toLocaleString(
+                              "en-IN",
+                              {
+                                dateStyle: "medium",
+                                timeStyle: "short",
+                              }
+                            )
+                          : "Unknown"}
+                      </p>
+                    </div>
+
+                    <DeleteEnquiryButton id={enquiry._id} />
                   </div>
                 </div>
 

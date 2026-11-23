@@ -164,7 +164,7 @@ export default function Page() {
       </section>
 
       {/* WHY ARMATECH (ANIMATED) */}
-      <section id="why-armatech" className="relative overflow-hidden border-t border-border bg-background">
+      <section id="why-armatech-home" className="relative overflow-hidden border-t border-border bg-background">
         <div
           className="pointer-events-none absolute inset-0 opacity-60"
           style={{

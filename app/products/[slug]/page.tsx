@@ -81,7 +81,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-white text-neutral-900 pt-12">
+    <main className="min-h-screen overflow-x-hidden bg-white text-neutral-900">
       {/* BREADCRUMB */}
       <section className="border-b border-neutral-200 bg-neutral-50">
         <div className="mx-auto w-full max-w-7xl px-5 sm:px-8">
@@ -168,6 +168,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {/* Model Selector with animation */}
                 <div className=" p-5 sm:p-6 ">
                   <ModelSelector product={product} />
+
+                  <a
+                    href={product.brochure}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-300 px-4 py-3 text-xs font-bold uppercase tracking-widest text-neutral-700 transition hover:border-red-600 hover:text-red-600"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Download {product.name} brochure
+                  </a>
                 </div>
               </div>
 

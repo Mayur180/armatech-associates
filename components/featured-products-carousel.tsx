@@ -3,83 +3,27 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { useState } from "react"
-import { catalogImages } from "@/lib/catalog"
+import { getProduct, type Product } from "@/lib/catalog"
 
-type Product = {
-  name: string
-  category: string
-  code: string
-  image: string
-  slug: string
-}
+/*
+ * Keep the product order fixed so the carousel always runs:
+ * Manual -> Semi-Auto -> Fully Automatic -> Cabinet -> VMS -> Manual...
+ */
 
-const products: Product[] = [
-  {
-    name: "MANUAL VMM",
-    category: "VIDEO MEASURING MACHINE",
-    code: "AA-9011M",
-    image: catalogImages.manual,
-    slug: "manual-vmm",
-  },
-  {
-    name: "SEMI-AUTO VMM",
-    category: "VIDEO MEASURING MACHINE",
-    code: "AA-9021SA",
-    image: catalogImages.semi,
-    slug: "semi-automatic-vmm",
-  },
-  {
-    name: "FULLY AUTOMATIC VMM",
-    category: "VIDEO MEASURING MACHINE",
-    code: "AA-9031A",
-    image: catalogImages.automatic,
-    slug: "cnc-auto-vmm",
-  },
-  {
-    name: "AUTOMATIC VMM WITH CABINET",
-    category: "VIDEO MEASURING MACHINE",
-    code: "AA-9041AC",
-    image: catalogImages.cabinet,
-    slug: "automatic-vmm-cabinet",
-  },
-  {
-    name: "VMS MANUAL",
-    category: "VISION MEASURING SYSTEM",
-    code: "AA-9051V",
-    image: catalogImages.vms,
-    slug: "vms-manual",
-  },
+const carouselSlugs = [
+  "manual-vmm",
+  "semi-automatic-vmm",
+  "fully-automatic-vmm",
+  "automatic-vmm-cabinet",
+  "vms-manual",
 ]
 
 export default function FeaturedProductsCarousel() {
   const [paused, setPaused] = useState(false)
 
-  /*
-   * Keep the product order fixed.
-   * This guarantees the carousel always runs:
-   *
-   * Manual
-   * ↓
-   * Semi-Auto
-   * ↓
-   * Fully Automatic
-   * ↓
-   * Automatic with Cabinet
-   * ↓
-   * VMS Manual
-   * ↓
-   * Manual again...
-   */
-
-  const orderedProducts = [
-    "manual-vmm",
-    "semi-automatic-vmm",
-    "cnc-auto-vmm",
-    "automatic-vmm-cabinet",
-    "vms-manual",
-  ]
-    .map((slug) => products.find((product) => product.slug === slug))
-    .filter(Boolean) as Product[]
+  const orderedProducts = carouselSlugs
+    .map((slug) => getProduct(slug))
+    .filter((product): product is Product => Boolean(product))
 
   /*
    * Duplicate the complete product set.
@@ -134,7 +78,7 @@ export default function FeaturedProductsCarousel() {
           ================================================== */}
 
           <div
-            className="flex w-max gap-6"
+            className="featured-products-track flex w-max gap-6"
             style={{
               animation: `featured-products-scroll ${
                 orderedProducts.length * 2
@@ -155,15 +99,15 @@ export default function FeaturedProductsCarousel() {
               ))}
             </div>
 
-            {/* =================================================
-                SECOND PRODUCT SET
-            ================================================== */}
+            {/* Duplicate set for the seamless loop. Hidden from
+                screen readers and keyboard navigation. */}
 
-            <div className="flex shrink-0 gap-6">
+            <div className="flex shrink-0 gap-6" aria-hidden="true">
               {orderedProducts.map((product) => (
                 <ProductCard
                   key={`second-${product.slug}`}
                   product={product}
+                  focusable={false}
                 />
               ))}
             </div>
@@ -187,7 +131,7 @@ export default function FeaturedProductsCarousel() {
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .featured-products-reduced-motion {
+          .featured-products-track {
             animation: none !important;
           }
         }
@@ -200,10 +144,17 @@ export default function FeaturedProductsCarousel() {
    PRODUCT CARD
 ============================================================= */
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({
+  product,
+  focusable = true,
+}: {
+  product: Product
+  focusable?: boolean
+}) {
   return (
     <Link
       href={`/products/${product.slug}`}
+      tabIndex={focusable ? undefined : -1}
       className="
         group/card
         block
@@ -269,19 +220,19 @@ function ProductCard({ product }: { product: Product }) {
         {/* Category */}
 
         <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-red-600">
-          {product.category}
+          {product.family}
         </p>
 
         {/* Product Name */}
 
-        <h3 className="mt-3 font-mono text-xl font-black tracking-tight text-zinc-950">
+        <h3 className="mt-3 font-mono text-xl font-black uppercase tracking-tight text-zinc-950">
           {product.name}
         </h3>
 
         {/* Model */}
 
         <p className="mt-3 font-mono text-xs font-bold tracking-[0.16em] text-zinc-500">
-          {product.code}
+          {product.variants[0]?.model}
         </p>
 
         {/* Description */}

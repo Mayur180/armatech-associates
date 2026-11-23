@@ -22,7 +22,7 @@ const productLinks = [
   },
   {
     label: "Fully Automatic VMM",
-    href: "/products/cnc-auto-vmm",
+    href: "/products/fully-automatic-vmm",
   },
   {
     label: "Cabinet Integrated VMM",
@@ -45,7 +45,7 @@ const companyLinks = [
   },
   {
     label: "About Us",
-    href: "/#why-armatech",
+    href: "/about",
   },
   {
     label: "Products",
@@ -53,7 +53,7 @@ const companyLinks = [
   },
   {
     label: "Quality",
-    href: "/#armatech-standard",
+    href: "/services",
   },
   {
     label: "Contact Us",
@@ -290,7 +290,7 @@ export default function SiteFooter() {
                     </p>
 
                     <p className="mt-2 text-sm leading-6 text-[#555555]">
-                      W-17 A, &apos;S&apos; Block, M.I.D.C.
+                      W-174 A, &apos;S&apos; Block, M.I.D.C.
                       <br />
                       Bhosari Industrial Estate
                       <br />
@@ -318,7 +318,26 @@ export default function SiteFooter() {
                     </p>
 
                     <p className="mt-2 text-sm text-[#555555]">
-                      +91 70209 91684
+                      <a
+                        href="tel:+912027122385"
+                        className="transition hover:text-[#c8102e]"
+                      >
+                        +91 20 2712 2385
+                      </a>
+                      <br />
+                      <a
+                        href="tel:+912027120241"
+                        className="transition hover:text-[#c8102e]"
+                      >
+                        +91 20 2712 0241
+                      </a>
+                      <br />
+                      <a
+                        href="tel:+917020991684"
+                        className="transition hover:text-[#c8102e]"
+                      >
+                        +91 70209 91684
+                      </a>
                     </p>
 
                   </div>
@@ -339,12 +358,12 @@ export default function SiteFooter() {
                       Enquiries
                     </p>
 
-                    <Link
-                      href="/contact"
-                      className="mt-2 inline-block text-sm font-semibold text-[#555555] transition hover:text-[#c8102e]"
+                    <a
+                      href="mailto:armatechsales@gmail.com"
+                      className="mt-2 inline-block break-all text-sm font-semibold text-[#555555] transition hover:text-[#c8102e]"
                     >
-                      Send an enquiry
-                    </Link>
+                      armatechsales@gmail.com
+                    </a>
 
                   </div>
 

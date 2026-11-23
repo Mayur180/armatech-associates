@@ -22,13 +22,16 @@ export function getMongoClient(): Promise<MongoClient> {
     throw new Error("MONGODB_URI is not defined. Add it to your environment variables.")
   }
 
-  if (process.env.NODE_ENV === "development") {
-    if (!global._mongoClientPromise) {
-      global._mongoClientPromise = new MongoClient(uri, options).connect()
-    }
-
-    return global._mongoClientPromise
+  if (!global._mongoClientPromise) {
+    global._mongoClientPromise = new MongoClient(uri, options)
+      .connect()
+      .catch((error) => {
+        // Never cache a failed connection, otherwise every later request
+        // keeps failing until the process restarts.
+        global._mongoClientPromise = undefined
+        throw error
+      })
   }
 
-  return new MongoClient(uri, options).connect()
+  return global._mongoClientPromise
 }

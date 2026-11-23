@@ -15,8 +15,8 @@ export default function CTASection() {
           </p>
         </div>
         <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
-          {/* Reverted back to standard contact link */}
-          <Link href="/contact" className="rounded-md bg-red-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
+          {/* Free inspection intent pre-fills the contact form */}
+          <Link href="/contact?intent=free-inspection" className="rounded-md bg-red-600 px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600">
             Book Free Inspection
           </Link>
           <Link href="/products" className="text-lg font-semibold leading-6 text-white hover:text-gray-300">

@@ -20,7 +20,7 @@ export type Product = {
   category:
     | "Manual"
     | "Semi-auto"
-    | "CNC auto"
+    | "Computer auto"
     | "Cabinet integrated"
 
   badge: string
@@ -46,19 +46,11 @@ export type Product = {
 // ============================================================
 
 export const catalogImages = {
-  manual:
-    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Maunal-L8yjCFjZiWt6iCDQZhujqswIkFjqPo.png",
-
-  semi:
-    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/semi-nIQvd99xxNXr13VTuwnMkOI3ip3YPp.png",
-
+  manual: "/Image/manual.png",
+  semi: "/Image/semi.png",
   automatic: "/Image/automatic.png",
-
-  cabinet:
-    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/automatic%20with%20cabinet-nMON6kS70ryrBN3q5uxzUV77A0oTbr.png",
-
-  vms:
-    "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/vms-UyN1lpNPu7hfXst0XeCpOdBG3w6paP.png",
+  cabinet: "/Image/cabinet.png",
+  vms: "/Image/vms.png",
 }
 
 // ============================================================
@@ -66,15 +58,11 @@ export const catalogImages = {
 // ============================================================
 
 export const catalogBrochures = {
-  manual: "/pdf/Manual_VMM.pdf",
-
-  semiAutomatic: "/pdf/Semi_Automatic_VMM.pdf",
-
-  fullyAutomatic: "/pdf/Fully_Automatic_VMM.pdf",
-
-  cabinet: "/pdf/Automatic_VMM_With_Cabinet.pdf",
-
-  vms: "/pdf/VMS_VMM.pdf",
+  manual: "/Pdf/Manual_VMM.pdf",
+  semiAutomatic: "/Pdf/Semi_Automatic_VMM.pdf",
+  fullyAutomatic: "/Pdf/Fully_Automatic_VMM.pdf",
+  cabinet: "/Pdf/Automatic_VMM_With_Cabinet.pdf",
+  vms: "/Pdf/VMS_VMM.pdf",
 }
 
 // ============================================================
@@ -286,7 +274,7 @@ export const products: Product[] = [
     badge: "Signal feedback",
 
     summary:
-      "A semi-automatic optical measurement system combining manual X/Y operation with CNC-controlled Z-axis movement.",
+      "A semi-automatic optical measurement system combining manual X/Y operation with Computer-controlled Z-axis movement.",
 
     travel:
       "200 × 100 × 150 mm → 400 × 300 × 200 mm",
@@ -302,7 +290,7 @@ export const products: Product[] = [
       "Semi Automatic VMM | Video Measuring Machine | CRYSTAL",
 
     seoDescription:
-      "Explore CRYSTAL Semi Automatic VMM systems with manual X/Y operation and CNC Z-axis control for precision dimensional inspection.",
+      "Explore CRYSTAL Semi Automatic VMM systems with manual X/Y operation and Computer Z-axis control for precision dimensional inspection.",
 
     applications: [
       "Precision dimensional inspection",
@@ -316,7 +304,7 @@ export const products: Product[] = [
     highlights: [
       "Industrial-grade color CCD camera",
       "0.7–4.5X manual zoom lens",
-      "CNC-controlled Z axis",
+      "Computer-controlled Z axis",
       "0.5 μm linear scale resolution",
       "LED surface illumination",
       "LED parallel contour illumination",
@@ -414,9 +402,9 @@ export const products: Product[] = [
       {
         label: "Driving System",
         values: [
-          "Manual X/Y + CNC Z",
-          "Manual X/Y + CNC Z",
-          "Manual X/Y + CNC Z",
+          "Manual X/Y + Computer Z",
+          "Manual X/Y + Computer Z",
+          "Manual X/Y + Computer Z",
         ],
       },
 
@@ -436,18 +424,18 @@ export const products: Product[] = [
   // ==========================================================
 
   {
-    slug: "cnc-auto-vmm",
+    slug: "fully-automatic-vmm",
 
     name: "Fully Automatic VMM",
 
     family: "Video Measuring Machine",
 
-    category: "CNC auto",
+    category: "Computer auto",
 
     badge: "Programmable inspection",
 
     summary:
-      "A CNC-controlled video measuring system designed for automated and repeatable dimensional inspection.",
+      "A Computer-controlled video measuring system designed for automated and repeatable dimensional inspection.",
 
     travel:
       "200 × 200 × 200 mm → 400 × 300 × 200 mm",
@@ -457,13 +445,13 @@ export const products: Product[] = [
     brochure: catalogBrochures.fullyAutomatic,
 
     imageAlt:
-      "CRYSTAL Fully Automatic CNC Video Measuring Machine for automated inspection",
+      "CRYSTAL Fully Automatic Computer Video Measuring Machine for automated inspection",
 
     seoTitle:
-      "Fully Automatic VMM | CNC Video Measuring Machine | CRYSTAL",
+      "Fully Automatic VMM | Computer Video Measuring Machine | CRYSTAL",
 
     seoDescription:
-      "Explore CRYSTAL Fully Automatic CNC VMM systems for automated, repeatable and precise dimensional measurement and inspection.",
+      "Explore CRYSTAL Fully Automatic Computer VMM systems for automated, repeatable and precise dimensional measurement and inspection.",
 
     applications: [
       "Automated dimensional inspection",
@@ -475,7 +463,7 @@ export const products: Product[] = [
     ],
 
     highlights: [
-      "CNC automatic measurement",
+      "Computer automatic measurement",
       "Automatic zoom system",
       "High-resolution CCD camera",
       "AC servo motor drive",
@@ -548,9 +536,9 @@ export const products: Product[] = [
       {
         label: "Driving System",
         values: [
-          "CNC control with servo motor drive",
-          "CNC control with servo motor drive",
-          "CNC control with servo motor drive",
+          "Computer control with servo motor drive",
+          "Computer control with servo motor drive",
+          "Computer control with servo motor drive",
         ],
       },
 
@@ -578,10 +566,10 @@ export const products: Product[] = [
 
     category: "Cabinet integrated",
 
-    badge: "Enclosed CNC system",
+    badge: "Enclosed Computer system",
 
     summary:
-      "A fully enclosed CNC video measuring system with servo-driven axes, automatic zoom and integrated machine cabinet.",
+      "A fully enclosed Computer video measuring system with servo-driven axes, automatic zoom and integrated machine cabinet.",
 
     travel:
       "300 × 200 × 200 mm → 600 × 500 × 200 mm",
@@ -591,13 +579,13 @@ export const products: Product[] = [
     brochure: catalogBrochures.cabinet,
 
     imageAlt:
-      "CRYSTAL Automatic Video Measuring Machine with Cabinet for CNC inspection",
+      "CRYSTAL Automatic Video Measuring Machine with Cabinet for Computer inspection",
 
     seoTitle:
-      "Automatic VMM with Cabinet | CNC Video Measuring Machine | CRYSTAL",
+      "Automatic VMM with Cabinet | Computer Video Measuring Machine | CRYSTAL",
 
     seoDescription:
-      "Explore CRYSTAL Automatic VMM systems with integrated cabinet, CNC servo drive and automatic zoom for precision dimensional inspection.",
+      "Explore CRYSTAL Automatic VMM systems with integrated cabinet, Computer servo drive and automatic zoom for precision dimensional inspection.",
 
     applications: [
       "Automated dimensional inspection",
@@ -605,11 +593,11 @@ export const products: Product[] = [
       "Automotive component measurement",
       "Precision manufacturing",
       "High-volume inspection",
-      "CNC measurement applications",
+      "Computer measurement applications",
     ],
 
     highlights: [
-      "CNC controlled measurement",
+      "Computer controlled measurement",
       "High-precision servo motor drive",
       "1–10X automatic zoom lens",
       "1.3MP digital camera",
@@ -751,10 +739,10 @@ export const products: Product[] = [
       {
         label: "Driving System",
         values: [
-          "CNC control; high-precision servo motor drive",
-          "CNC control; high-precision servo motor drive",
-          "CNC control; high-precision servo motor drive",
-          "CNC control; high-precision servo motor drive",
+          "Computer control; high-precision servo motor drive",
+          "Computer control; high-precision servo motor drive",
+          "Computer control; high-precision servo motor drive",
+          "Computer control; high-precision servo motor drive",
         ],
       },
 
@@ -958,7 +946,7 @@ export const categories = [
   "All systems",
   "Manual",
   "Semi-auto",
-  "CNC auto",
+  "Computer auto",
   "Cabinet integrated",
 ] as const
 

@@ -16,10 +16,22 @@ const products = catalogueProducts.map((product) => ({
 }))
 
 const capabilities = [
-  'Manual control',
-  'Powered Z axis',
-  'Programmed routines',
-  'Enclosed cabinet',
+  {
+    label: 'Manual control',
+    body: 'X, Y and Z driven by hand for one-off parts and direct operator feel.',
+  },
+  {
+    label: 'Powered Z axis',
+    body: 'Computer-controlled vertical focus for repeatable height and step measurement.',
+  },
+  {
+    label: 'Programmed routines',
+    body: 'Servo-driven axes follow stored inspection programs on automatic models.',
+  },
+  {
+    label: 'Enclosed cabinet',
+    body: 'Cabinet-integrated automatic systems shield the stage and optics on the shop floor.',
+  },
 ]
 
 export default function Page() {
@@ -55,7 +67,7 @@ export default function Page() {
             <p className="mt-7 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
               Five machine families, sixteen configurations. Manual benchtop
               systems to enclosed servo machines, with 0.5 µm scales and
-              2.5 + L/100 µm stated accuracy.
+              accuracy stated as fine as 2 + L/100 µm.
             </p>
             <div className="mt-9 flex flex-wrap gap-4">
               <Link href="/products" className="inline-flex items-center gap-3 bg-primary px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
@@ -127,34 +139,20 @@ export default function Page() {
         >
           {capabilities.map((item, i) => (
             <motion.div 
-              key={item} 
+              key={item.label} 
               variants={{ hidden: { opacity: 0, y: 40 }, show: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
               className="p-6"
             >
               <p className={`font-mono text-3xl font-bold ${i === 0 ? "" : "text-primary"}`}>0{i + 1}</p>
-              <p className="mt-4 text-sm font-bold uppercase tracking-widest">{item}</p>
+              <p className="mt-4 text-sm font-bold uppercase tracking-widest">{item.label}</p>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.body}</p>
             </motion.div>
           ))}
         </motion.div>
       </section>
 
       {/* FEATURED PRODUCTS */}
-      <section className="mx-auto max-w-7xl px-5 py-10 sm:py-12 lg:px-8 lg:py-16">
-        <div className="flex items-end justify-between gap-6">
-          <div>
-            <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-primary">Featured systems</p>
-            <h2 className="mt-4 max-w-xl font-mono text-3xl font-bold uppercase tracking-[-0.04em] sm:text-5xl">
-              Tools for a tighter tolerance.
-            </h2>
-          </div>
-          <Link href="/products" className="hidden text-xs font-bold uppercase tracking-widest underline decoration-primary underline-offset-8 transition-colors hover:text-primary sm:block">
-            View all products <ArrowRight className="ml-2 inline size-4" />
-          </Link>
-        </div>
-        <div className="mt-8">
-          <FeaturedProductsCarousel />
-        </div>
-      </section>
+      <FeaturedProductsCarousel />
 
       {/* WHY ARMATECH (ANIMATED) */}
       <section id="why-armatech-home" className="relative overflow-hidden border-t border-border bg-background">
@@ -201,7 +199,9 @@ export default function Page() {
               <div className="mt-10 h-px w-10 bg-primary transition-all duration-300 group-hover:w-20" />
               <h3 className="mt-6 font-mono text-lg font-bold uppercase">Precision Focused</h3>
               <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                Stated accuracy is verified after installation, with the result recorded for your quality file.
+                Stated accuracy is verified after installation, with the result recorded
+                for your quality file. Every model&apos;s figure is published, so the claim
+                can be checked against the certificate.
               </p>
             </motion.div>
 
@@ -217,7 +217,9 @@ export default function Page() {
               <div className="mt-10 h-px w-10 bg-primary transition-all duration-300 group-hover:w-20" />
               <h3 className="mt-6 font-mono text-lg font-bold uppercase">Reliable Equipment</h3>
               <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                Axis movement, scale feedback and optics are checked against the build sheet before dispatch.
+                Axis movement, scale feedback and optics are checked against the build
+                sheet before dispatch. The same checks are repeated at installation, so
+                what left the facility is what measures your parts.
               </p>
             </motion.div>
 
@@ -233,7 +235,9 @@ export default function Page() {
               <div className="mt-10 h-px w-10 bg-primary transition-all duration-300 group-hover:w-20" />
               <h3 className="mt-6 font-mono text-lg font-bold uppercase">Application Driven</h3>
               <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                Specification starts with the features, tolerances and parts per shift on your drawing, not a stock model.
+                Specification starts with the features, tolerances and parts per shift
+                on your drawing, not a stock model. Options are quoted only where they
+                earn their place in that application.
               </p>
             </motion.div>
 
@@ -249,7 +253,9 @@ export default function Page() {
               <div className="mt-10 h-px w-10 bg-primary transition-all duration-300 group-hover:w-20" />
               <h3 className="mt-6 font-mono text-lg font-bold uppercase">Technical Support</h3>
               <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                Installed, calibrated and supported from Bhosari MIDC, Pune, by the team that supplied the machine.
+                Installed, calibrated and supported from Bhosari MIDC, Pune, by the team
+                that supplied the machine. Installation, training and calibration stay
+                with the same team after handover.
               </p>
             </motion.div>
           </motion.div>
@@ -284,14 +290,18 @@ export default function Page() {
               <Search className="size-6 text-primary" />
               <h3 className="mt-5 font-mono text-lg font-bold uppercase">Specify with confidence</h3>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                Travel, accuracy and repeatability figures are published for all sixteen configurations, so a shortlist can be made before the first call.
+                Travel, accuracy and repeatability figures are published for all sixteen
+                configurations, so a shortlist can be made before the first call. The
+                figures are listed model by model, not just for the family.
               </p>
             </div>
             <div>
               <ArrowRight className="size-6 text-primary" />
               <h3 className="mt-5 font-mono text-lg font-bold uppercase">Support that responds</h3>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                Installation, operator training and calibration are handled by the team that supplied the machine.
+                Installation, operator training and calibration are handled by the team
+                that supplied the machine. Service requests are coordinated from Pune,
+                with remote diagnosis first and site visits where the issue needs one.
               </p>
             </div>
           </div>

@@ -64,6 +64,39 @@ export async function generateMetadata({
   }
 }
 
+const familyNotes: Record<string, { range: string; choice: string }> = {
+  "manual-vmm": {
+    range:
+      "The three manual models share one optical package and one scale specification; the difference is working envelope and mass. AA-9011M measures 200 × 100 × 150 mm, AA-9012M 300 × 200 × 200 mm and AA-9013M 400 × 300 × 200 mm. All three are stated at 2.5 + L/100 µm accuracy with 2.5 µm repeatability and 0.5 µm linear scales (0.1 µm optional).",
+    choice:
+      "Choose the smallest envelope that takes your largest part plus fixture clearance; moving up a size changes capacity, not measurement quality. Hand-driven axes suit one-off parts, tool-room checks and mixed batches where writing a program would take longer than the inspection. If height or step measurement repeats through a shift, the powered Z axis of the semi-automatic family is the next step.",
+  },
+  "semi-automatic-vmm": {
+    range:
+      "Semi-automatic models keep X and Y manual and put the Z axis under computer control. The three envelopes are 200 × 100 × 150 mm, 300 × 200 × 200 mm and 400 × 300 × 200 mm. AA-9021SA and AA-9022SA are stated at 2.5 + L/100 µm with ±2.5 µm repeatability; AA-9023SA at 2.6 + L/100 µm with ±3 µm.",
+    choice:
+      "Choose this family when operators measure height, steps and contours repeatedly but parts still need hand positioning. Powered focus gives every operator the same starting point and removes the slowest manual step, while two-axis software records results against nominal dimensions. It is the usual step between a fully manual bench and a programmed automatic routine.",
+  },
+  "fully-automatic-vmm": {
+    range:
+      "All three axes are servo-driven and zoom is automatic, so a stored routine can change magnification and lighting as it measures. Travel starts at 200 × 200 × 200 mm on AA-9031A and rises to 400 × 300 × 200 mm on AA-9033A; all three carry 2.5 + L/100 µm accuracy and 2.5 µm repeatability.",
+    choice:
+      "This is the family for repeat inspection: the same part, measured by different operators and shifts, follows the same program. Parts are positioned on the stage by hand at the start of a run and the axes execute the routine. Where dust, draughts or production-floor conditions threaten the optics, the cabinet-integrated range puts the same automatic platform inside an enclosure.",
+  },
+  "automatic-vmm-cabinet": {
+    range:
+      "Four travels run from 300 × 200 × 200 mm to 600 × 500 × 200 mm. The 1–10X automatic zoom and 1.3 MP camera give 18–195X magnification, and 0.5 µm linear scales are standard (0.1 µm optional). The 300 mm and 400 mm stages are stated at 2 + L/100 µm with 2 µm repeatability; the 500 mm and 600 mm stages at 2.5 + L/100 µm with 2.5 µm repeatability.",
+    choice:
+      "The enclosure protects the stage and optics from dust and draughts and defines the working area on a production floor. Plan the delivery route and floor loading early: the largest model measures 890 × 1370 × 1780 mm and weighs 715 kg. If parts fit a smaller stage, the unenclosed automatic family offers the same servo control in a lighter frame.",
+  },
+  "vms-manual": {
+    range:
+      "The VMS range uses a finer linear scale than the VMM models — 0.001 mm — and a longer 108 mm working distance. Envelopes are 200 × 100 × 150 mm, 300 × 200 × 200 mm and 400 × 300 × 200 mm; all three are stated at 2.5 + L/100 µm accuracy with 2.5 µm repeatability. The 0.7–4.5X manual zoom covers 18–188X magnification.",
+    choice:
+      "Choose the VMS where fine scale reading and working clearance matter on manual inspection work. Every axis is adjusted by hand, so it suits one-off parts and tool-room checks. Where a powered Z axis or stored routines would remove more time than the finer scale saves, the semi-automatic and automatic families are the better fit.",
+  },
+}
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params
   const product = getProduct(slug)
@@ -71,6 +104,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (!product) {
     notFound()
   }
+
+  const notes = familyNotes[product.slug]
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -199,6 +234,56 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
       </section>
+
+      {/* APPLICATIONS */}
+      <section className="border-b border-border">
+        <div className="mx-auto w-full max-w-7xl px-5 py-10 lg:px-8 lg:py-14">
+          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+            Applications
+          </p>
+          <h2 className="mt-3 font-mono text-2xl font-bold uppercase tracking-[-0.03em] sm:text-3xl">
+            Where the {product.name} is used
+          </h2>
+
+          <div className="mt-7 grid border border-border sm:grid-cols-2 lg:grid-cols-3">
+            {product.applications.map((application, index) => (
+              <div
+                key={application}
+                className="border-b border-r border-border p-5"
+              >
+                <span className="font-mono text-[10px] font-bold tracking-[0.16em] text-muted-foreground">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <p className="mt-3 text-sm leading-6">{application}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* RANGE NOTES */}
+      {notes && (
+        <section className="border-b border-border bg-secondary">
+          <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-8 lg:py-16">
+            <div>
+              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+                Range notes
+              </p>
+              <h2 className="mt-4 font-mono text-2xl font-bold uppercase tracking-[-0.03em] sm:text-3xl">
+                Choosing within the {product.name} range.
+              </h2>
+              <p className="mt-5 max-w-md text-sm leading-7 text-muted-foreground">
+                Each model has its own specification table. These notes explain how
+                the sizes differ before you open one.
+              </p>
+            </div>
+            <div className="space-y-5 text-sm leading-7 text-muted-foreground">
+              <p>{notes.range}</p>
+              <p>{notes.choice}</p>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* FOOTER LINKS */}
       <section>

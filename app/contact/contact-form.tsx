@@ -269,6 +269,28 @@ export default function ContactForm() {
               </span>
             </div>
 
+            <div className="mt-5 border border-border bg-secondary p-4">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                What to send
+              </p>
+              <ul className="mt-3 space-y-2 text-xs leading-5 text-muted-foreground">
+                {[
+                  "Largest part envelope and material",
+                  "Features and tolerances to measure",
+                  "Parts per shift or per month",
+                  "Probe, fixture or CAD comparison requirements",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-1.5 h-1 w-1 shrink-0 bg-primary" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                A drawing reference helps; we will ask for the file by email.
+              </p>
+            </div>
+
             {errorMsg && (
               <div className="mt-5 border-l-2 border-primary bg-primary/5 p-3 text-xs leading-5 text-foreground">
                 {errorMsg}

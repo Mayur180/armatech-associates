@@ -35,13 +35,28 @@ export async function generateMetadata({ params }: ModelPageProps): Promise<Meta
     return { title: "Model Not Found" }
   }
 
+  const description =
+    copy?.paragraphs[0] ??
+    `Technical specifications, ${variant.travel} mm travel range and configuration options for the CRYSTAL ${variant.model} ${product.name}.`
+
   return {
     title: `${variant.model} | ${product.name} Specifications`,
-    description:
-      copy?.paragraphs[0] ??
-      `Technical specifications, ${variant.travel} mm travel range and configuration options for the CRYSTAL ${variant.model} ${product.name}.`,
+    description,
     alternates: {
       canonical: `/products/${product.slug}/${variant.model}`,
+    },
+    openGraph: {
+      title: `${variant.model} | ${product.name}`,
+      description,
+      url: `${SITE_URL}/products/${product.slug}/${variant.model}`,
+      type: "website",
+      images: [{ url: product.image, alt: product.imageAlt }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${variant.model} | ${product.name}`,
+      description,
+      images: [product.image],
     },
   }
 }
@@ -57,6 +72,20 @@ export default async function ModelSpecsPage({ params }: ModelPageProps) {
   if (!variant) notFound()
 
   const copy = getModelCopy(variant.model)
+  const accuracySpec = product.specifications.find((spec) =>
+    spec.label.startsWith("Measuring Accuracy")
+  )
+  const repeatabilitySpec = product.specifications.find((spec) =>
+    spec.label.startsWith("Repeatability")
+  )
+  const lensSpec = product.specifications.find((spec) => spec.label === "Lens")
+  const accuracy = accuracySpec?.values[variantIndex]
+  const repeatability = repeatabilitySpec?.values[variantIndex]
+  const lens = lensSpec?.values[variantIndex]
+  const intro =
+    accuracy && repeatability
+      ? `The ${variant.model} is the ${variant.travel} mm X × Y × Z configuration in the ${product.name} range. Stated accuracy is ${accuracy} µm with ${repeatability} µm repeatability.${lens ? ` Optics: ${lens}.` : ""}`
+      : product.summary
   const pageUrl = `${SITE_URL}/products/${product.slug}/${variant.model}`
 
   const productJsonLd = {
@@ -127,7 +156,7 @@ export default async function ModelSpecsPage({ params }: ModelPageProps) {
           </h1>
 
           <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
-            {product.imageAlt}.
+            {intro}
           </p>
 
           <div className="mt-6 flex flex-wrap gap-x-10 gap-y-3 border-t border-border pt-5">
@@ -226,6 +255,66 @@ export default async function ModelSpecsPage({ params }: ModelPageProps) {
                 </li>
               ))}
             </ul>
+          </section>
+
+          {/* RANGE */}
+          <section className="mt-8">
+            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-primary">
+              Range
+            </p>
+            <h2 className="mt-3 font-mono text-xl font-bold uppercase tracking-[-0.02em]">
+              Other sizes in this range
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              Each row opens the full specification for that size.
+            </p>
+
+            <div className="mt-4 border border-border">
+              {product.variants.map((item, index) => {
+                const isCurrent = item.model === variant.model
+                const rowClass = `flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between ${
+                  index !== product.variants.length - 1
+                    ? "border-b border-border"
+                    : ""
+                }`
+                const rowContent = (
+                  <>
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+                      <span className="font-mono text-sm font-bold">{item.model}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {item.travel} mm travel
+                      </span>
+                      {accuracySpec && (
+                        <span className="text-xs text-muted-foreground">
+                          {accuracySpec.values[index]} µm accuracy
+                        </span>
+                      )}
+                    </div>
+                    {isCurrent ? (
+                      <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
+                        This model
+                      </span>
+                    ) : (
+                      <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+                    )}
+                  </>
+                )
+
+                return isCurrent ? (
+                  <div key={item.model} className={`${rowClass} bg-secondary`}>
+                    {rowContent}
+                  </div>
+                ) : (
+                  <Link
+                    key={item.model}
+                    href={`/products/${product.slug}/${item.model}`}
+                    className={`${rowClass} transition-colors hover:bg-secondary`}
+                  >
+                    {rowContent}
+                  </Link>
+                )
+              })}
+            </div>
           </section>
 
           {/* SCOPE */}

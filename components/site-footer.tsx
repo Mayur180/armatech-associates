@@ -19,7 +19,7 @@ const productLinks = [
     href: "/products/manual-vmm",
   },
   {
-    label: "Semi-Auto VMM",
+    label: "Semi Automatic VMM",
     href: "/products/semi-automatic-vmm",
   },
   {
@@ -27,11 +27,11 @@ const productLinks = [
     href: "/products/fully-automatic-vmm",
   },
   {
-    label: "Cabinet Integrated VMM",
+    label: "Automatic VMM with Cabinet",
     href: "/products/automatic-vmm-cabinet",
   },
   {
-    label: "VMS Manual",
+    label: "VMS VMM",
     href: "/products/vms-manual",
   },
 ]
@@ -179,8 +179,9 @@ export default function SiteFooter() {
               </Link>
 
               <p className="mt-5 max-w-sm text-sm leading-7 text-[#555555]">
-                Precision measurement and quality control solutions
-                for modern manufacturing.
+                Precision measurement and quality-control equipment for modern
+                manufacturing, supplied and supported from Pune since 1980. This
+                division covers the CRYSTAL range of video measuring machines.
               </p>
 
               <a

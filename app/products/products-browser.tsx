@@ -53,6 +53,11 @@ export default function ProductsBrowser() {
             Compare the exact travel range, optics and controls
             behind every model.
           </p>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-neutral-600">
+            Filter by drive system, or search a series name or model code. Each
+            family page opens the specification table, accuracy figure and
+            delivery scope for every model in that family.
+          </p>
         </div>
       </section>
 
@@ -160,7 +165,8 @@ export default function ProductsBrowser() {
         {/* NO PRODUCTS FOUND */}
         {filtered.length === 0 && (
           <p className="py-16 text-center font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            No matching systems found.
+            No matching systems found. Try a model code such as AA-9032A, or
+            clear the filter.
           </p>
         )}
       </section>
@@ -180,7 +186,8 @@ export default function ProductsBrowser() {
             </h2>
             <p className="mt-3 max-w-xl text-xs leading-6 text-background/60">
               Five family brochures and the full comparison set, as published
-              PDFs.
+              PDFs. Each brochure lists travel, accuracy, optics and drive system
+              for every model in that family.
             </p>
 
             <div className="mt-6 grid gap-px bg-background/15 sm:grid-cols-2">
@@ -219,7 +226,8 @@ export default function ProductsBrowser() {
             </p>
             <p className="mt-3 text-xs leading-6 text-background/60">
               All five families merged into a single PDF, for sending to a
-              colleague or attaching to an enquiry.
+              colleague or attaching to an internal justification. The separate
+              brochures are still available above if you only need one family.
             </p>
             <a
               href="/Pdf/VMM_merged.pdf"

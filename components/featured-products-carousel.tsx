@@ -47,21 +47,28 @@ export default function FeaturedProductsCarousel() {
             SECTION HEADER
         ====================================================== */}
 
-        <div className="mb-10 flex items-end justify-between">
+        <div className="mb-10 flex items-end justify-between gap-6">
           <div>
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-primary">
-              Our Products
+            <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.22em] text-primary">
+              Featured systems
             </p>
 
-            <h2 className="text-3xl font-black tracking-tight text-zinc-950 sm:text-4xl">
-              Precision Measurement Systems
+            <h2 className="font-mono text-3xl font-black uppercase tracking-[-0.04em] text-zinc-950 sm:text-4xl">
+              Tools for a tighter tolerance.
             </h2>
 
             <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-500 sm:text-base">
-              Explore our range of precision video measuring and vision
-              measurement systems designed for accurate industrial inspection.
+              Five families, sixteen models — manual benchtop to enclosed servo.
+              Open a family for its full specification table and delivery scope.
             </p>
           </div>
+
+          <Link
+            href="/products"
+            className="hidden shrink-0 text-xs font-bold uppercase tracking-widest underline decoration-primary underline-offset-8 transition-colors hover:text-primary sm:block"
+          >
+            View all products <ArrowRight className="ml-2 inline size-4" />
+          </Link>
         </div>
 
         {/* =====================================================
@@ -237,8 +244,8 @@ function ProductCard({
 
         {/* Description */}
 
-        <p className="mt-6 text-sm text-zinc-500">
-          Precision Video Measuring Machine
+        <p className="mt-6 text-sm leading-6 text-zinc-500">
+          {product.summary}
         </p>
 
         {/* Divider */}

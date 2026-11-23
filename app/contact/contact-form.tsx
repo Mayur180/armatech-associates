@@ -71,14 +71,23 @@ export default function ContactForm() {
         body: JSON.stringify(payload),
       })
 
-      const result = await response.json()
+      const result = await response.json().catch(() => ({}))
+      if (result.message === "Thank you.") {
+        setIsSuccess(true) // Treat honeypot hit as success so bots don't learn
+        return
+      }
 
-      if (response.ok && result.success) {
+      if (response.ok && result.success && result.saved === true) {
         setIsSuccess(true)
       } else {
-        setErrorMsg(result.error || result.message || "Something went wrong.")
+        setErrorMsg(
+          result.error ||
+            result.message ||
+            `Submission failed (HTTP ${response.status}). Please try again or call us.`
+        )
       }
-    } catch {
+    } catch (err) {
+      console.error("Enquiry submit failed:", err)
       setErrorMsg(
         "Could not reach the server. Please check your connection and try again."
       )

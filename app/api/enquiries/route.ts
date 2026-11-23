@@ -38,7 +38,6 @@ function isValidEmail(email: string) {
 
 function isValidPhone(phone: string) {
   const digits = phone.replace(/\D/g, "")
-
   return digits.length >= 7 && digits.length <= 15
 }
 
@@ -86,7 +85,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Honeypot: real users never fill this field.
-  if (clean(body.website)) {
+  if (clean(body.hp_field)) {
     return NextResponse.json({ success: true, message: "Thank you." })
   }
 
@@ -139,13 +138,9 @@ export async function POST(request: NextRequest) {
     createdAt: new Date(),
   }
 
-  // ----------------------------------------------------------
-  // Save to MongoDB. The site must still work if the database
-  // is unreachable, so a failure here is not fatal.
-  // ----------------------------------------------------------
-
   let saved = false
   let enquiryId: string | undefined
+  let dbError: string | undefined
 
   try {
     const client = await getMongoClient()
@@ -158,12 +153,9 @@ export async function POST(request: NextRequest) {
     enquiryId = result.insertedId.toString()
     console.log("ENQUIRY SAVED TO MONGODB:", enquiryId)
   } catch (error) {
+    dbError = error instanceof Error ? error.message : String(error)
     console.error("ENQUIRY DATABASE ERROR:", error)
   }
-
-  // ----------------------------------------------------------
-  // Emails
-  // ----------------------------------------------------------
 
   let adminEmailSent = false
   let customerEmailSent = false
@@ -243,16 +235,18 @@ export async function POST(request: NextRequest) {
     console.warn("RESEND_API_KEY is not configured. Emails were skipped.")
   }
 
-  if (!saved && !adminEmailSent) {
+  if (!saved) {
     return NextResponse.json(
       {
         success: false,
         error:
-          "We could not deliver your enquiry right now. Please call us on " +
+          "We could not store your enquiry right now. Please call us on " +
           CONTACT.mobile +
           " or email " +
           CONTACT.email +
           ".",
+        saved: false,
+        dbError,
       },
       { status: 503 }
     )
@@ -262,7 +256,7 @@ export async function POST(request: NextRequest) {
     {
       success: true,
       message: "Your enquiry has been submitted successfully.",
-      saved,
+      saved: true,
       enquiryId,
       email: {
         adminSent: adminEmailSent,
@@ -316,7 +310,6 @@ export async function DELETE(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url)
-
   const id = searchParams.get("id")
   const deleteAll = searchParams.get("all") === "true"
 
@@ -342,7 +335,6 @@ export async function DELETE(request: NextRequest) {
 
     if (deleteAll) {
       const result = await enquiries.deleteMany({})
-
       return NextResponse.json({
         success: true,
         message: `${result.deletedCount} enquiries deleted successfully.`,
@@ -366,7 +358,6 @@ export async function DELETE(request: NextRequest) {
     })
   } catch (error) {
     console.error("DELETE ENQUIRY ERROR:", error)
-
     return NextResponse.json(
       { success: false, error: "Unable to delete enquiry." },
       { status: 500 }
